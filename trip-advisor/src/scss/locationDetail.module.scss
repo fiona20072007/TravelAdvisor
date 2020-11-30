@@ -1,0 +1,103 @@
+.locationAll {
+  display: flex;
+  position: relative;
+}
+.left {
+  width: 60%;
+}
+.right {
+  width: 38%;
+  position: fixed;
+  top: 0;
+  right: 0;
+}
+.left {
+  width: 60%;
+  margin: 10px;
+}
+//banner
+.banner {
+  height: 200px;
+  overflow: hidden;
+  margin: 10px;
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 0;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+.bannerName {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1;
+  color: white;
+  font-size: 50px;
+}
+.bannerDes {
+  position: absolute;
+  top: 160px;
+  left: 10px;
+  z-index: 1;
+  color: white;
+  font-size: 20px;
+}
+.bannerPhoto {
+  width: 100%;
+  position: absolute;
+  z-index: 0;
+}
+
+//show
+.location {
+  width: 100%;
+}
+.locationShow {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+}
+.item {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 6px;
+  cursor: pointer;
+}
+.itemSelect {
+  width: 100%;
+  height: 300px;
+  border: 1px solid black;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 25px;
+  display: flex;
+  cursor: pointer;
+}
+.selectDetail {
+  margin: 10px;
+}
+
+.itemPhoto {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+.itemSelectPhoto {
+  height: 100%;
+  width: 300px;
+  object-fit: cover;
+}
+
+//map
+.marker {
+  font-size: 30px;
+}
