@@ -1,10 +1,8 @@
 import firebase from "firebase";
+import "firebase/storage";
+import "firebase/database";
 
 const firebaseConfig = {
-  // API_HOST: "https://mickeyzone.online/api/1.0",
-  // FACEBOOK_APP_ID: "700590737403665",
-  // API_KEY: "AIzaSyBIPaKSL7L_BEuibcSXhCtV-7TwWaJ1cok",
-
   apiKey: "AIzaSyAupP8pk0usCtzryMeCkskkn_1OuE1s2mg",
   authDomain: "tripadvisor-abc.firebaseapp.com",
   databaseURL: "https://tripadvisor-abc.firebaseio.com",
