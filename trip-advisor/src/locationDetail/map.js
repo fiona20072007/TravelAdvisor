@@ -23,21 +23,25 @@ const SimpleMap = compose(
     return (
       <Fragment>
         <GoogleMap center={props.center} zoom={props.zoom}>
-          {props.locationDetail.map((place) => (
-            <Marker
-              key={place.id}
-              position={place.pos}
-              onClick={(event) => props.markerClickHandler(event, place)}
-            >
-              {props.infoOpen && props.selectedPlace.pos == place.pos && (
-                <InfoWindow onCloseClick={() => props.setInfoOpen(false)}>
-                  <div>
-                    <h3>{props.selectedPlace.name}</h3>
-                  </div>
-                </InfoWindow>
-              )}
-            </Marker>
-          ))}
+          {props.locationDetail.map((place, i) => {
+            return (
+              <Marker
+                key={place.id}
+                position={place.pos}
+                onClick={(event) =>
+                  props.markerClickHandler(event, place, Math.floor(i / 3))
+                }
+              >
+                {props.infoOpen && props.selectedPlace.pos == place.pos && (
+                  <InfoWindow onCloseClick={() => props.setInfoOpen(false)}>
+                    <div>
+                      <h3>{props.selectedPlace.name}</h3>
+                    </div>
+                  </InfoWindow>
+                )}
+              </Marker>
+            );
+          })}
         </GoogleMap>
       </Fragment>
     );

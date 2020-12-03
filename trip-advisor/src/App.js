@@ -18,7 +18,7 @@ class App extends React.Component {
               path="/locationDetail/:tags"
               component={LocationDetail}
             />
-            <Route exact path="/schedule" component={ScheduleIndex} />
+            <Route path="/schedule" component={ScheduleIndex} />
           </Switch>
         </div>
       </Router>
