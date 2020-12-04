@@ -25,6 +25,7 @@ class AddSchedule extends React.Component {
       endDateSubmit: "",
       totalDay: "",
       size: null,
+      dateBlock: [],
     };
   }
   componentDidMount() {
@@ -63,7 +64,24 @@ class AddSchedule extends React.Component {
         TravelScheduleName: this.state.value,
         comment: "",
         id: this.state.size,
+        dateBlock: this.state.dateBlock,
       });
+    for (let i = 0; i < this.state.totalDay; i++) {
+      db.collection("schedule")
+        .doc("userId")
+        .collection("data")
+        .doc("travel" + this.state.size)
+        .collection("dateBlockDetail")
+        .doc(this.state.dateBlock[i])
+        .set({
+          id: i,
+          name: this.state.dateBlock[i],
+          morning: [],
+          afternoon: [],
+          night: [],
+        });
+    }
+
     alert(
       "Submitted: " +
         this.state.startDateSubmit +
@@ -81,6 +99,10 @@ class AddSchedule extends React.Component {
     let days = Math.floor(throughTime / (24 * 3600 * 1000)) + 1;
     let startDateStamp = moment(startDate).valueOf();
     let endDateStamp = moment(endDate).valueOf();
+    const dateTemp = [];
+    for (let i = startDateStamp; i < endDateStamp + 1; i += 86400000) {
+      dateTemp.push(moment(i).format("MM-DD-YYYY"));
+    }
 
     this.setState({
       startDate,
@@ -90,6 +112,7 @@ class AddSchedule extends React.Component {
       startDateSubmit: startDateTemp,
       endDateSubmit: endDateTemp,
       totalDay: days,
+      dateBlock: dateTemp,
     });
   };
 

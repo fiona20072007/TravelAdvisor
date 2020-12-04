@@ -33,32 +33,6 @@ const ScheduleIndex = (props) => {
       });
   }, []);
 
-  //   loadOptions = async inputValue => {
-  //     inputValue = inputValue.toLowerCase().replace(/\W/g, "");
-  //     return new Promise(resolve => {
-  //       db.collection("Tag")
-  //         .orderBy("plainName")
-  //         .startAt(inputValue)
-  //         .endAt(inputValue + "\uf8ff")
-  //         .get()
-  //         .then(docs => {
-  //           if (!docs.empty) {
-  //             let recommendedTags = [];
-  //             docs.forEach(function(doc) {
-  //               const tag = {
-  //                 value: doc.id,
-  //                 label: doc.data().tagName
-  //               };
-  //               recommendedTags.push(tag);
-  //             });
-  //             return resolve(recommendedTags);
-  //           } else {
-  //             return resolve([]);
-  //           }
-  //         });
-  //     });
-  //   };
-
   return (
     <div className={styles.scheduleLayout}>
       <ul className={styles.scheduleNav}>
