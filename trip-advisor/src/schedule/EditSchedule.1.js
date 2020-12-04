@@ -38,28 +38,6 @@ class EditSchedule extends React.Component {
         //   this.setState({ travelData: travelDataTemp });
       );
   }
-  onDragStart = (result) => {
-    console.log(result);
-    const { source, draggableId } = result;
-
-    if (draggableId.substr(0, 1) === "I") {
-      let travelMorningTemp = [];
-
-      db.collection("schedule")
-        .doc("userId")
-        .collection("data")
-        .doc(`travel${this.state.travelShowId}`)
-        .collection("dateBlockDetail")
-        .doc(source.droppableId.substring(5))
-        .onSnapshot((doc) => {
-          // .then(doc => {
-          travelMorningTemp = [...doc.data().morning];
-
-          this.setState({ travelMorning: travelMorningTemp });
-          console.log(this.state.travelMorning);
-        });
-    }
-  };
 
   onDragEnd = (result) => {
     console.log(result);
@@ -80,15 +58,6 @@ class EditSchedule extends React.Component {
         destination.index !== source.index
       ) {
         let travelMorningTemp = [];
-        let dragObj = {
-          country: this.state.travelMorning[source.index].country,
-          id: draggableId.substring(3),
-        };
-        travelMorningTemp = [...this.state.travelMorning];
-        travelMorningTemp.splice(source.index, 1);
-        travelMorningTemp.splice(destination.index, 0, dragObj);
-        this.setState({ travelMorning: travelMorningTemp });
-        console.log("Morning", travelMorningTemp);
 
         db.collection("schedule")
           .doc("userId")
@@ -96,10 +65,34 @@ class EditSchedule extends React.Component {
           .doc(`travel${this.state.travelShowId}`)
           .collection("dateBlockDetail")
           .doc(destination.droppableId.substring(5))
-          .set({
-            morning: travelMorningTemp,
-            name: destination.droppableId.substring(5),
+          .get()
+          .then((doc) => {
+            travelMorningTemp = [...doc.data().morning];
+            let dragObj = {
+              country: doc.data().morning[source.index].country,
+              id: draggableId.substring(3),
+            };
+            travelMorningTemp.splice(source.index, 1);
+            travelMorningTemp.splice(destination.index, 0, dragObj);
+            // console.log(travelMorningTemp);
+            this.setState({ travelMorning: travelMorningTemp });
+            console.log(this.state.travelMorning);
+
+            db.collection("schedule")
+              .doc("userId")
+              .collection("data")
+              .doc(`travel${this.state.travelShowId}`)
+              .collection("dateBlockDetail")
+              .doc(destination.droppableId.substring(5))
+              .set({
+                morning: travelMorningTemp,
+                name: destination.droppableId.substring(5),
+              });
           });
+        // .then(
+        //   console.log(this.state.travelMorning)
+
+        // );
       }
     }
 
@@ -141,10 +134,7 @@ class EditSchedule extends React.Component {
             </div>
           );
         })}
-        <DragDropContext
-          onDragEnd={this.onDragEnd}
-          onDragStart={this.onDragStart}
-        >
+        <DragDropContext onDragEnd={this.onDragEnd}>
           {this.state.travelData.map((item, i) => {
             return <DropSchedule key={i} items={item.dateBlock} />;
           })}

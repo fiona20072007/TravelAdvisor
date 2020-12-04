@@ -19,12 +19,10 @@ const ScheduleIndex = (props) => {
   // };
 
   useEffect(() => {
-    console.log(travelShow);
     db.collection("schedule")
       .doc("userId")
       .collection("data")
       .onSnapshot((querySnapshot) => {
-        console.log(TravelSchedule);
         let TravelScheduleTemp = [];
         querySnapshot.forEach((doc) => {
           TravelScheduleTemp.push(doc.data());
