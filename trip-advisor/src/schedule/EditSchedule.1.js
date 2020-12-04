@@ -44,7 +44,21 @@ class EditSchedule extends React.Component {
     const { draggableId } = result;
 
     if (draggableId.substr(0, 1) === "I") {
+      // let travelMorningTemp = [];
       let travelMorningAllTemp = {};
+
+      // db.collection("schedule")
+      //   .doc("userId")
+      //   .collection("data")
+      //   .doc(`travel${this.state.travelShowId}`)
+      //   .collection("dateBlockDetail")
+      //   .doc(source.droppableId.substring(5))
+      //   .get()
+      //   .then(doc => {
+      //     travelMorningTemp = Array.from(doc.data().morning);
+      //     console.log("travelMorningTemp = ", travelMorningTemp);
+      //     this.setState({ travelMorning: travelMorningTemp });
+      //   });
 
       db.collection("schedule")
         .doc("userId")
@@ -81,8 +95,19 @@ class EditSchedule extends React.Component {
         destination.droppableId === source.droppableId &&
         destination.index !== source.index
       ) {
+        // let travelMorningDragTemp = [];
+        // let travelMorningDropTemp = [];
+        // let dragObj = {
+        //   country: this.state.travelMorningAllTemp[
+        //     source.draggableId.substring(5)
+        //   ].country,
+        //   id: draggableId.substring(3)
+        // };
+        // source.droppableId.substring(5)
         let travelMorningTemp = [];
-
+        console.log(
+          this.state.travelMorningAll[source.droppableId.substring(5)]
+        );
         travelMorningTemp = Array.from(
           this.state.travelMorningAll[source.droppableId.substring(5)]
         );
@@ -90,7 +115,7 @@ class EditSchedule extends React.Component {
 
         travelMorningTemp.splice(destination.index, 0, remove);
         this.setState({ travelMorning: travelMorningTemp });
-        // console.log("Morning", travelMorningTemp);
+        console.log("Morning", travelMorningTemp);
 
         db.collection("schedule")
           .doc("userId")
@@ -100,43 +125,6 @@ class EditSchedule extends React.Component {
           .doc(destination.droppableId.substring(5))
           .set({
             morning: travelMorningTemp,
-            name: destination.droppableId.substring(5),
-          });
-      } else {
-        let travelMorningDragTemp = [];
-        let travelMorningDropTemp = [];
-        travelMorningDragTemp = Array.from(
-          this.state.travelMorningAll[source.droppableId.substring(5)]
-        );
-        travelMorningDropTemp = Array.from(
-          this.state.travelMorningAll[destination.droppableId.substring(5)]
-        );
-        const [remove] = travelMorningDragTemp.splice(source.index, 1);
-        //console.log(travelMorningDragTemp); //可set
-
-        db.collection("schedule")
-          .doc("userId")
-          .collection("data")
-          .doc(`travel${this.state.travelShowId}`)
-          .collection("dateBlockDetail")
-          .doc(source.droppableId.substring(5))
-          .set({
-            morning: travelMorningDragTemp,
-            name: source.droppableId.substring(5),
-          });
-
-        //console.log(remove);
-        travelMorningDropTemp.splice(destination.index, 0, remove);
-        // console.log(travelMorningDropTemp); //可set
-
-        db.collection("schedule")
-          .doc("userId")
-          .collection("data")
-          .doc(`travel${this.state.travelShowId}`)
-          .collection("dateBlockDetail")
-          .doc(destination.droppableId.substring(5))
-          .set({
-            morning: travelMorningDropTemp,
             name: destination.droppableId.substring(5),
           });
       }
