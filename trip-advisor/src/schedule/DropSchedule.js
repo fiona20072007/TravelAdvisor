@@ -3,6 +3,7 @@ import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
 import FindLocation from "./FindLocation";
 import DragListSchedule from "./DragListSchedule";
+import PropTypes from "prop-types";
 import { Droppable } from "react-beautiful-dnd";
 
 const db = firebase.firestore();
@@ -36,17 +37,20 @@ class DropSchedule extends React.Component {
 
         travelDateDetailTemp.forEach((dates) => {
           let arr = [];
-          return dates.morning.forEach((date) => {
+
+          dates.morning.forEach((date) => {
             if (dates.morning.length !== 0) {
               db.collection("country")
                 .doc(date.country)
                 .collection("location")
-                .onSnapshot((querySnapshot) => {
-                  querySnapshot.forEach((doc) => {
-                    if (doc.data().id == date.id) {
-                      arr.push(doc.data());
-                    }
+                .where("id", "==", date.id)
+
+                .get()
+                .then((docs) => {
+                  docs.forEach((doc) => {
+                    arr.push(doc.data());
                   });
+
                   travelDetailCountryTemp[dates.name] = arr;
                   this.setState({
                     travelDetailCountry: travelDetailCountryTemp,
@@ -59,10 +63,8 @@ class DropSchedule extends React.Component {
   }
 
   render() {
-    // console.log("this.state.travelDateDetail", this.state.travelDateDetail);
     return (
       <div className={styles.scheduleDateAll}>
-        {/* {console.log(321)} */}
         {this.state.travelDateDetail.map((item, i) => (
           <Droppable droppableId={`drop-${item.name}`} key={i}>
             {(provided) => (
@@ -79,7 +81,7 @@ class DropSchedule extends React.Component {
                   />
                   {provided.placeholder}
                 </div>
-                <FindLocation />
+                <FindLocation getCountry={this.props.getCountry} />
               </div>
             )}
           </Droppable>
@@ -88,5 +90,9 @@ class DropSchedule extends React.Component {
     );
   }
 }
+
+DropSchedule.propTypes = {
+  getCountry: PropTypes.func,
+};
 
 export default DropSchedule;

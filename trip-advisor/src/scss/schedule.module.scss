@@ -40,7 +40,7 @@
 .scheduleNav {
   list-style: none;
   display: flex;
-  margin-left: -10px;
+  margin-left: 0px;
 }
 a {
   text-decoration: none;
@@ -51,8 +51,7 @@ a {
 }
 .scheduleListAll {
   width: 210px;
-  height: 200px;
-  overflow: scroll;
+  height: 180px;
 }
 .scheduleDetail {
   border: 1px solid rgb(240, 220, 185);
@@ -71,9 +70,9 @@ a {
 }
 
 .scheduleAll {
-  width: 210px;
+  width: 230px;
   height: 92vh;
-  overflow: scroll;
+  overflow-y: scroll;
   border: 1px solid black;
 }
 
@@ -124,7 +123,7 @@ a {
 .searchAll {
   position: fixed;
   top: 0;
-  left: 220px;
+  left: 250px;
   width: 200px;
   margin: 5px;
   background-color: white;
@@ -133,9 +132,9 @@ a {
   margin-top: 130px;
   position: fixed;
   top: 0;
-  left: 220px;
-  width: 210px;
-  height: 84.2vh;
-  overflow: scroll;
+  left: 240px;
+  width: 230px;
+  height: 83.9vh;
+  overflow-y: scroll;
   border: 1px solid black;
 }

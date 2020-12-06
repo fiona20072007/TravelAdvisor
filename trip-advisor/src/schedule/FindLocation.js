@@ -1,5 +1,5 @@
 import React from "react";
-// import PropTypes from "prop-types";
+import PropTypes from "prop-types";
 import firebase from "../firebase";
 import AsyncSelect from "react-select/async";
 import styles from "../scss/schedule.module.scss";
@@ -83,6 +83,7 @@ class FindLocation extends React.Component {
   };
 
   handleOnChangeCountry = () => {
+    this.props.getCountry(this.state.value);
     db.collection("country")
       .doc(this.state.value)
       .collection("location")
@@ -180,8 +181,8 @@ class FindLocation extends React.Component {
   }
 }
 
-// FindLocation.propTypes = {
-//   match: PropTypes.object
-// };
+FindLocation.propTypes = {
+  getCountry: PropTypes.func,
+};
 
 export default FindLocation;
