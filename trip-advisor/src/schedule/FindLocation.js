@@ -147,6 +147,14 @@ class FindLocation extends React.Component {
       });
   };
 
+  handleOnChange() {
+    document.getElementById("19559").scrollIntoView({
+      behavior: "smooth",
+      block: "center",
+      inline: "center",
+    });
+  }
+
   setInfoOpen = (state) => {
     this.setState({
       infoOpen: state,

@@ -1,8 +1,8 @@
 .scheduleListDetail {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   overflow: scroll;
-  width: 210px;
+  width: 230px;
   height: 92vh;
   border: 1px solid black;
 }
@@ -11,7 +11,8 @@
   align-items: center;
   flex-direction: column;
   font-size: 20px;
-  margin: 10px;
+  margin: auto;
+  margin-top: 10px;
   border: 1px solid black;
   border-radius: 10px;
   overflow: hidden;
@@ -50,7 +51,6 @@ a {
   cursor: pointer;
 }
 .scheduleListAll {
-  width: 210px;
   height: 180px;
 }
 .scheduleDetail {
@@ -114,11 +114,19 @@ a {
   overflow: hidden;
   margin: 6px;
   cursor: pointer;
+  position: relative;
 }
 .itemPhoto {
   width: 100%;
   height: 100px;
   object-fit: cover;
+}
+.itemListDelete {
+  position: absolute;
+  top: 2px;
+  right: 10px;
+  cursor: pointer;
+  display: none;
 }
 .searchAll {
   position: fixed;
@@ -127,6 +135,7 @@ a {
   width: 200px;
   margin: 5px;
   background-color: white;
+  z-index: 100;
 }
 .locationList {
   margin-top: 130px;

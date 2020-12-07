@@ -77,6 +77,7 @@ class DropSchedule extends React.Component {
                   <div className={styles.scheduleDateOnly}>{item.name}</div>
                   <DragListSchedule
                     item={item.name}
+                    date={item.name}
                     travelDetailCountry={this.state.travelDetailCountry}
                   />
                   {provided.placeholder}
