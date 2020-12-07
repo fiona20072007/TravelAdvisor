@@ -38,7 +38,7 @@ class DropSchedule extends React.Component {
         travelDateDetailTemp.forEach((dates) => {
           let arr = [];
 
-          dates.morning.forEach((date) => {
+          dates.morning.forEach((date, index) => {
             if (dates.morning.length !== 0) {
               db.collection("country")
                 .doc(date.country)
@@ -48,7 +48,7 @@ class DropSchedule extends React.Component {
                 .get()
                 .then((docs) => {
                   docs.forEach((doc) => {
-                    arr.push(doc.data());
+                    arr[index] = doc.data();
                   });
 
                   travelDetailCountryTemp[dates.name] = arr;
@@ -63,18 +63,20 @@ class DropSchedule extends React.Component {
   }
 
   render() {
+    // console.log(this.state.travelDetailCountry);
+    //把這個state往上拉到editSchedule.js再set
     return (
       <div className={styles.scheduleDateAll}>
         {this.state.travelDateDetail.map((item, i) => (
           <Droppable droppableId={`drop-${item.name}`} key={i}>
             {(provided) => (
               <div>
+                <div className={styles.scheduleDateOnly}>{item.name}</div>
                 <div
                   className={styles.scheduleDetail}
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <div className={styles.scheduleDateOnly}>{item.name}</div>
                   <DragListSchedule
                     item={item.name}
                     date={item.name}

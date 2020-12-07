@@ -22,6 +22,7 @@
 .scheduleLayout {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .scheduleListRange {
@@ -84,15 +85,16 @@ a {
 }
 
 .scheduleDateOnly {
-  border: 3px solid white;
+  border-bottom: 3px solid white;
   color: white;
   background-color: rgb(30, 121, 191);
+  text-align: center;
 }
 
 // item
 
 .item {
-  width: 195px;
+  // width: 195px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -139,11 +141,22 @@ a {
 }
 .locationList {
   margin-top: 130px;
+  margin-left: 15px;
   position: fixed;
   top: 0;
   left: 240px;
-  width: 230px;
-  height: 83.9vh;
+  width: 200px;
+  height: 84.3vh;
   overflow-y: scroll;
   border: 1px solid black;
+}
+
+//map
+
+.scheduleMap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 65%;
+  background-color: green;
 }

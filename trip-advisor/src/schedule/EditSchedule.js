@@ -3,6 +3,8 @@ import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
 import PropTypes from "prop-types";
 import DropSchedule from "./DropSchedule";
+import ScheduleMap from "./ScheduleMap";
+
 import { DragDropContext } from "react-beautiful-dnd";
 
 const db = firebase.firestore();
@@ -43,12 +45,10 @@ class EditSchedule extends React.Component {
   }
 
   getCountry = (country) => {
-    console.log(country);
     this.setState({ searchCountry: country });
   };
 
   onDragStart = (result) => {
-    // console.log(result);
     const { draggableId } = result;
 
     let travelMorningAllTemp = {};
@@ -64,11 +64,9 @@ class EditSchedule extends React.Component {
           travelMorningAllTemp[doc.data().name] = doc.data().morning;
         });
         this.setState({ travelMorningAll: travelMorningAllTemp });
-        console.log("travelMorningAllTemp", travelMorningAllTemp);
       });
 
     if (draggableId.substr(0, 1) === "i") {
-      console.log(this.state.searchCountry);
       db.collection("country")
         .doc(this.state.searchCountry)
         .collection("location")
@@ -79,8 +77,12 @@ class EditSchedule extends React.Component {
               let obj = {
                 country: this.state.searchCountry,
                 id: doc.data().id,
+                pos: {
+                  lat: parseFloat(doc.data().latitude),
+                  lng: parseFloat(doc.data().longitude),
+                },
               };
-              console.log(obj);
+
               this.setState({
                 searchCountryDetail: obj,
               });
@@ -91,7 +93,6 @@ class EditSchedule extends React.Component {
   };
 
   onDragEnd = (result) => {
-    console.log(result);
     const { destination, source, draggableId } = result;
     if (!destination) {
       console.log("no destination");
@@ -118,7 +119,6 @@ class EditSchedule extends React.Component {
 
         travelMorningTemp.splice(destination.index, 0, remove);
         this.setState({ travelMorning: travelMorningTemp });
-        // console.log("Morning", travelMorningTemp);
 
         db.collection("schedule")
           .doc("userId")
@@ -140,7 +140,7 @@ class EditSchedule extends React.Component {
           this.state.travelMorningAll[destination.droppableId.substring(5)]
         );
         const [remove] = travelMorningDragTemp.splice(source.index, 1);
-        //console.log(travelMorningDragTemp); //可set
+        travelMorningDropTemp.splice(destination.index, 0, remove);
 
         db.collection("schedule")
           .doc("userId")
@@ -152,10 +152,6 @@ class EditSchedule extends React.Component {
             morning: travelMorningDragTemp,
             name: source.droppableId.substring(5),
           });
-
-        //console.log(remove);
-        travelMorningDropTemp.splice(destination.index, 0, remove);
-        // console.log(travelMorningDropTemp); //可set
 
         db.collection("schedule")
           .doc("userId")
@@ -171,7 +167,6 @@ class EditSchedule extends React.Component {
     }
 
     if (draggableId.substr(0, 1) === "i") {
-      console.log(123);
       let travelMorningTemp = [];
 
       travelMorningTemp = Array.from(
@@ -184,7 +179,6 @@ class EditSchedule extends React.Component {
         this.state.searchCountryDetail
       );
       this.setState({ travelMorning: travelMorningTemp });
-      // console.log("Morning", travelMorningTemp);
 
       db.collection("schedule")
         .doc("userId")
@@ -200,32 +194,39 @@ class EditSchedule extends React.Component {
   };
 
   render() {
-    // console.log("travelData", this.state.travelData);
     return (
-      <div className={styles.scheduleAll}>
-        {this.state.travelData.map((item) => {
-          return (
-            <div key={item.id} className={styles.scheduleListAll}>
-              <div className={styles.scheduleList}>
-                <div className={styles.scheduleTitle}>
-                  {item.TravelScheduleName}
+      <div className={styles.scheduleWithMap}>
+        <div className={styles.scheduleAll}>
+          {this.state.travelData.map((item) => {
+            return (
+              <div key={item.id} className={styles.scheduleListAll}>
+                <div className={styles.scheduleList}>
+                  <div className={styles.scheduleTitle}>
+                    {item.TravelScheduleName}
+                  </div>
+                  <div className={styles.date}>
+                    {item.StartDate} ～ {item.EndDate}
+                  </div>
+                  <img
+                    className={styles.schedulePhoto}
+                    src={item.CoverImgUrl}
+                  />
                 </div>
-                <div className={styles.date}>
-                  {item.StartDate} ～ {item.EndDate}
-                </div>
-                <img className={styles.schedulePhoto} src={item.CoverImgUrl} />
               </div>
-            </div>
-          );
-        })}
-        <DragDropContext
-          onDragEnd={this.onDragEnd}
-          onDragStart={this.onDragStart}
-        >
-          {this.state.travelData.map((i) => {
-            return <DropSchedule key={i} getCountry={this.getCountry} />;
+            );
           })}
-        </DragDropContext>
+          <DragDropContext
+            onDragEnd={this.onDragEnd}
+            onDragStart={this.onDragStart}
+          >
+            {this.state.travelData.map((i) => {
+              return <DropSchedule key={i} getCountry={this.getCountry} />;
+            })}
+          </DragDropContext>
+        </div>
+        <div className={styles.scheduleMap}>
+          <ScheduleMap />
+        </div>
       </div>
     );
   }

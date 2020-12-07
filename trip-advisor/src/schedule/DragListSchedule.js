@@ -7,7 +7,6 @@ import { Draggable } from "react-beautiful-dnd";
 const db = firebase.firestore();
 
 class DragListSchedule extends React.Component {
-  // console.log(props.travelDetailCountry);
   deleteLocation = (i) => {
     let travelMorningTemp = [];
     let travelAll = [];
@@ -20,10 +19,12 @@ class DragListSchedule extends React.Component {
       let travelSet = {};
       travelSet["country"] = item.Country;
       travelSet["id"] = item.id;
+      travelSet["pos"] = {
+        lat: parseFloat(item.latitude),
+        lng: parseFloat(item.longitude),
+      };
       travelAll.push(travelSet);
     });
-
-    // console.log("travelAll", travelAll);
 
     db.collection("schedule")
       .doc("userId")

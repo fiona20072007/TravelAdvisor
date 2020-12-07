@@ -15,6 +15,7 @@ class FindLocation extends React.Component {
 
     this.state = {
       value: "",
+      countryId: "",
       locationBanner: [],
       locationDetail: [],
       center: {},
@@ -67,12 +68,15 @@ class FindLocation extends React.Component {
         .then((docs) => {
           if (!docs.empty) {
             let recommendedTags = [];
-            docs.forEach(function (doc) {
+            docs.forEach((doc) => {
               const tag = {
                 value: doc.id,
                 label: doc.data().name,
               };
               recommendedTags.push(tag);
+              this.setState({
+                countryId: doc.data().id,
+              });
             });
             return resolve(recommendedTags);
           } else {
@@ -147,11 +151,11 @@ class FindLocation extends React.Component {
       });
   };
 
-  handleOnChange() {
-    document.getElementById("19559").scrollIntoView({
+  handleOnChange(id) {
+    document.getElementById(id).scrollIntoView({
       behavior: "smooth",
-      block: "center",
-      inline: "center",
+      block: "start",
+      inline: "nearest",
     });
   }
 
@@ -178,7 +182,7 @@ class FindLocation extends React.Component {
             <AsyncSelect
               className={styles.locationInput}
               loadOptions={this.loadOptions}
-              onChange={this.handleOnChange}
+              onChange={() => this.handleOnChange(this.state.countryId)}
             />
           </div>
         </div>
