@@ -20,7 +20,6 @@ const SimpleMap = compose(
   withGoogleMap
 )((props) => {
   const renderMap = () => {
-    console.log(props.center);
     return (
       <Fragment>
         <GoogleMap center={props.center} zoom={props.zoom}>

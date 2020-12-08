@@ -1,10 +1,10 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import firebase from "../firebase";
 import config from "../config";
 import {
   GoogleMap,
   Marker,
-  InfoWindow,
+  // InfoWindow,
   withScriptjs,
   withGoogleMap,
 } from "react-google-maps";
@@ -21,12 +21,9 @@ const SimpleMap = compose(
   }),
   withScriptjs,
   withGoogleMap
-)(() => {
-  const [travelDataObj, setTravelDataObj] = useState({});
-  const [travelDataArr, setTravelDataArr] = useState([]);
+)((props) => {
   const [center, setCenter] = useState({});
-  // const [centerCountry, setCenterCountry] = useState("");
-  console.log(travelDataObj);
+
   useEffect(() => {
     db.collection("schedule")
       .doc("userId")
@@ -34,15 +31,14 @@ const SimpleMap = compose(
       .doc(`travel${location.pathname.charAt(location.pathname.length - 1)}`)
       .collection("dateBlockDetail")
       .onSnapshot((docs) => {
-        let travelDataTemp = {};
+        // let travelDataTemp = {};
         let travelDataArrTemp = [];
         docs.forEach((doc) => {
-          travelDataTemp[doc.data().name] = doc.data().morning;
+          // travelDataTemp[doc.data().name] = doc.data().morning;
           travelDataArrTemp.push(doc.data());
         });
 
-        setTravelDataObj(travelDataTemp);
-        setTravelDataArr(travelDataArrTemp);
+        // setTravelDataObj(travelDataTemp);
 
         travelDataArrTemp.forEach((arr, i) => {
           if (arr.morning.length !== 0) {
@@ -62,61 +58,36 @@ const SimpleMap = compose(
               lng: 121.51557,
             };
             setCenter(centerTemp);
+          } else {
+            let centerTemp = {
+              lat: 25.049,
+              lng: 121.51557,
+            };
+            setCenter(centerTemp);
           }
         });
       });
   }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setCenter({
-  //       lat: 1,
-  //       lng: 103
-  //     });
-  //   }, 3000);
-  // }, []);
-
   const renderMap = () => {
-    console.log("travelDataArr", travelDataArr);
     return (
-      <Fragment>
-        <GoogleMap center={center} zoom={10}>
-          {travelDataArr.map((date) => {
-            // console.log("date", date);
-            if (date.morning.length !== 0) {
-              console.log(date);
-              date.morning.map((place) => {
-                // console.log(place);
-
-                console.log("place", place.pos);
-                return (
-                  <Marker
-                    // key={place.id}
-                    // position={place.pos}
-                    key={123}
-                    position={{
-                      lat: 40,
-                      lng: -73,
-                    }}
-
-                    // onClick={event =>
-                    //   props.markerClickHandler(event, place, Math.floor(i / 3))
-                    // }
-                  >
-                    {
-                      <InfoWindow>
-                        <div>
-                          <h3>{33}</h3>
-                        </div>
-                      </InfoWindow>
-                    }
-                  </Marker>
-                );
-              });
-            }
-          })}
-        </GoogleMap>
-      </Fragment>
+      <GoogleMap defaultZoom={11} center={center}>
+        {props.travelDataArr.map((date) => {
+          return date.morning.map((location) => {
+            return (
+              <Marker key={location.id} position={location.pos}>
+                {/* {props.infoOpen && props.selectedPlace.pos == place.pos && (
+                  <InfoWindow onCloseClick={() => props.setInfoOpen(false)}>
+                    <div>
+                      <h3>{props.selectedPlace.name}</h3>
+                    </div>
+                  </InfoWindow>
+                )} */}
+              </Marker>
+            );
+          });
+        })}
+      </GoogleMap>
     );
   };
   return renderMap();

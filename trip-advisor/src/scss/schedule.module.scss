@@ -91,6 +91,29 @@ a {
   text-align: center;
 }
 
+.switchBtn {
+  position: fixed;
+  top: 9px;
+  left: 280px;
+}
+.switchBtn button {
+  background-color: white;
+  border: 1px solid black;
+  margin: 5px;
+  font-size: 16px;
+  padding: 0;
+  cursor: pointer;
+}
+.likeList {
+  position: fixed;
+  top: 54px;
+  left: 255px;
+  width: 200px;
+  height: 92vh;
+  overflow-y: scroll;
+  border: 1px solid black;
+}
+
 // item
 
 .item {
@@ -100,10 +123,12 @@ a {
   justify-content: center;
   align-items: center;
   border: 1px solid black;
+  background-color: white;
   border-radius: 10px;
   overflow: hidden;
   margin: 6px;
   cursor: pointer;
+  position: relative;
 }
 .itemList {
   display: flex;
@@ -130,9 +155,30 @@ a {
   cursor: pointer;
   display: none;
 }
+.itemLike {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  stroke: rgb(128, 128, 128);
+  stroke-width: 2px;
+  fill: rgb(255, 128, 191);
+  fill-opacity: 1;
+  cursor: pointer;
+}
+.searchLike {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  stroke: rgb(128, 128, 128);
+  stroke-width: 2px;
+  fill: rgb(255, 128, 191);
+  fill-opacity: 1;
+  cursor: pointer;
+  display: none;
+}
 .searchAll {
   position: fixed;
-  top: 0;
+  top: 45px;
   left: 250px;
   width: 200px;
   margin: 5px;
@@ -140,13 +186,13 @@ a {
   z-index: 100;
 }
 .locationList {
-  margin-top: 130px;
+  margin-top: 180px;
   margin-left: 15px;
   position: fixed;
   top: 0;
   left: 240px;
   width: 200px;
-  height: 84.3vh;
+  height: 78vh;
   overflow-y: scroll;
   border: 1px solid black;
 }

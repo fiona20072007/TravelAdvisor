@@ -19,6 +19,8 @@ class EditSchedule extends React.Component {
       travelMorningAll: {},
       searchCountry: "",
       searchCountryDetail: {},
+      travelDataArr: [],
+      locationLikeDetail: {},
     };
   }
 
@@ -31,17 +33,26 @@ class EditSchedule extends React.Component {
       .doc("userId")
       .collection("data")
       .doc(`travel${travelShowId}`)
-      .onSnapshot(
-        (doc) => {
-          travelDataTemp.push(doc.data());
-          this.setState({ travelData: travelDataTemp });
-        }
+      .onSnapshot((doc) => {
+        travelDataTemp.push(doc.data());
+        this.setState({ travelData: travelDataTemp });
+      });
 
-        // .get()
-        // .then(doc => {
-        //   travelDataTemp.push(doc.data());
-        //   this.setState({ travelData: travelDataTemp });
-      );
+    db.collection("schedule")
+      .doc("userId")
+      .collection("data")
+      .doc(`travel${travelShowId}`)
+      .collection("dateBlockDetail")
+      .onSnapshot((docs) => {
+        let travelDataArrTemp = [];
+        docs.forEach((doc) => {
+          travelDataArrTemp.push(doc.data());
+        });
+
+        this.setState({
+          travelDataArr: travelDataArrTemp,
+        });
+      });
   }
 
   getCountry = (country) => {
@@ -64,9 +75,11 @@ class EditSchedule extends React.Component {
           travelMorningAllTemp[doc.data().name] = doc.data().morning;
         });
         this.setState({ travelMorningAll: travelMorningAllTemp });
+        console.log(travelMorningAllTemp);
       });
 
     if (draggableId.substr(0, 1) === "i") {
+      console.log(result);
       db.collection("country")
         .doc(this.state.searchCountry)
         .collection("location")
@@ -86,6 +99,26 @@ class EditSchedule extends React.Component {
               this.setState({
                 searchCountryDetail: obj,
               });
+            }
+          });
+        });
+    }
+
+    if (draggableId.substr(0, 1) === "L") {
+      console.log(result);
+      db.collection("schedule")
+        .doc("userId")
+        .get()
+        .then((docAll) => {
+          let locationLikeDetailTemp = {};
+          docAll.data().like.forEach((location) => {
+            if (location.id.toString() === draggableId.substring(3)) {
+              locationLikeDetailTemp = location;
+              locationLikeDetailTemp.id = location.id.toString();
+              this.setState({
+                locationLikeDetail: locationLikeDetailTemp,
+              });
+              console.log(locationLikeDetailTemp);
             }
           });
         });
@@ -166,18 +199,27 @@ class EditSchedule extends React.Component {
       }
     }
 
-    if (draggableId.substr(0, 1) === "i") {
+    if (draggableId.substr(0, 1) === "i" || draggableId.substr(0, 1) === "L") {
       let travelMorningTemp = [];
 
       travelMorningTemp = Array.from(
         this.state.travelMorningAll[destination.droppableId.substring(5)]
       );
 
-      travelMorningTemp.splice(
-        destination.index,
-        0,
-        this.state.searchCountryDetail
-      );
+      if (draggableId.substr(0, 1) === "i") {
+        travelMorningTemp.splice(
+          destination.index,
+          0,
+          this.state.searchCountryDetail
+        );
+      } else {
+        travelMorningTemp.splice(
+          destination.index,
+          0,
+          this.state.locationLikeDetail
+        );
+      }
+
       this.setState({ travelMorning: travelMorningTemp });
 
       db.collection("schedule")
@@ -193,10 +235,37 @@ class EditSchedule extends React.Component {
     }
   };
 
+  handleLocationShow = () => {
+    let els = document.getElementsByClassName("findLocationShow");
+    Array.from(els).forEach((el) => {
+      el.style.display = "block";
+    });
+
+    let elsLike = document.getElementsByClassName("likeLocationShow");
+    Array.from(elsLike).forEach((el) => {
+      el.style.display = "none";
+    });
+  };
+  handleCollectionShow = () => {
+    let els = document.getElementsByClassName("findLocationShow");
+    Array.from(els).forEach((el) => {
+      el.style.display = "none";
+    });
+
+    let elsLike = document.getElementsByClassName("likeLocationShow");
+    Array.from(elsLike).forEach((el) => {
+      el.style.display = "block";
+    });
+  };
+
   render() {
     return (
       <div className={styles.scheduleWithMap}>
         <div className={styles.scheduleAll}>
+          <div className={styles.switchBtn}>
+            <button onClick={this.handleLocationShow}>景點搜尋</button>
+            <button onClick={this.handleCollectionShow}>我的收藏</button>
+          </div>
           {this.state.travelData.map((item) => {
             return (
               <div key={item.id} className={styles.scheduleListAll}>
@@ -224,8 +293,9 @@ class EditSchedule extends React.Component {
             })}
           </DragDropContext>
         </div>
+
         <div className={styles.scheduleMap}>
-          <ScheduleMap />
+          <ScheduleMap travelDataArr={this.state.travelDataArr} />
         </div>
       </div>
     );

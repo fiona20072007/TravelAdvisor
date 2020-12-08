@@ -22,6 +22,7 @@ class LocationDetail extends React.Component {
       infoOpen: false,
       locationArray: [],
       locationArrayT: [],
+      likeList: [],
     };
   }
   componentDidMount = () => {
@@ -61,13 +62,52 @@ class LocationDetail extends React.Component {
               id={item.id}
               data-column={Math.floor(i / 3)}
               onClick={(event) =>
-                this.markerClickHandler(event, item, Math.floor(i / 3))
+                this.markerClickHandler(
+                  event.target.tagName,
+                  item,
+                  Math.floor(i / 3)
+                )
               }
               className={styles.item}
+              onMouseOver={() => {
+                document.getElementById(`like-${item.id}`).style.display =
+                  "block";
+                if (this.state.likeList.find((i) => i.id === item.id)) {
+                  document.getElementById(`like-${item.id}`).style.fill =
+                    "rgb(255, 128, 191)";
+                  document.getElementById(`like-${item.id}`).style[
+                    "fill-opacity"
+                  ] = 1;
+                } else {
+                  document.getElementById(`like-${item.id}`).style.fill =
+                    "rgb(255, 255, 255)";
+                  document.getElementById(`like-${item.id}`).style[
+                    "fill-opacity"
+                  ] = 0.3;
+                }
+              }}
+              onMouseLeave={() => {
+                if (this.state.likeList.find((i) => i.id === item.id)) {
+                  return;
+                } else {
+                  document.getElementById(`like-${item.id}`).style.display =
+                    "none";
+                }
+              }}
             >
               <img src={item.photo} className={styles.itemPhoto}></img>
               <div className={styles.itemName}>{item.name}</div>
               <div>{item.star_level}</div>
+              <div
+                id={`like-${item.id}`}
+                className={styles.itemLike}
+                onClick={() => this.handleLike(item)}
+              >
+                <svg id="icon-heart" viewBox="0 0 32 32" width="30" height="20">
+                  <title>heart</title>
+                  <path d="M29.306 4.768c-1.662-1.66-3.958-2.687-6.493-2.687s-4.831 1.027-6.493 2.687l-0.32 0.32-0.32-0.32c-1.662-1.664-3.96-2.694-6.498-2.694-5.072 0-9.183 4.112-9.183 9.183 0 2.534 1.026 4.828 2.686 6.49l11.363 11.373c0.499 0.496 1.187 0.803 1.947 0.803s1.448-0.307 1.947-0.803l11.353-11.36c1.671-1.66 2.705-3.96 2.705-6.501 0-2.536-1.030-4.832-2.695-6.491l-0-0z"></path>
+                </svg>
+              </div>
             </div>
           );
         });
@@ -106,6 +146,25 @@ class LocationDetail extends React.Component {
           center: centerTemp,
           zoom: zoomTemp,
         });
+      });
+
+    db.collection("schedule")
+      .doc("userId")
+      .onSnapshot((doc) => {
+        if (doc.data()["like"] === undefined) {
+          db.collection("schedule").doc("userId").set(
+            {
+              like: [],
+            },
+            { merge: true }
+          );
+        } else {
+          this.setState({ likeList: doc.data()["like"] });
+          doc.data()["like"].forEach((likeItem) => {
+            document.getElementById(`like-${likeItem.id}`).style.display =
+              "block";
+          });
+        }
       });
   };
 
@@ -192,64 +251,122 @@ class LocationDetail extends React.Component {
   };
 
   markerClickHandler = (event, place, n) => {
-    let locationArrayTemp = [...this.state.locationArrayT];
-    let showId = nanoid();
-    locationArrayTemp.splice(
-      n * 3 + 3,
-      0,
-      <div
-        key={showId}
-        id="show"
-        // onClick={event => props.markerClickHandler(event, item)}
-        className={styles.itemSelect}
-      >
-        <img src={place.photo} className={styles.itemSelectPhoto}></img>
-        <div className={styles.selectDetail}>
-          <div className={styles.itemName}>{place.name}</div>
-          <div>{place.address}</div>
-          <div>{place.telephone}</div>
-          <div>{place.star_level}</div>
+    if (event !== "path") {
+      let locationArrayTemp = [...this.state.locationArrayT];
+      let showId = nanoid();
+      locationArrayTemp.splice(
+        n * 3 + 3,
+        0,
+        <div
+          key={showId}
+          id="show"
+          // onClick={event => props.markerClickHandler(event, item)}
+          className={styles.itemSelect}
+        >
+          <img src={place.photo} className={styles.itemSelectPhoto}></img>
+          <div className={styles.selectDetail}>
+            <div className={styles.itemName}>{place.name}</div>
+            <div>{place.address}</div>
+            <div>{place.telephone}</div>
+            <div>{place.star_level}</div>
+          </div>
         </div>
-      </div>
-    );
+      );
 
-    // Remember which place was clicked
-    this.setState({
-      selectedPlace: place,
-      locationArray: locationArrayTemp,
-      // center: place.pos
-    });
-    // Required so clicking a 2nd marker works as expected
-    if (this.state.infoOpen) {
+      // Remember which place was clicked
       this.setState({
-        infoOpen: false,
+        selectedPlace: place,
+        locationArray: locationArrayTemp,
+        // center: place.pos
       });
-    }
-    this.setState({
-      infoOpen: true,
-    });
-    // zoom in a little on marker click
-    if (this.state.zoom < 13) {
+      // Required so clicking a 2nd marker works as expected
+      if (this.state.infoOpen) {
+        this.setState({
+          infoOpen: false,
+        });
+      }
       this.setState({
-        zoom: 13,
+        infoOpen: true,
       });
-    }
+      // zoom in a little on marker click
+      if (this.state.zoom < 13) {
+        this.setState({
+          zoom: 13,
+        });
+      }
 
-    window.setTimeout(
-      () =>
-        document.getElementById("show").scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-          inline: "center",
-        }),
-      10
-    );
+      window.setTimeout(
+        () =>
+          document.getElementById("show").scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+            inline: "center",
+          }),
+        10
+      );
+    } else {
+      return;
+    }
   };
 
   setInfoOpen = (state) => {
     this.setState({
       infoOpen: state,
     });
+  };
+
+  handleLike = (likeItem) => {
+    let likeAllArr = [...this.state.likeList];
+    let obj = {
+      country: likeItem.country,
+      id: likeItem.id,
+      pos: { lat: likeItem.latitude, lng: likeItem.longitude },
+    };
+
+    if (likeAllArr.length === 0) {
+      document.getElementById(`like-${likeItem.id}`).style.fill =
+        "rgb(255, 128, 191)";
+      document.getElementById(`like-${likeItem.id}`).style["fill-opacity"] = 1;
+      likeAllArr.push(obj);
+
+      db.collection("schedule").doc("userId").set(
+        {
+          like: likeAllArr,
+        },
+        { merge: true }
+      );
+    } else {
+      if (likeAllArr.find((item) => item.id === likeItem.id)) {
+        document.getElementById(`like-${likeItem.id}`).style.fill =
+          "rgb(255, 255, 255)";
+        document.getElementById(`like-${likeItem.id}`).style[
+          "fill-opacity"
+        ] = 0.3;
+        let removeLikeAllArr = likeAllArr.filter(function (i) {
+          return i.id !== likeItem.id;
+        });
+        db.collection("schedule").doc("userId").set(
+          {
+            like: removeLikeAllArr,
+          },
+          { merge: true }
+        );
+      } else {
+        document.getElementById(`like-${likeItem.id}`).style.fill =
+          "rgb(255, 128, 191)";
+        document.getElementById(`like-${likeItem.id}`).style[
+          "fill-opacity"
+        ] = 1;
+        likeAllArr.push(obj);
+
+        db.collection("schedule").doc("userId").set(
+          {
+            like: likeAllArr,
+          },
+          { merge: true }
+        );
+      }
+    }
   };
 
   render() {

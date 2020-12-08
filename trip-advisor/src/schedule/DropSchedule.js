@@ -2,6 +2,7 @@ import React from "react";
 import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
 import FindLocation from "./FindLocation";
+import LikeLocation from "./LikeLocation";
 import DragListSchedule from "./DragListSchedule";
 import PropTypes from "prop-types";
 import { Droppable } from "react-beautiful-dnd";
@@ -84,7 +85,18 @@ class DropSchedule extends React.Component {
                   />
                   {provided.placeholder}
                 </div>
-                <FindLocation getCountry={this.props.getCountry} />
+
+                {i == this.state.travelDateDetail.length - 1 && (
+                  <div className="findLocationShow">
+                    <FindLocation getCountry={this.props.getCountry} />
+                  </div>
+                )}
+
+                {i == this.state.travelDateDetail.length - 1 && (
+                  <div className="likeLocationShow">
+                    <LikeLocation />
+                  </div>
+                )}
               </div>
             )}
           </Droppable>
