@@ -5,8 +5,6 @@ import AsyncSelect from "react-select/async";
 import styles from "../scss/schedule.module.scss";
 import { Draggable } from "react-beautiful-dnd";
 
-// import { nanoid } from "nanoid";
-
 const db = firebase.firestore();
 
 class FindLocation extends React.Component {
@@ -17,7 +15,6 @@ class FindLocation extends React.Component {
       value: "",
       countryId: "",
       locationDetail: [],
-      infoOpen: false,
       locationArray: [],
       locationArrayT: [],
       likeList: [],
@@ -209,7 +206,6 @@ class FindLocation extends React.Component {
           locationDetail: locationDetailTemp,
           locationArray: locationArrayTemp,
         });
-        console.log(locationDetailTemp);
       });
 
     if (this.state.value !== "") {
@@ -224,6 +220,23 @@ class FindLocation extends React.Component {
     }
   };
 
+  componentDidUpdate(prevState) {
+    if (this.state.likeList !== prevState.likeList && this.state.value !== "") {
+      this.state.locationDetail.map((item) => {
+        if (this.state.likeList.find((i) => i.id === item.id)) {
+          document.getElementById(`likeSearch-${item.id}`).style.fill =
+            "rgb(255, 128, 191)";
+          document.getElementById(`likeSearch-${item.id}`).style[
+            "fill-opacity"
+          ] = 1;
+        } else {
+          document.getElementById(`likeSearch-${item.id}`).style.display =
+            "none";
+        }
+      });
+    }
+  }
+
   handleOnChange(id) {
     document.getElementById(id).scrollIntoView({
       behavior: "smooth",
@@ -231,12 +244,6 @@ class FindLocation extends React.Component {
       inline: "nearest",
     });
   }
-
-  setInfoOpen = (state) => {
-    this.setState({
-      infoOpen: state,
-    });
-  };
 
   handleLike = (item) => {
     let obj = {

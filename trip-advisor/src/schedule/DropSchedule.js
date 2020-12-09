@@ -53,10 +53,7 @@ class DropSchedule extends React.Component {
                       arr[index] = doc.data();
                     });
                     travelDetailCountryTemp[dates.name] = arr;
-                    console.log(
-                      "travelDetailCountryTemp",
-                      travelDetailCountryTemp
-                    );
+
                     this.setState({
                       travelDetailCountry: travelDetailCountryTemp,
                     });
