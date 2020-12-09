@@ -239,7 +239,42 @@ class FindLocation extends React.Component {
   };
 
   handleLike = (item) => {
-    console.log(item);
+    let obj = {
+      country: item.country,
+      id: item.id,
+      pos: {
+        lat: item.latitude,
+        lng: item.longitude,
+      },
+    };
+    let likeArr = [...this.state.likeList];
+
+    if (this.state.likeList.find((i) => i.id === item.id)) {
+      document.getElementById(`likeSearch-${item.id}`).style.fill =
+        "rgb(255, 255, 255)";
+      document.getElementById(`likeSearch-${item.id}`).style[
+        "fill-opacity"
+      ] = 0.3;
+      let likeArrFilter = [...this.state.likeList];
+      likeArr = likeArrFilter.filter((i) => i.id !== item.id);
+    } else {
+      document.getElementById(`likeSearch-${item.id}`).style.fill =
+        "rgb(255, 128, 191)";
+      document.getElementById(`likeSearch-${item.id}`).style[
+        "fill-opacity"
+      ] = 1;
+      likeArr.push(obj);
+    }
+
+    this.setState({
+      likeList: likeArr,
+    });
+    db.collection("schedule").doc("userId").set(
+      {
+        like: likeArr,
+      },
+      { merge: true }
+    );
   };
 
   render() {

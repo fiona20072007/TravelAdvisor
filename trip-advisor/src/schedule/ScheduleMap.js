@@ -37,6 +37,7 @@ const SimpleMap = compose(
           // travelDataTemp[doc.data().name] = doc.data().morning;
           travelDataArrTemp.push(doc.data());
         });
+        console.log("travelDataArrTemp", travelDataArrTemp);
 
         // setTravelDataObj(travelDataTemp);
 
@@ -70,12 +71,20 @@ const SimpleMap = compose(
   }, []);
 
   const renderMap = () => {
+    let num = 3;
+    let color = "ff3300";
     return (
       <GoogleMap defaultZoom={11} center={center}>
         {props.travelDataArr.map((date) => {
           return date.morning.map((location) => {
             return (
-              <Marker key={location.id} position={location.pos}>
+              <Marker
+                key={location.id}
+                position={location.pos}
+                options={{
+                  icon: `https://mt.google.com/vt/icon/text=${num}&psize=16&font=fonts/arialuni_t.ttf&color=${color}00&name=icons/spotlight/spotlight-waypoint-b.png&ax=44&ay=48&scale=1`,
+                }}
+              >
                 {/* {props.infoOpen && props.selectedPlace.pos == place.pos && (
                   <InfoWindow onCloseClick={() => props.setInfoOpen(false)}>
                     <div>

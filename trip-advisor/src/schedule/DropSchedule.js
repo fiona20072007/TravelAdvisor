@@ -34,31 +34,40 @@ class DropSchedule extends React.Component {
           travelDateDetailTemp.push(doc.data());
         });
         this.setState({ travelDateDetail: travelDateDetailTemp });
+
         let travelDetailCountryTemp = {};
 
         travelDateDetailTemp.forEach((dates) => {
           let arr = [];
 
-          dates.morning.forEach((date, index) => {
-            if (dates.morning.length !== 0) {
-              db.collection("country")
-                .doc(date.country)
-                .collection("location")
-                .where("id", "==", date.id)
-
-                .get()
-                .then((docs) => {
-                  docs.forEach((doc) => {
-                    arr[index] = doc.data();
+          if (dates.morning.length !== 0) {
+            dates.morning.forEach((date, index) => {
+              if (dates.morning.length !== 0) {
+                db.collection("country")
+                  .doc(date.country)
+                  .collection("location")
+                  .where("id", "==", date.id)
+                  .get()
+                  .then((docs) => {
+                    docs.forEach((doc) => {
+                      arr[index] = doc.data();
+                    });
+                    travelDetailCountryTemp[dates.name] = arr;
+                    console.log(
+                      "travelDetailCountryTemp",
+                      travelDetailCountryTemp
+                    );
+                    this.setState({
+                      travelDetailCountry: travelDetailCountryTemp,
+                    });
                   });
-
-                  travelDetailCountryTemp[dates.name] = arr;
-                  this.setState({
-                    travelDetailCountry: travelDetailCountryTemp,
-                  });
-                });
-            }
-          });
+              }
+            });
+          } else {
+            this.setState({
+              travelDetailCountry: {},
+            });
+          }
         });
       });
   }
