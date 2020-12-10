@@ -88,6 +88,9 @@ class DropSchedule extends React.Component {
                     item={item.name}
                     date={item.name}
                     travelDetailCountry={this.state.travelDetailCountry}
+                    setInfoOpen={this.props.setInfoOpen}
+                    selectedPlace={this.props.selectedPlace}
+                    setSelectedPlace={this.props.setSelectedPlace}
                   />
                   {provided.placeholder}
                 </div>
@@ -114,6 +117,9 @@ class DropSchedule extends React.Component {
 
 DropSchedule.propTypes = {
   getCountry: PropTypes.func,
+  setInfoOpen: PropTypes.func,
+  selectedPlace: PropTypes.object,
+  setSelectedPlace: PropTypes.func,
 };
 
 export default DropSchedule;

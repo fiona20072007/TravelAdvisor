@@ -17,7 +17,9 @@ class DragListSchedule extends React.Component {
     travelMorningTemp.splice(i, 1);
     travelMorningTemp.forEach((item) => {
       let travelSet = {};
+      console.log(item);
       travelSet["country"] = item.Country;
+      travelSet["name"] = item.name;
       travelSet["id"] = item.id;
       travelSet["pos"] = {
         lat: parseFloat(item.latitude),
@@ -64,6 +66,10 @@ class DragListSchedule extends React.Component {
                         `delete-${item.id}`
                       ).style.display = "none")
                     }
+                    onClick={() => {
+                      this.props.setInfoOpen(true);
+                      this.props.setSelectedPlace(item);
+                    }}
                   >
                     <div
                       className={styles.itemListDelete}
@@ -94,6 +100,8 @@ DragListSchedule.propTypes = {
   item: PropTypes.string,
   travelDetailCountry: PropTypes.object,
   date: PropTypes.string,
+  setInfoOpen: PropTypes.func,
+  setSelectedPlace: PropTypes.func,
 };
 
 export default DragListSchedule;

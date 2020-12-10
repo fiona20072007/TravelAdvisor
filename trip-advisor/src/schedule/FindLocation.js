@@ -36,9 +36,15 @@ class FindLocation extends React.Component {
           this.setState({ likeList: doc.data()["like"] });
           if (this.state.value !== "") {
             doc.data()["like"].forEach((likeItem) => {
-              document.getElementById(
-                `likeSearch-${likeItem.id}`
-              ).style.display = "block";
+              if (
+                document.getElementById(`likeSearch-${likeItem.id}`) === null
+              ) {
+                return;
+              } else {
+                document.getElementById(
+                  `likeSearch-${likeItem.id}`
+                ).style.display = "block";
+              }
             });
           }
         }
@@ -208,20 +214,29 @@ class FindLocation extends React.Component {
         });
       });
 
-    if (this.state.value !== "") {
-      window.setTimeout(
-        () =>
-          this.state.likeList.forEach((likeItem) => {
-            document.getElementById(`likeSearch-${likeItem.id}`).style.display =
-              "block";
-          }),
-        300
-      );
-    }
+    // if (this.state.value !== "") {
+    //   window.setTimeout(
+    //     () =>
+    //       this.state.likeList.forEach(likeItem => {
+    //         if (document.getElementById(`likeSearch-${likeItem.id}`) === null) {
+    //           return;
+    //         } else {
+    //           document.getElementById(
+    //             `likeSearch-${likeItem.id}`
+    //           ).style.display = "block";
+    //         }
+    //       }),
+    //     300
+    //   );
+    // }
   };
 
   componentDidUpdate(prevState) {
-    if (this.state.likeList !== prevState.likeList && this.state.value !== "") {
+    if (
+      this.state.likeList !== prevState.likeList &&
+      this.state.likeList.length !== 0 &&
+      this.state.value !== ""
+    ) {
       this.state.locationDetail.map((item) => {
         if (this.state.likeList.find((i) => i.id === item.id)) {
           document.getElementById(`likeSearch-${item.id}`).style.fill =
@@ -248,6 +263,7 @@ class FindLocation extends React.Component {
   handleLike = (item) => {
     let obj = {
       country: item.country,
+      name: item.name,
       id: item.id,
       pos: {
         lat: item.latitude,

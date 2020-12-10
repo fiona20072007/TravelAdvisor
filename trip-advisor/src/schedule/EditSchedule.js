@@ -21,6 +21,9 @@ class EditSchedule extends React.Component {
       searchCountryDetail: {},
       travelDataArr: [],
       locationLikeDetail: {},
+      //map
+      infoOpen: false,
+      selectedPlace: {},
     };
   }
 
@@ -89,6 +92,7 @@ class EditSchedule extends React.Component {
             if (doc.data().id === draggableId.substring(3)) {
               let obj = {
                 country: this.state.searchCountry,
+                name: doc.data().name,
                 id: doc.data().id,
                 pos: {
                   lat: parseFloat(doc.data().latitude),
@@ -258,6 +262,38 @@ class EditSchedule extends React.Component {
     });
   };
 
+  setInfoOpen = (state) => {
+    this.setState({
+      infoOpen: state,
+    });
+  };
+  setSelectedPlace = (item) => {
+    console.log("1111111111111");
+    if (item.pos) {
+      let obj = {};
+      obj["pos"] = {
+        lat: item.pos.lat,
+        lng: item.pos.lng,
+      };
+      obj["name"] = item.name;
+
+      this.setState({
+        selectedPlace: obj,
+      });
+    } else {
+      let obj = {
+        lat: parseFloat(item.latitude),
+        lng: parseFloat(item.longitude),
+      };
+      this.setState({
+        selectedPlace: {
+          pos: obj,
+          name: item.name,
+        },
+      });
+    }
+  };
+
   render() {
     return (
       <div className={styles.scheduleWithMap}>
@@ -289,13 +325,27 @@ class EditSchedule extends React.Component {
             onDragStart={this.onDragStart}
           >
             {this.state.travelData.map((i) => {
-              return <DropSchedule key={i} getCountry={this.getCountry} />;
+              return (
+                <DropSchedule
+                  key={i}
+                  getCountry={this.getCountry}
+                  setInfoOpen={this.setInfoOpen}
+                  selectedPlace={this.state.selectedPlace}
+                  setSelectedPlace={this.setSelectedPlace}
+                />
+              );
             })}
           </DragDropContext>
         </div>
 
         <div className={styles.scheduleMap}>
-          <ScheduleMap travelDataArr={this.state.travelDataArr} />
+          <ScheduleMap
+            travelDataArr={this.state.travelDataArr}
+            infoOpen={this.state.infoOpen}
+            setInfoOpen={this.setInfoOpen}
+            selectedPlace={this.state.selectedPlace}
+            setSelectedPlace={this.setSelectedPlace}
+          />
         </div>
       </div>
     );

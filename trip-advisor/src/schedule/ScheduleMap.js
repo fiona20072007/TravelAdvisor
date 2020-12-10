@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from "react";
+import styles from "../scss/schedule.module.scss";
 import firebase from "../firebase";
 import config from "../config";
 import {
   GoogleMap,
   Marker,
-  // InfoWindow,
+  InfoWindow,
   withScriptjs,
   withGoogleMap,
 } from "react-google-maps";
 import { compose, withProps } from "recompose";
-
+const {
+  MarkerWithLabel,
+} = require("react-google-maps/lib/components/addons/MarkerWithLabel");
 const db = firebase.firestore();
 
 const SimpleMap = compose(
@@ -23,76 +26,89 @@ const SimpleMap = compose(
   withGoogleMap
 )((props) => {
   const [center, setCenter] = useState({});
+  const [colorAll, setColorAll] = useState([]);
 
   useEffect(() => {
-    db.collection("schedule")
-      .doc("userId")
-      .collection("data")
-      .doc(`travel${location.pathname.charAt(location.pathname.length - 1)}`)
-      .collection("dateBlockDetail")
-      .onSnapshot((docs) => {
-        // let travelDataTemp = {};
-        let travelDataArrTemp = [];
-        docs.forEach((doc) => {
-          // travelDataTemp[doc.data().name] = doc.data().morning;
-          travelDataArrTemp.push(doc.data());
-        });
-        console.log("travelDataArrTemp", travelDataArrTemp);
+    props.travelDataArr.forEach((arr) => {
+      if (arr.morning.length !== 0) {
+        db.collection("indexCountry")
+          .doc(arr.morning[0].country)
+          .get()
+          .then((doc) => {
+            let obj = {};
+            obj["lat"] = parseFloat(doc.data().latitude);
+            obj["lng"] = parseFloat(doc.data().longitude);
 
-        // setTravelDataObj(travelDataTemp);
+            setCenter(obj);
 
-        travelDataArrTemp.forEach((arr, i) => {
-          if (arr.morning.length !== 0) {
-            db.collection("indexCountry")
-              .doc(arr.morning[0].country)
-              .get()
-              .then((doc) => {
-                let obj = {};
-                obj["lat"] = parseFloat(doc.data().latitude);
-                obj["lng"] = parseFloat(doc.data().longitude);
-                setCenter(obj);
-                return;
-              });
-          } else if (i === arr.length - 1) {
-            let centerTemp = {
-              lat: 25.049,
-              lng: 121.51557,
-            };
-            setCenter(centerTemp);
-          } else {
-            let centerTemp = {
-              lat: 25.049,
-              lng: 121.51557,
-            };
-            setCenter(centerTemp);
-          }
-        });
-      });
-  }, []);
+            return;
+          });
+      } else {
+        let centerTemp = {
+          lat: 25.049,
+          lng: 121.51557,
+        };
+        setCenter(centerTemp);
+      }
+    });
+
+    let colorArr = [];
+    let n = props.travelDataArr.length;
+    let letters = "0123456789ABCDEF".split("");
+
+    for (let j = 0; j < n; j++) {
+      let color = "#";
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      colorArr.push(color);
+    }
+
+    setColorAll(colorArr);
+  }, [props.travelDataArr]);
 
   const renderMap = () => {
-    let num = 3;
-    let color = "ff3300";
     return (
       <GoogleMap defaultZoom={11} center={center}>
-        {props.travelDataArr.map((date) => {
-          return date.morning.map((location) => {
+        {props.travelDataArr.map((date, j) => {
+          return date.morning.map((location, i) => {
             return (
-              <Marker
-                key={location.id}
-                position={location.pos}
-                options={{
-                  icon: `https://mt.google.com/vt/icon/text=${num}&psize=16&font=fonts/arialuni_t.ttf&color=${color}00&name=icons/spotlight/spotlight-waypoint-b.png&ax=44&ay=48&scale=1`,
-                }}
-              >
-                {/* {props.infoOpen && props.selectedPlace.pos == place.pos && (
-                  <InfoWindow onCloseClick={() => props.setInfoOpen(false)}>
-                    <div>
-                      <h3>{props.selectedPlace.name}</h3>
-                    </div>
-                  </InfoWindow>
-                )} */}
-              </Marker>
+              <div key={location.id}>
+                <MarkerWithLabel
+                  position={location.pos}
+                  labelAnchor={new window.google.maps.Point(13, 42)}
+                  labelStyle={{
+                    backgroundColor: `${colorAll[j]}`,
+                    borderRadius: "99em",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                    width: "25px",
+                    height: "25px",
+                    textAlign: "center",
+                    verticalAlign: "bottom",
+                  }}
+                  onClick={() => {
+                    console.log("HIHIHI", location.pos);
+                    props.setInfoOpen(true);
+                    props.setSelectedPlace(location);
+                    console.log("location.pos", location.pos);
+                  }}
+                >
+                  <div className={styles.markerText}>{i + 1}</div>
+                </MarkerWithLabel>
+
+                <Marker position={location.pos}>
+                  {props.infoOpen &&
+                    props.selectedPlace.pos.lat == location.pos.lat &&
+                    props.selectedPlace.pos.lng == location.pos.lng && (
+                      <InfoWindow onCloseClick={() => props.setInfoOpen(false)}>
+                        <div>
+                          <h3>{props.selectedPlace.name}</h3>
+                        </div>
+                      </InfoWindow>
+                    )}
+                </Marker>
+              </div>
             );
           });
         })}

@@ -161,8 +161,17 @@ class LocationDetail extends React.Component {
         } else {
           this.setState({ likeList: doc.data()["like"] });
           doc.data()["like"].forEach((likeItem) => {
-            document.getElementById(`like-${likeItem.id}`).style.display =
-              "block";
+            if (document.getElementById(`like-${likeItem.id}`) === null) {
+              return;
+            } else {
+              document.getElementById(`like-${likeItem.id}`).style.display =
+                "block";
+              document.getElementById(`like-${likeItem.id}`).style.fill =
+                "rgb(255, 128, 191)";
+              document.getElementById(`like-${likeItem.id}`).style[
+                "fill-opacity"
+              ] = 1;
+            }
           });
         }
       });
@@ -319,6 +328,7 @@ class LocationDetail extends React.Component {
     let likeAllArr = [...this.state.likeList];
     let obj = {
       country: likeItem.country,
+      name: likeItem.name,
       id: likeItem.id,
       pos: { lat: likeItem.latitude, lng: likeItem.longitude },
     };
