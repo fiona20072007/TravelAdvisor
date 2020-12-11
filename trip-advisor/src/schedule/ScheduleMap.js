@@ -4,12 +4,13 @@ import firebase from "../firebase";
 import config from "../config";
 import {
   GoogleMap,
+  DirectionsRenderer,
   Marker,
   InfoWindow,
   withScriptjs,
   withGoogleMap,
 } from "react-google-maps";
-import { compose, withProps } from "recompose";
+import { compose, withProps, lifecycle } from "recompose";
 const {
   MarkerWithLabel,
 } = require("react-google-maps/lib/components/addons/MarkerWithLabel");
@@ -23,9 +24,70 @@ const SimpleMap = compose(
     mapElement: <div style={{ height: "100%" }} />,
   }),
   withScriptjs,
-  withGoogleMap
+  withGoogleMap,
+  lifecycle({
+    componentDidUpdate(prevProps) {
+      let locationSpot = {};
+      if (prevProps.travelDataArr !== this.props.travelDataArr) {
+        this.props.travelDataArr.forEach((item) => {
+          // console.log(item);
+          let arr = [];
+          if (item.morning.length > 1) {
+            for (let i = 0; i < item.morning.length - 1; i++) {
+              let obj = {};
+
+              obj["origin"] = new window.google.maps.LatLng(
+                item.morning[i].pos.lat,
+                item.morning[i].pos.lng
+              );
+              obj["destination"] = new window.google.maps.LatLng(
+                item.morning[i + 1].pos.lat,
+                item.morning[i + 1].pos.lng
+              );
+              arr.push(obj);
+            }
+          }
+          locationSpot[item.name] = arr;
+        });
+
+        const DirectionsService = new window.google.maps.DirectionsService();
+
+        let arr = [];
+        let locationObj = {};
+
+        Object.keys(locationSpot).map((item) => {
+          let locationArrTemp = [];
+
+          locationSpot[item].forEach((route) => {
+            DirectionsService.route(
+              {
+                origin: route.origin,
+                destination: route.destination,
+                travelMode: window.google.maps.TravelMode.DRIVING,
+              },
+              (result, status) => {
+                if (status === window.google.maps.DirectionsStatus.OK) {
+                  locationArrTemp.push(result);
+                  arr.push(result);
+                  this.setState({
+                    directions: arr,
+                  });
+                  console.log(arr);
+                } else {
+                  console.error(`error fetching directions ${result}`);
+                }
+              }
+            );
+          });
+          locationObj[item] = locationArrTemp;
+          console.log(locationObj);
+        });
+      }
+    },
+  })
 )((props) => {
   const [center, setCenter] = useState({});
+  // const [locationSpot, setLocationSpot] = useState({});
   const [colorAll, setColorAll] = useState([]);
 
   useEffect(() => {
@@ -68,6 +130,7 @@ const SimpleMap = compose(
   }, [props.travelDataArr]);
 
   const renderMap = () => {
+    console.log(props.directions);
     return (
       <GoogleMap defaultZoom={11} center={center}>
         {props.travelDataArr.map((date, j) => {
@@ -88,10 +151,8 @@ const SimpleMap = compose(
                     verticalAlign: "bottom",
                   }}
                   onClick={() => {
-                    console.log("HIHIHI", location.pos);
+                    props.setSelectedPlaceMarker(location);
                     props.setInfoOpen(true);
-                    props.setSelectedPlace(location);
-                    console.log("location.pos", location.pos);
                   }}
                 >
                   <div className={styles.markerText}>{i + 1}</div>
@@ -112,6 +173,18 @@ const SimpleMap = compose(
             );
           });
         })}
+        {props.directions &&
+          props.directions.map((item, i) => {
+            return (
+              <DirectionsRenderer
+                directions={item}
+                key={i}
+                defaultOptions={{
+                  suppressMarkers: true,
+                }}
+              />
+            );
+          })}
       </GoogleMap>
     );
   };
@@ -119,3 +192,11 @@ const SimpleMap = compose(
 });
 
 export default SimpleMap;
+
+// polylineOptions: { strokeColor: "#8b0013" }
+
+// var polylineOptionsActual = {
+//   strokeColor: '#FF0000',
+//   strokeOpacity: 1.0,
+//   strokeWeight: 10
+//   };

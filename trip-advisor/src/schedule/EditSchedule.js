@@ -268,30 +268,30 @@ class EditSchedule extends React.Component {
     });
   };
   setSelectedPlace = (item) => {
-    console.log("1111111111111");
-    if (item.pos) {
-      let obj = {};
-      obj["pos"] = {
-        lat: item.pos.lat,
-        lng: item.pos.lng,
-      };
-      obj["name"] = item.name;
+    console.log(item);
+    let obj = {
+      lat: parseFloat(item.latitude),
+      lng: parseFloat(item.longitude),
+    };
+    this.setState({
+      selectedPlace: {
+        pos: obj,
+        name: item.name,
+      },
+    });
+  };
+  setSelectedPlaceMarker = (item) => {
+    console.log(item);
+    let obj = {};
+    obj["pos"] = {
+      lat: item.pos.lat,
+      lng: item.pos.lng,
+    };
+    obj["name"] = item.name;
 
-      this.setState({
-        selectedPlace: obj,
-      });
-    } else {
-      let obj = {
-        lat: parseFloat(item.latitude),
-        lng: parseFloat(item.longitude),
-      };
-      this.setState({
-        selectedPlace: {
-          pos: obj,
-          name: item.name,
-        },
-      });
-    }
+    this.setState({
+      selectedPlace: obj,
+    });
   };
 
   render() {
@@ -344,7 +344,7 @@ class EditSchedule extends React.Component {
             infoOpen={this.state.infoOpen}
             setInfoOpen={this.setInfoOpen}
             selectedPlace={this.state.selectedPlace}
-            setSelectedPlace={this.setSelectedPlace}
+            setSelectedPlaceMarker={this.setSelectedPlaceMarker}
           />
         </div>
       </div>
