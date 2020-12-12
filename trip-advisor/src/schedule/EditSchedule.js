@@ -21,9 +21,10 @@ class EditSchedule extends React.Component {
       searchCountryDetail: {},
       travelDataArr: [],
       locationLikeDetail: {},
-      //map
       infoOpen: false,
       selectedPlace: {},
+      traffic: {},
+      trafficDetail: {},
     };
   }
 
@@ -55,7 +56,66 @@ class EditSchedule extends React.Component {
         this.setState({
           travelDataArr: travelDataArrTemp,
         });
+
+        let locationSpot = {};
+        travelDataArrTemp.forEach((item) => {
+          // console.log(item);
+          let arr = [];
+          if (item.morning.length > 1) {
+            for (let i = 0; i < item.morning.length - 1; i++) {
+              let obj = {};
+
+              obj["origin"] = new window.google.maps.LatLng(
+                item.morning[i].pos.lat,
+                item.morning[i].pos.lng
+              );
+              obj["destination"] = new window.google.maps.LatLng(
+                item.morning[i + 1].pos.lat,
+                item.morning[i + 1].pos.lng
+              );
+              obj["travelMode"] = "DRIVING";
+              obj["id"] = i;
+              arr.push(obj);
+            }
+          }
+          locationSpot[item.name] = arr;
+        });
+        this.setState({
+          trafficDetail: locationSpot,
+        });
       });
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.travelDataArr !== this.state.travelDataArr) {
+      let locationSpot = {};
+
+      this.state.travelDataArr.forEach((item) => {
+        // console.log(item);
+        let arr = [];
+        if (item.morning.length > 1) {
+          for (let i = 0; i < item.morning.length - 1; i++) {
+            let obj = {};
+
+            obj["origin"] = new window.google.maps.LatLng(
+              item.morning[i].pos.lat,
+              item.morning[i].pos.lng
+            );
+            obj["destination"] = new window.google.maps.LatLng(
+              item.morning[i + 1].pos.lat,
+              item.morning[i + 1].pos.lng
+            );
+            obj["travelMode"] = "DRIVING";
+            obj["id"] = i;
+            arr.push(obj);
+          }
+        }
+        locationSpot[item.name] = arr;
+      });
+      // console.log(locationSpot);
+      this.setState({
+        trafficDetail: locationSpot,
+      });
+    }
   }
 
   getCountry = (country) => {
@@ -240,26 +300,16 @@ class EditSchedule extends React.Component {
   };
 
   handleLocationShow = () => {
-    let els = document.getElementsByClassName("findLocationShow");
-    Array.from(els).forEach((el) => {
-      el.style.display = "block";
-    });
-
-    let elsLike = document.getElementsByClassName("likeLocationShow");
-    Array.from(elsLike).forEach((el) => {
-      el.style.display = "none";
-    });
+    document.getElementsByClassName("findLocationShow")[0].style.display =
+      "block";
+    document.getElementsByClassName("likeLocationShow")[0].style.display =
+      "none";
   };
   handleCollectionShow = () => {
-    let els = document.getElementsByClassName("findLocationShow");
-    Array.from(els).forEach((el) => {
-      el.style.display = "none";
-    });
-
-    let elsLike = document.getElementsByClassName("likeLocationShow");
-    Array.from(elsLike).forEach((el) => {
-      el.style.display = "block";
-    });
+    document.getElementsByClassName("findLocationShow")[0].style.display =
+      "none";
+    document.getElementsByClassName("likeLocationShow")[0].style.display =
+      "block";
   };
 
   setInfoOpen = (state) => {
@@ -292,6 +342,15 @@ class EditSchedule extends React.Component {
     this.setState({
       selectedPlace: obj,
     });
+  };
+
+  showTraffic = (data) => {
+    this.setState({
+      traffic: data,
+    });
+  };
+  handleTraffic = (traffic) => {
+    console.log(traffic);
   };
 
   render() {
@@ -332,6 +391,9 @@ class EditSchedule extends React.Component {
                   setInfoOpen={this.setInfoOpen}
                   selectedPlace={this.state.selectedPlace}
                   setSelectedPlace={this.setSelectedPlace}
+                  traffic={this.state.traffic}
+                  handleTraffic={this.handleTraffic}
+                  trafficDetail={this.state.trafficDetail}
                 />
               );
             })}
@@ -345,6 +407,9 @@ class EditSchedule extends React.Component {
             setInfoOpen={this.setInfoOpen}
             selectedPlace={this.state.selectedPlace}
             setSelectedPlaceMarker={this.setSelectedPlaceMarker}
+            showTraffic={this.showTraffic}
+            handleTraffic={this.handleTraffic}
+            trafficDetail={this.state.trafficDetail}
           />
         </div>
       </div>

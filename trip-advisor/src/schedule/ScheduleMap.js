@@ -27,43 +27,26 @@ const SimpleMap = compose(
   withGoogleMap,
   lifecycle({
     componentDidUpdate(prevProps) {
-      let locationSpot = {};
-      if (prevProps.travelDataArr !== this.props.travelDataArr) {
-        this.props.travelDataArr.forEach((item) => {
-          // console.log(item);
-          let arr = [];
-          if (item.morning.length > 1) {
-            for (let i = 0; i < item.morning.length - 1; i++) {
-              let obj = {};
+      console.log("trafficDetail", this.props.trafficDetail);
 
-              obj["origin"] = new window.google.maps.LatLng(
-                item.morning[i].pos.lat,
-                item.morning[i].pos.lng
-              );
-              obj["destination"] = new window.google.maps.LatLng(
-                item.morning[i + 1].pos.lat,
-                item.morning[i + 1].pos.lng
-              );
-              arr.push(obj);
-            }
-          }
-          locationSpot[item.name] = arr;
-        });
-
+      if (
+        prevProps.travelDataArr !== this.props.travelDataArr ||
+        prevProps.trafficDetail !== this.props.trafficDetail
+      ) {
         const DirectionsService = new window.google.maps.DirectionsService();
 
         let arr = [];
         let locationObj = {};
 
-        Object.keys(locationSpot).map((item) => {
+        Object.keys(this.props.trafficDetail).map((item) => {
           let locationArrTemp = [];
 
-          locationSpot[item].forEach((route) => {
+          this.props.trafficDetail[item].forEach((route) => {
             DirectionsService.route(
               {
                 origin: route.origin,
                 destination: route.destination,
-                travelMode: window.google.maps.TravelMode.DRIVING,
+                travelMode: window.google.maps.TravelMode[route.travelMode],
               },
               (result, status) => {
                 if (status === window.google.maps.DirectionsStatus.OK) {
@@ -72,7 +55,7 @@ const SimpleMap = compose(
                   this.setState({
                     directions: arr,
                   });
-                  console.log(arr);
+                  // console.log(arr);
                 } else {
                   console.error(`error fetching directions ${result}`);
                 }
@@ -80,7 +63,8 @@ const SimpleMap = compose(
             );
           });
           locationObj[item] = locationArrTemp;
-          console.log(locationObj);
+          // console.log(locationObj);
+          this.props.showTraffic(locationObj);
         });
       }
     },
@@ -130,7 +114,7 @@ const SimpleMap = compose(
   }, [props.travelDataArr]);
 
   const renderMap = () => {
-    console.log(props.directions);
+    // console.log(props.directions);
     return (
       <GoogleMap defaultZoom={11} center={center}>
         {props.travelDataArr.map((date, j) => {

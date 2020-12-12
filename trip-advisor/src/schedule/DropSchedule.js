@@ -91,7 +91,9 @@ class DropSchedule extends React.Component {
                     setInfoOpen={this.props.setInfoOpen}
                     selectedPlace={this.props.selectedPlace}
                     setSelectedPlace={this.props.setSelectedPlace}
+                    traffic={this.props.traffic}
                   />
+
                   {provided.placeholder}
                 </div>
 
@@ -120,6 +122,7 @@ DropSchedule.propTypes = {
   setInfoOpen: PropTypes.func,
   selectedPlace: PropTypes.object,
   setSelectedPlace: PropTypes.func,
+  traffic: PropTypes.object,
 };
 
 export default DropSchedule;
