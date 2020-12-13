@@ -5,6 +5,28 @@
   position: relative;
   justify-content: center;
 }
+.navBar {
+  color: white;
+  z-index: 100;
+  position: fixed;
+  top: 40px;
+  left: 50px;
+  font-size: 30px;
+  cursor: pointer;
+}
+.navBarList {
+  color: white;
+  z-index: 100;
+  position: fixed;
+  top: 37px;
+  left: 120px;
+  display: flex;
+  font-size: 20px;
+}
+.navBarList div {
+  margin: 10px;
+  cursor: pointer;
+}
 
 .banner {
   position: absolute;
@@ -54,7 +76,7 @@
   display: flex;
   flex-flow: wrap;
   justify-content: center;
-  width: 80%;
+  width: 1100px;
 }
 
 .titleShow {
@@ -86,3 +108,5 @@
   color: white;
   font-size: 11px;
 }
+
+/////////

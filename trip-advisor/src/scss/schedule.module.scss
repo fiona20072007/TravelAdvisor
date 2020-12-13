@@ -209,3 +209,14 @@ a {
 .markerText {
   margin-top: 5px;
 }
+
+// select
+.itemTraffic {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+}
+.itemSelect {
+  width: 70px;
+}

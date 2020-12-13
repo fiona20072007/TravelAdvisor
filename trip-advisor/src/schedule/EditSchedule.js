@@ -83,6 +83,10 @@ class EditSchedule extends React.Component {
         this.setState({
           trafficDetail: locationSpot,
         });
+        // db.collection("schedule")
+        //   .doc("userId")
+        //   .collection("data")
+        //   .doc(`travel${this.state.travelShowId}`)
       });
   }
   componentDidUpdate(prevProps, prevState) {
@@ -345,12 +349,17 @@ class EditSchedule extends React.Component {
   };
 
   showTraffic = (data) => {
+    console.log(data);
+
     this.setState({
       traffic: data,
     });
   };
   handleTraffic = (traffic) => {
     console.log(traffic);
+    this.setState({
+      trafficDetail: traffic,
+    });
   };
 
   render() {
@@ -407,8 +416,9 @@ class EditSchedule extends React.Component {
             setInfoOpen={this.setInfoOpen}
             selectedPlace={this.state.selectedPlace}
             setSelectedPlaceMarker={this.setSelectedPlaceMarker}
+            travelShowId={this.state.travelShowId}
             showTraffic={this.showTraffic}
-            handleTraffic={this.handleTraffic}
+            // handleTraffic={this.handleTraffic}
             trafficDetail={this.state.trafficDetail}
           />
         </div>

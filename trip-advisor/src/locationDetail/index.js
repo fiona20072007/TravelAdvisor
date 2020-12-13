@@ -383,6 +383,12 @@ class LocationDetail extends React.Component {
     return (
       <div className={styles.locationAll}>
         <div className={styles.left}>
+          <div className={styles.navBar}>三</div>
+          <div className={styles.navBarList}>
+            <div>景點搜尋</div>
+            <div>行程規劃</div>
+            <div onClick={() => console.log(123)}>會員登入</div>
+          </div>
           <div className={styles.title}>挑選景點</div>
           <AsyncSelect
             className={styles.locationInput}

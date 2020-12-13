@@ -1,10 +1,10 @@
+$gray: rgb(175, 169, 169);
+
 .locationAll {
   display: flex;
   position: relative;
 }
-.left {
-  width: 60%;
-}
+
 .right {
   width: 38%;
   position: fixed;
@@ -51,7 +51,41 @@
   z-index: 0;
 }
 
+/////navbar
+.navBar {
+  // color: white;
+  // z-index: 100;
+  position: fixed;
+  top: 20px;
+  right: 40%;
+  font-size: 30px;
+  cursor: pointer;
+}
+.navBarList {
+  // color: white;
+  z-index: 100;
+  position: fixed;
+  top: 17px;
+  right: 43%;
+  display: flex;
+  font-size: 20px;
+}
+.navBarList div {
+  margin: 10px;
+  cursor: pointer;
+}
+
 //show
+.title {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 13px;
+  font-size: 20px;
+}
+.locationInput {
+  margin: 10px;
+  color: $gray;
+}
 .location {
   width: 100%;
 }
@@ -60,21 +94,27 @@
   flex-flow: wrap;
   justify-content: center;
 }
+.titleShow {
+  margin-left: 10px;
+  margin-top: 20px;
+  color: $gray;
+}
 .item {
   width: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  border: 1px solid black;
+  border: 1px solid $gray;
   border-radius: 10px;
   overflow: hidden;
-  margin: 6px;
+  margin: 20px;
   cursor: pointer;
   position: relative;
 }
+
 .itemSelect {
-  width: 100%;
+  width: 835px;
   height: 300px;
   border: 1px solid black;
   border-radius: 10px;
@@ -83,6 +123,7 @@
   display: flex;
   cursor: pointer;
 }
+
 .selectDetail {
   margin: 10px;
 }

@@ -92,6 +92,8 @@ class DropSchedule extends React.Component {
                     selectedPlace={this.props.selectedPlace}
                     setSelectedPlace={this.props.setSelectedPlace}
                     traffic={this.props.traffic}
+                    handleTraffic={this.props.handleTraffic}
+                    trafficDetail={this.props.trafficDetail}
                   />
 
                   {provided.placeholder}
@@ -123,6 +125,8 @@ DropSchedule.propTypes = {
   selectedPlace: PropTypes.object,
   setSelectedPlace: PropTypes.func,
   traffic: PropTypes.object,
+  handleTraffic: PropTypes.func,
+  trafficDetail: PropTypes.object,
 };
 
 export default DropSchedule;

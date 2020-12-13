@@ -72,6 +72,12 @@ class LocationIndex extends React.Component {
   render() {
     return (
       <div className={styles.locationAll}>
+        <div className={styles.navBar}>三</div>
+        <div className={styles.navBarList}>
+          <div>景點搜尋</div>
+          <div>行程規劃</div>
+          <div onClick={() => console.log(123)}>會員登入</div>
+        </div>
         <div className={styles.banner}></div>
         <div className={styles.title}>挑選地點</div>
         <AsyncSelect
@@ -79,9 +85,7 @@ class LocationIndex extends React.Component {
           loadOptions={this.loadOptions}
           onChange={this.handleOnChange}
         />
-        {/* {this.state.selectedTag.map(e => {
-          return <li key={e.value}>{e.label}</li>;
-        })} */}
+
         <LocationShow
           indexLocation={this.state.indexLocation}
           handleOnChange={this.handleOnChange}

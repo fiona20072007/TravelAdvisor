@@ -40,20 +40,26 @@ class DragListSchedule extends React.Component {
         name: this.props.date,
       });
   };
+
+  // componentDidUpdate(prevProps) {
+  //   if (prevProps.traffic !== this.props.traffic) {
+  //     console.log(123);
+  //     this.handleNewTraffic;
+  //     console.log("this.props.traffic", this.props.traffic);
+  //   }
+  // }
   render() {
-    // console.log("traffic", this.props.traffic);
-    // console.log("travelDetailCountry", this.props.travelDetailCountry);
-    // console.log("item", this.props.item);
-    // console.log(
-    //   "this.props.traffic[this.props.item].length",
-    //   this.props.traffic[this.props.item]
-    // );
+    console.log(
+      "this.props.traffic[this.props.item]",
+      this.props.traffic[this.props.item]
+    );
     return (
       <div>
         {this.props.travelDetailCountry[this.props.item] === undefined && (
           <div className={styles.emptyList}>Drop Here!</div>
         )}
         {this.props.travelDetailCountry[this.props.item] &&
+          this.props.traffic[this.props.item] !== undefined &&
           this.props.travelDetailCountry[this.props.item].map((item, i) => {
             return (
               <div key={item.id}>
@@ -98,13 +104,16 @@ class DragListSchedule extends React.Component {
                   )}
                 </Draggable>
 
-                {i < this.props.traffic[this.props.item].length && (
-                  <TrafficSchedule
-                    traffic={this.props.traffic}
-                    date={this.props.item}
-                    num={i}
-                  />
-                )}
+                {i < this.props.traffic[this.props.item].length &&
+                  this.props.traffic[this.props.item] !== undefined && (
+                    <TrafficSchedule
+                      traffic={this.props.traffic}
+                      date={this.props.item}
+                      num={i}
+                      handleTraffic={this.props.handleTraffic}
+                      trafficDetail={this.props.trafficDetail}
+                    />
+                  )}
               </div>
             );
           })}
@@ -120,6 +129,8 @@ DragListSchedule.propTypes = {
   setInfoOpen: PropTypes.func,
   setSelectedPlace: PropTypes.func,
   traffic: PropTypes.object,
+  handleTraffic: PropTypes.func,
+  trafficDetail: PropTypes.object,
 };
 
 export default DragListSchedule;

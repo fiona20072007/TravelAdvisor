@@ -27,21 +27,19 @@ const SimpleMap = compose(
   withGoogleMap,
   lifecycle({
     componentDidUpdate(prevProps) {
-      console.log("trafficDetail", this.props.trafficDetail);
-
+      // console.log("trafficDetail", this.props.trafficDetail);
+      let locationObj = {};
+      let arr = [];
       if (
         prevProps.travelDataArr !== this.props.travelDataArr ||
         prevProps.trafficDetail !== this.props.trafficDetail
       ) {
         const DirectionsService = new window.google.maps.DirectionsService();
-
-        let arr = [];
-        let locationObj = {};
-
+        console.log("this.props.trafficDetail", this.props.trafficDetail);
         Object.keys(this.props.trafficDetail).map((item) => {
           let locationArrTemp = [];
 
-          this.props.trafficDetail[item].forEach((route) => {
+          this.props.trafficDetail[item].forEach((route, index) => {
             DirectionsService.route(
               {
                 origin: route.origin,
@@ -50,20 +48,22 @@ const SimpleMap = compose(
               },
               (result, status) => {
                 if (status === window.google.maps.DirectionsStatus.OK) {
-                  locationArrTemp.push(result);
+                  locationArrTemp[index] = result;
+                  location;
+                  console.log("locationArrTemp", locationArrTemp);
+                  locationObj[item] = locationArrTemp;
+                  this.props.showTraffic(locationObj);
                   arr.push(result);
                   this.setState({
                     directions: arr,
                   });
-                  // console.log(arr);
                 } else {
                   console.error(`error fetching directions ${result}`);
                 }
               }
             );
           });
-          locationObj[item] = locationArrTemp;
-          // console.log(locationObj);
+
           this.props.showTraffic(locationObj);
         });
       }
