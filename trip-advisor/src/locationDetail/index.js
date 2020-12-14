@@ -6,6 +6,7 @@ import SimpleMap from "./map";
 import styles from "../scss/locationDetail.module.scss";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
+import { Link } from "react-router-dom";
 
 const db = firebase.firestore();
 
@@ -383,11 +384,24 @@ class LocationDetail extends React.Component {
     return (
       <div className={styles.locationAll}>
         <div className={styles.left}>
-          <div className={styles.navBar}>三</div>
+          <div className={styles.navBar}>
+            <div
+              className={styles.icon1}
+              id="icon1"
+              onClick={() => {
+                let el = document.querySelector("#icon1");
+                el.classList.toggle(styles.open);
+              }}
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
           <div className={styles.navBarList}>
-            <div>景點搜尋</div>
-            <div>行程規劃</div>
-            <div onClick={() => console.log(123)}>會員登入</div>
+            <Link to="/">Home</Link>
+            <Link to="/schedule">行程規劃</Link>
+            <Link to="/member">會員登入</Link>
           </div>
           <div className={styles.title}>挑選景點</div>
           <AsyncSelect

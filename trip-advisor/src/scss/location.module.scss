@@ -2,8 +2,9 @@
   display: flex;
   flex-direction: column;
   text-align: center;
-  position: relative;
+  // position: relative;
   justify-content: center;
+  width: 100%;
 }
 .navBar {
   color: white;
@@ -15,7 +16,6 @@
   cursor: pointer;
 }
 .navBarList {
-  color: white;
   z-index: 100;
   position: fixed;
   top: 37px;
@@ -23,8 +23,11 @@
   display: flex;
   font-size: 20px;
 }
+.navBarList a,
 .navBarList div {
   margin: 10px;
+  color: white;
+  border: none;
   cursor: pointer;
 }
 
@@ -108,5 +111,3 @@
   color: white;
   font-size: 11px;
 }
-
-/////////

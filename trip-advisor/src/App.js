@@ -2,6 +2,7 @@ import React from "react";
 import LocationIndex from "./location";
 import LocationDetail from "./locationDetail";
 import ScheduleIndex from "./schedule";
+import MemberIndex from "./member";
 import styles from "./scss/App.module.scss";
 
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
@@ -19,6 +20,7 @@ class App extends React.Component {
               component={LocationDetail}
             />
             <Route path="/schedule" component={ScheduleIndex} />
+            <Route path="/member" component={MemberIndex} />
           </Switch>
         </div>
       </Router>

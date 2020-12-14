@@ -2,8 +2,10 @@ import React from "react";
 import firebase from "../firebase";
 import AsyncSelect from "react-select/async";
 import LocationShow from "./locationShow";
+import MemberIndex from "../member";
 import styles from "../scss/location.module.scss";
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 
 const db = firebase.firestore();
 
@@ -12,27 +14,25 @@ class LocationIndex extends React.Component {
     super(props);
 
     this.state = {
-      // value: "",
       selectedTag: [],
       indexLocation: [],
+      memberLoginState: false,
     };
   }
   componentDidMount = () => {
-    db.collection("indexCountry")
-      // .where(‘state’, ‘==’, ‘CA’)
-      .onSnapshot((querySnapshot) => {
-        let indexLocationTemp = [];
-        querySnapshot.forEach(function (doc) {
-          indexLocationTemp.push({
-            name: doc.data().name,
-            description: doc.data().description,
-            photo: doc.data().photo,
-          });
-        });
-        this.setState({
-          indexLocation: indexLocationTemp,
+    db.collection("indexCountry").onSnapshot((querySnapshot) => {
+      let indexLocationTemp = [];
+      querySnapshot.forEach(function (doc) {
+        indexLocationTemp.push({
+          name: doc.data().name,
+          description: doc.data().description,
+          photo: doc.data().photo,
         });
       });
+      this.setState({
+        indexLocation: indexLocationTemp,
+      });
+    });
   };
 
   loadOptions = async (inputValue) => {
@@ -62,10 +62,6 @@ class LocationIndex extends React.Component {
   };
 
   handleOnChange = (tags) => {
-    console.log(tags);
-    // this.setState({
-    //   selectedTag: [tags]
-    // });
     this.props.history.push(`/locationDetail/${tags.label}`);
   };
 
@@ -74,9 +70,18 @@ class LocationIndex extends React.Component {
       <div className={styles.locationAll}>
         <div className={styles.navBar}>三</div>
         <div className={styles.navBarList}>
-          <div>景點搜尋</div>
-          <div>行程規劃</div>
-          <div onClick={() => console.log(123)}>會員登入</div>
+          <Link to="/">Home</Link>
+          <Link to="/schedule">行程規劃</Link>
+          {/* <Link to="/member">會員登入</Link> */}
+          <div
+            onClick={() => {
+              this.setState((prevState) => ({
+                memberLoginState: !prevState.memberLoginState,
+              }));
+            }}
+          >
+            會員登入
+          </div>
         </div>
         <div className={styles.banner}></div>
         <div className={styles.title}>挑選地點</div>
@@ -90,6 +95,7 @@ class LocationIndex extends React.Component {
           indexLocation={this.state.indexLocation}
           handleOnChange={this.handleOnChange}
         />
+        {this.state.memberLoginState === true && <MemberIndex />}
       </div>
     );
   }
