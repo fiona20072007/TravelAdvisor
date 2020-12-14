@@ -41,13 +41,13 @@ class TrafficSchedule extends React.Component {
     let obj = Object.assign({}, this.props.trafficDetail);
     obj[this.props.date][this.props.num].travelMode = data.value;
     this.props.handleTraffic(obj);
-    console.log(obj);
+    // console.log(obj);
     this.setState({
       selectedFilter: data,
     });
   };
   render() {
-    console.log(this.props.traffic);
+    // console.log(this.props.traffic);
     return (
       this.props.traffic[this.props.date][this.props.num] !== undefined && (
         <div>

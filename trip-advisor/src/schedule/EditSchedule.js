@@ -350,7 +350,6 @@ class EditSchedule extends React.Component {
 
   showTraffic = (data) => {
     console.log(data);
-
     this.setState({
       traffic: data,
     });

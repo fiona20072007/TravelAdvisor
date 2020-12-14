@@ -30,42 +30,51 @@ const SimpleMap = compose(
       // console.log("trafficDetail", this.props.trafficDetail);
       let locationObj = {};
       let arr = [];
+      let state = false;
       if (
         prevProps.travelDataArr !== this.props.travelDataArr ||
         prevProps.trafficDetail !== this.props.trafficDetail
       ) {
         const DirectionsService = new window.google.maps.DirectionsService();
-        console.log("this.props.trafficDetail", this.props.trafficDetail);
-        Object.keys(this.props.trafficDetail).map((item) => {
+
+        Object.keys(this.props.trafficDetail).forEach((item) => {
+          // console.log(item);
           let locationArrTemp = [];
+          // console.log(this.props.trafficDetail[item]);
 
-          this.props.trafficDetail[item].forEach((route, index) => {
-            DirectionsService.route(
-              {
-                origin: route.origin,
-                destination: route.destination,
-                travelMode: window.google.maps.TravelMode[route.travelMode],
-              },
-              (result, status) => {
-                if (status === window.google.maps.DirectionsStatus.OK) {
-                  locationArrTemp[index] = result;
-                  location;
-                  console.log("locationArrTemp", locationArrTemp);
-                  locationObj[item] = locationArrTemp;
-                  this.props.showTraffic(locationObj);
-                  arr.push(result);
-                  this.setState({
-                    directions: arr,
-                  });
-                } else {
-                  console.error(`error fetching directions ${result}`);
+          if (this.props.trafficDetail[item].length !== 0) {
+            state = true;
+            this.props.trafficDetail[item].forEach((route, index) => {
+              DirectionsService.route(
+                {
+                  origin: route.origin,
+                  destination: route.destination,
+                  travelMode: window.google.maps.TravelMode[route.travelMode],
+                },
+                (result, status) => {
+                  if (status === window.google.maps.DirectionsStatus.OK) {
+                    locationArrTemp[index] = result;
+                    // location;
+                    console.log("locationArrTemp", locationArrTemp);
+                    locationObj[item] = locationArrTemp;
+                    this.props.showTraffic(locationObj);
+                    console.log(locationObj);
+                    arr.push(result);
+                    this.setState({
+                      directions: arr,
+                    });
+                  } else {
+                    console.error(`error fetching directions ${result}`);
+                  }
                 }
-              }
-            );
-          });
-
-          this.props.showTraffic(locationObj);
+              );
+            });
+          }
         });
+
+        if (state === false) {
+          this.props.showTraffic({});
+        }
       }
     },
   })
@@ -184,3 +193,7 @@ export default SimpleMap;
 //   strokeOpacity: 1.0,
 //   strokeWeight: 10
 //   };
+
+// console.log("this.props.trafficDetail", this.props.trafficDetail);
+// 想辦法判斷 traffic detail 全都是空的，如果全都是空的就把 state 設成 true
+// 在底下的 REsult 判斷如果是 true 就不要 ｓｅｔＳＴａｔｅ

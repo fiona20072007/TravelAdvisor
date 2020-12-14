@@ -39,6 +39,13 @@ class DragListSchedule extends React.Component {
         morning: travelAll,
         name: this.props.date,
       });
+
+    if (i === this.props.travelDetailCountry[this.props.date].length - 1) {
+      let obj = Object.assign({}, this.props.trafficDetail);
+      obj[this.props.date].splice(i - 1, 1);
+      this.props.handleTraffic(obj);
+      console.log(obj);
+    }
   };
 
   // componentDidUpdate(prevProps) {
@@ -53,13 +60,14 @@ class DragListSchedule extends React.Component {
       "this.props.traffic[this.props.item]",
       this.props.traffic[this.props.item]
     );
+
     return (
       <div>
         {this.props.travelDetailCountry[this.props.item] === undefined && (
           <div className={styles.emptyList}>Drop Here!</div>
         )}
         {this.props.travelDetailCountry[this.props.item] &&
-          this.props.traffic[this.props.item] !== undefined &&
+          // this.props.traffic[this.props.item] !== undefined &&
           this.props.travelDetailCountry[this.props.item].map((item, i) => {
             return (
               <div key={item.id}>
@@ -104,8 +112,8 @@ class DragListSchedule extends React.Component {
                   )}
                 </Draggable>
 
-                {i < this.props.traffic[this.props.item].length &&
-                  this.props.traffic[this.props.item] !== undefined && (
+                {this.props.traffic[this.props.item] !== undefined &&
+                  i < this.props.traffic[this.props.item].length && (
                     <TrafficSchedule
                       traffic={this.props.traffic}
                       date={this.props.item}

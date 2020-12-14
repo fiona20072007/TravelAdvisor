@@ -1,11 +1,11 @@
 import React from "react";
-// import firebase from "../firebase";
+import firebase from "../firebase";
 // import AsyncSelect from "react-select/async";
 // import LocationShow from "./locationShow";
 import styles from "../scss/member.module.scss";
 // import PropTypes from "prop-types";
 // import { Link } from "react-router-dom";
-import { signInWithGoogle } from "../firebase";
+// import { signInWithGoogle } from "../firebase";
 
 // const db = firebase.firestore();
 
@@ -19,6 +19,36 @@ class MemberIndex extends React.Component {
   //       indexLocation: []
   //     };
   //   }
+  googleLogin = () => {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    firebase
+      .auth()
+      .signInWithPopup(provider)
+      .then(function (result) {
+        // This gives you a Google Access Token. You can use it to access the Google API.
+        var token = result.credential.accessToken;
+        // The signed-in user info.
+        var user = result.user;
+        // ...
+        console.log(token, user);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+  googleSignOut = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function () {
+        // Sign-out successful.
+        console.log("signout success");
+      })
+      .catch(function (error) {
+        // An error happened.
+        console.log(error);
+      });
+  };
 
   render() {
     return (
@@ -37,7 +67,8 @@ class MemberIndex extends React.Component {
           <div>密碼</div>
           <input></input>
         </div>
-        <button onClick={signInWithGoogle}>Continue with Google</button>
+        <button onClick={this.googleLogin}>Continue with Google</button>
+        <button onClick={this.googleSignOut}>Log Out</button>
       </div>
     );
   }

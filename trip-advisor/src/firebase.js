@@ -4,8 +4,10 @@ import "firebase/database";
 import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAupP8pk0usCtzryMeCkskkn_1OuE1s2mg",
+  apiKey: "AIzaSyBLNfKTV-4Uo1qYcp1ABcd3Rj51qkN7FbQ",
+  // apiKey: "AIzaSyD87zvLDe78SDD7atGpl9yePayaEf6QL_I",
   authDomain: "tripadvisor-abc.firebaseapp.com",
+  // authDomain:"http://localhost:3000/",
   databaseURL: "https://tripadvisor-abc.firebaseio.com",
   projectId: "tripadvisor-abc",
   storageBucket: "tripadvisor-abc.appspot.com",
@@ -17,10 +19,12 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.firestore();
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({
-  prompt: "select_account",
-});
-export const signInWithGoogle = () =>
-  firebase.initializeApp(firebaseConfig).auth().signInWithPopup(provider);
+// provider.setCustomParameters({
+//   prompt: "select_account"
+// });
+// export const signInWithGoogle = () =>
+//   firebase
+//     .initializeApp(firebaseConfig)
+//     .auth()
+//     .signInWithPopup(provider);
 export default firebase;
