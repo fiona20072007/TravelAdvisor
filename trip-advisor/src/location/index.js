@@ -2,24 +2,31 @@ import React from "react";
 import firebase from "../firebase";
 import AsyncSelect from "react-select/async";
 import LocationShow from "./locationShow";
-import MemberIndex from "../member";
+// import MemberIndex from "../member";
 import styles from "../scss/location.module.scss";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 
 const db = firebase.firestore();
 
 class LocationIndex extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       selectedTag: [],
       indexLocation: [],
-      memberLoginState: false,
+      // memberLoginState: false
     };
   }
   componentDidMount = () => {
+    // console.log(window.location.pathname);
+    if (window.location.pathname === "/") {
+      document.querySelectorAll("svg").forEach((item) => {
+        item.style.color = "white";
+      });
+      document.querySelectorAll("a").forEach((item) => {
+        item.style.color = "white";
+      });
+    }
     db.collection("indexCountry").onSnapshot((querySnapshot) => {
       let indexLocationTemp = [];
       querySnapshot.forEach(function (doc) {
@@ -68,21 +75,6 @@ class LocationIndex extends React.Component {
   render() {
     return (
       <div className={styles.locationAll}>
-        <div className={styles.navBar}>三</div>
-        <div className={styles.navBarList}>
-          <Link to="/">Home</Link>
-          <Link to="/schedule">行程規劃</Link>
-          {/* <Link to="/member">會員登入</Link> */}
-          <div
-            onClick={() => {
-              this.setState((prevState) => ({
-                memberLoginState: !prevState.memberLoginState,
-              }));
-            }}
-          >
-            會員登入
-          </div>
-        </div>
         <div className={styles.banner}></div>
         <div className={styles.title}>挑選地點</div>
         <AsyncSelect
@@ -95,7 +87,7 @@ class LocationIndex extends React.Component {
           indexLocation={this.state.indexLocation}
           handleOnChange={this.handleOnChange}
         />
-        {this.state.memberLoginState === true && <MemberIndex />}
+        {/* {this.state.memberLoginState === true && <MemberIndex />} */}
       </div>
     );
   }

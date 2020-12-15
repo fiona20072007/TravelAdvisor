@@ -6,7 +6,6 @@ import SimpleMap from "./map";
 import styles from "../scss/locationDetail.module.scss";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
-import { Link } from "react-router-dom";
 
 const db = firebase.firestore();
 
@@ -27,6 +26,15 @@ class LocationDetail extends React.Component {
     };
   }
   componentDidMount = () => {
+    console.log(window.location.pathname.substring(1, 9));
+    if (window.location.pathname.substring(1, 9) === "location") {
+      document.querySelectorAll("svg").forEach((item) => {
+        item.style.color = "rgb(138, 134, 134)";
+      });
+      document.querySelectorAll("a").forEach((item) => {
+        item.style.color = "rgb(138, 134, 134)";
+      });
+    }
     db.collection("country")
       .doc(this.props.match.params.tags)
       .collection("location")
@@ -384,7 +392,7 @@ class LocationDetail extends React.Component {
     return (
       <div className={styles.locationAll}>
         <div className={styles.left}>
-          <div className={styles.navBar}>
+          {/* <div className={styles.navBar}>
             <div
               className={styles.icon1}
               id="icon1"
@@ -402,7 +410,7 @@ class LocationDetail extends React.Component {
             <Link to="/">Home</Link>
             <Link to="/schedule">行程規劃</Link>
             <Link to="/member">會員登入</Link>
-          </div>
+          </div> */}
           <div className={styles.title}>挑選景點</div>
           <AsyncSelect
             className={styles.locationInput}

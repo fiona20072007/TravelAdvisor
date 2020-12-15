@@ -32,7 +32,7 @@ const SimpleMap = compose(
       let arr = [];
       let state = false;
       if (
-        prevProps.travelDataArr !== this.props.travelDataArr ||
+        // prevProps.travelDataArr !== this.props.travelDataArr ||
         prevProps.trafficDetail !== this.props.trafficDetail
       ) {
         const DirectionsService = new window.google.maps.DirectionsService();
@@ -45,6 +45,7 @@ const SimpleMap = compose(
           if (this.props.trafficDetail[item].length !== 0) {
             state = true;
             this.props.trafficDetail[item].forEach((route, index) => {
+              console.log(123312);
               DirectionsService.route(
                 {
                   origin: route.origin,

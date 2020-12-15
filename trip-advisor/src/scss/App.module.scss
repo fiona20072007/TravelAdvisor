@@ -1,7 +1,65 @@
+$gray: rgb(175, 169, 169);
+$darkGray: rgb(138, 134, 134);
 :global(body) {
   margin: 0px;
 }
 
 .app {
   margin: 0px;
+}
+.flexWrap {
+  display: flex;
+  justify-content: space-between;
+  // background: rgba(255, 255, 255, 0.2);
+}
+.icon {
+  margin: 8px;
+  margin-left: 50px;
+  border: none;
+  display: flex;
+  width: 400px;
+  align-items: center;
+  color: white;
+}
+.icon div {
+  font-size: 30px;
+  margin-left: 10px;
+}
+
+.icon img {
+  width: 15%;
+}
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 500;
+  width: 100%;
+}
+// .icon a title {
+//   color: black;
+// }
+.app nav ul {
+  list-style: none;
+  display: flex;
+  // justify-content: flex-end;
+  // height: 70px;
+}
+.app nav ul li {
+  // background-color: green;
+  width: 150px;
+  align-self: center;
+  margin-right: 30px;
+  font-size: 20px;
+}
+.app nav ul li a {
+  border: none;
+  color: white;
+  margin-left: 8px;
+}
+.app {
+  svg {
+    color: white;
+    // width: 20px;
+  }
 }

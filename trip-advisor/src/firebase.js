@@ -5,9 +5,9 @@ import "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLNfKTV-4Uo1qYcp1ABcd3Rj51qkN7FbQ",
-  // apiKey: "AIzaSyD87zvLDe78SDD7atGpl9yePayaEf6QL_I",
+
   authDomain: "tripadvisor-abc.firebaseapp.com",
-  // authDomain:"http://localhost:3000/",
+
   databaseURL: "https://tripadvisor-abc.firebaseio.com",
   projectId: "tripadvisor-abc",
   storageBucket: "tripadvisor-abc.appspot.com",

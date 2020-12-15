@@ -53,12 +53,6 @@ class MemberIndex extends React.Component {
   render() {
     return (
       <div className={styles.member}>
-        {/* <div className={styles.navBar}>三</div> */}
-        {/* <div className={styles.navBarList}>
-          <Link to="/">Home</Link>
-          <Link to="/schedule">行程規劃</Link>
-          <Link to="/member">會員登入</Link>
-        </div> */}
         <div className={styles.banner}></div>
         <div className={styles.title}>會員登入</div>
         <div>

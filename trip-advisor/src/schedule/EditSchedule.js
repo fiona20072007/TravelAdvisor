@@ -57,32 +57,32 @@ class EditSchedule extends React.Component {
           travelDataArr: travelDataArrTemp,
         });
 
-        let locationSpot = {};
-        travelDataArrTemp.forEach((item) => {
-          // console.log(item);
-          let arr = [];
-          if (item.morning.length > 1) {
-            for (let i = 0; i < item.morning.length - 1; i++) {
-              let obj = {};
+        // let locationSpot = {};
+        // travelDataArrTemp.forEach((item) => {
+        //   // console.log(item);
+        //   let arr = [];
+        //   if (item.morning.length > 1) {
+        //     for (let i = 0; i < item.morning.length - 1; i++) {
+        //       let obj = {};
 
-              obj["origin"] = new window.google.maps.LatLng(
-                item.morning[i].pos.lat,
-                item.morning[i].pos.lng
-              );
-              obj["destination"] = new window.google.maps.LatLng(
-                item.morning[i + 1].pos.lat,
-                item.morning[i + 1].pos.lng
-              );
-              obj["travelMode"] = "DRIVING";
-              obj["id"] = i;
-              arr.push(obj);
-            }
-          }
-          locationSpot[item.name] = arr;
-        });
-        this.setState({
-          trafficDetail: locationSpot,
-        });
+        //       obj["origin"] = new window.google.maps.LatLng(
+        //         item.morning[i].pos.lat,
+        //         item.morning[i].pos.lng
+        //       );
+        //       obj["destination"] = new window.google.maps.LatLng(
+        //         item.morning[i + 1].pos.lat,
+        //         item.morning[i + 1].pos.lng
+        //       );
+        //       obj["travelMode"] = "DRIVING";
+        //       obj["id"] = i;
+        //       arr.push(obj);
+        //     }
+        //   }
+        //   locationSpot[item.name] = arr;
+        // });
+        // this.setState({
+        //   trafficDetail: locationSpot,
+        // });
         // db.collection("schedule")
         //   .doc("userId")
         //   .collection("data")
