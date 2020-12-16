@@ -34,6 +34,9 @@ class LocationDetail extends React.Component {
       document.querySelectorAll("a").forEach((item) => {
         item.style.color = "rgb(138, 134, 134)";
       });
+      document.querySelector("nav").style.backgroundColor = "white";
+      document.querySelector("nav").style.boxShadow =
+        "0 0 8px rgba(0, 0, 0, 0.2)";
     }
     db.collection("country")
       .doc(this.props.match.params.tags)

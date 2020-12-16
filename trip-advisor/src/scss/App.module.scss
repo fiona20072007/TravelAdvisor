@@ -1,7 +1,8 @@
 $gray: rgb(175, 169, 169);
-$darkGray: rgb(138, 134, 134);
+$darkGray: rgb(135, 128, 152);
 :global(body) {
   margin: 0px;
+  box-sizing: border-box;
 }
 
 .app {
@@ -32,13 +33,12 @@ $darkGray: rgb(138, 134, 134);
 nav {
   position: fixed;
   top: 0;
-  left: 0;
   z-index: 500;
   width: 100%;
+  // transition: top 0.4s ease-in-out;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
-// .icon a title {
-//   color: black;
-// }
+
 .app nav ul {
   list-style: none;
   display: flex;
@@ -62,4 +62,13 @@ nav {
     color: white;
     // width: 20px;
   }
+}
+
+.active {
+  transition: top 0.4s ease-in-out;
+  top: 0px;
+}
+.hide {
+  transition: top 0.4s ease-in-out;
+  top: -78px;
 }

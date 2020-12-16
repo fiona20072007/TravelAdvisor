@@ -26,6 +26,8 @@ class LocationIndex extends React.Component {
       document.querySelectorAll("a").forEach((item) => {
         item.style.color = "white";
       });
+      document.querySelector("nav").style.backgroundColor = "transparent";
+      document.querySelector("nav").style.boxShadow = "0 0 0";
     }
     db.collection("indexCountry").onSnapshot((querySnapshot) => {
       let indexLocationTemp = [];
@@ -76,7 +78,7 @@ class LocationIndex extends React.Component {
     return (
       <div className={styles.locationAll}>
         <div className={styles.banner}></div>
-        <div className={styles.title}>挑選地點</div>
+        <div className={styles.title}>Choose One !</div>
         <AsyncSelect
           className={styles.locationInput}
           loadOptions={this.loadOptions}

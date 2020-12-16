@@ -1,6 +1,214 @@
+$lightGray: rgba(245, 247, 249, 0.947);
+$gray: rgb(175, 169, 169);
+$darkGray: rgb(138, 134, 134);
+$darkGreen: rgba(43, 92, 83, 0.796);
+input,
+button {
+  outline: none;
+}
+button {
+  cursor: pointer;
+}
 .member {
   width: 100%;
-  height: 100vh;
+  height: 70vh;
+  background-color: $lightGray;
+  padding-top: 250px;
+  padding-bottom: 100px;
   // align-self: center;
-  background-color: green;
+}
+.wrap {
+  width: 100%;
+  height: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.loginContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+.image {
+  width: 750px;
+  height: 518px;
+  background-image: url("../image/Northern.jpg");
+  border-radius: 10px;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  box-shadow: 0 0 17px rgba(0, 0, 0, 0.24);
+  left: 8%;
+}
+.image .layer {
+  // background-image: url("../image/Northern.jpg");
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: $lightGray;
+  opacity: 0.2;
+}
+
+///panel
+.panel {
+  position: static;
+  width: 0;
+  height: 0;
+  z-index: 100;
+}
+// .layer {
+//   position: absolute;
+//   width: 100%;
+//   height: 100%;
+//   background-color: #333;
+//   top: 0;
+//   left: 0;
+//   opacity: 1;
+//   z-index: 999;
+// }
+.loginPanel,
+.signupPanel {
+  // transform: rotate3d(0, 0, 0, 180deg);
+  width: 350px;
+  height: 590px;
+  background-color: white;
+  box-shadow: 0 0 17px rgba(0, 0, 0, 0.24);
+  border-radius: 10px;
+  position: absolute;
+  top: -5%;
+  left: 15%;
+  color: $darkGray;
+  z-index: 100;
+
+  // display: none;
+  // transform: rotate3d(0, 1, 0, 180deg);
+  transition-duration: 0.5s;
+}
+.changeState {
+  width: 350px;
+  height: 590px;
+  background-color: white;
+  box-shadow: 0 0 17px rgba(0, 0, 0, 0.24);
+  border-radius: 10px;
+  position: absolute;
+  top: -5%;
+  left: 15%;
+  color: $darkGray;
+  transform: rotate3d(0, 1, 0, 180deg);
+  transition-duration: 0.5s;
+  z-index: 50;
+}
+// .signupPanel {
+//   display: none;
+// }
+
+.title {
+  text-align: center;
+  border-bottom: 1px solid $gray;
+  font-size: 20px;
+  width: 100%;
+  background-color: $darkGreen;
+  color: white;
+  overflow: hidden;
+  border-radius: 10px 10px 0 0;
+  h3 {
+    display: inline-block;
+  }
+  svg {
+    margin-right: 10px;
+    color: white !important;
+  }
+}
+.container {
+  padding: 30px 30px 10px 30px;
+  text-align: center;
+}
+.signinItem {
+  margin-bottom: 20px;
+  position: relative;
+  border: 1px solid $gray;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  svg {
+    margin-left: 10px;
+  }
+}
+.signinTitle p {
+  margin-top: -5px;
+  margin-bottom: 30px;
+}
+.signinItem input {
+  width: 100%;
+  background-color: transparent;
+  display: block;
+  padding: 5px 10px;
+  border: none;
+  line-height: 1.75;
+  font-size: 18px;
+}
+.alert {
+  text-align: center;
+  color: white;
+}
+.btn {
+  width: 100%;
+  height: 40px;
+  border: 1px solid $gray;
+  border-radius: 5px;
+  line-height: 30px;
+  font-size: 18px;
+  color: white;
+  background-color: $darkGreen;
+  letter-spacing: 10px;
+  padding-left: 10px;
+}
+.changeSingup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  button {
+    height: 25px;
+    margin-left: 10px;
+    color: $darkGreen;
+    border: none;
+    border-radius: 5px;
+    background-color: transparent;
+    font-size: 17px;
+  }
+}
+.divider {
+  margin-top: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  span {
+    width: 88px;
+    height: 1px;
+    border-bottom: 1px solid $gray;
+    margin: 8px;
+  }
+}
+.socialSignin {
+  margin: 10px 30px 0 30px;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid $gray;
+  border-radius: 5px;
+  img {
+    width: 60px;
+  }
+}
+.signupPanel {
+  .socialSignin {
+    margin: 10px 30px 25px 30px;
+  }
+}
+.socialSignin {
+  cursor: pointer;
 }

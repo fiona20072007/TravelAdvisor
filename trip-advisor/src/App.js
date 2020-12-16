@@ -16,11 +16,35 @@ import {
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.lastScrollTop = 0;
+    this.state = {
+      hidden: false,
+    };
+  }
+  componentDidMount() {
+    window.addEventListener("scroll", this.handleScroll);
+  }
+  componentWillUnmount() {
+    window.removeEventListener("scroll", this.handleScroll);
+  }
+  handleScroll = () => {
+    const currentScrollTop = window.scrollY;
+
+    if (currentScrollTop > this.lastScrollTop) {
+      this.lastScrollTop = currentScrollTop;
+      this.setState({ hidden: true });
+    } else {
+      this.lastScrollTop = currentScrollTop;
+      this.setState({ hidden: false });
+    }
+  };
   render() {
     return (
       <Router>
         <div className={styles.app}>
-          <nav>
+          <nav className={this.state.hidden ? styles.hide : styles.active}>
             <div className={styles.flexWrap}>
               <a className={styles.icon}>
                 <img src={icon} alt="icon" />
