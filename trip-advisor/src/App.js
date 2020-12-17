@@ -4,6 +4,7 @@ import LocationIndex from "./location";
 import LocationDetail from "./locationDetail";
 import ScheduleIndex from "./schedule";
 import MemberIndex from "./member";
+import Profile from "./member/profile";
 import styles from "./scss/App.module.scss";
 import icon from "./image/icon.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -77,6 +78,7 @@ class App extends React.Component {
             />
             <Route path="/schedule" component={ScheduleIndex} />
             <Route path="/member" component={MemberIndex} />
+            <Route path="/profile" component={Profile} />
           </Switch>
         </div>
       </Router>

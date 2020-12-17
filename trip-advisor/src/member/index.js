@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from "../firebase";
 import styles from "../scss/member.module.scss";
+import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faSignInAlt,
@@ -11,6 +12,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from "../image/google-icon-10.png";
 
+const firestore = firebase.firestore();
+const auth = firebase.auth();
 class MemberIndex extends React.Component {
   constructor(props) {
     super(props);
@@ -24,6 +27,14 @@ class MemberIndex extends React.Component {
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        // console.log("already login");
+        this.props.history.push(`/profile`);
+      } else {
+        return;
+      }
+    });
     console.log(window.location.pathname.substring(1, 9));
     if (window.location.pathname.substring(1, 9) === "member") {
       document.querySelectorAll("svg").forEach((item) => {
@@ -42,46 +53,67 @@ class MemberIndex extends React.Component {
     firebase
       .auth()
       .signInWithPopup(provider)
-      .then(function (result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        var token = result.credential.accessToken;
-        // The signed-in user info.
-        var user = result.user;
-        // ...
-        console.log(token, user);
+      .then(() => {
+        const createAt = new Date();
+        firestore
+          .collection("schedule")
+          .doc(auth.currentUser.uid)
+          .set({
+            displayName: this.state.displayName,
+            createAt: createAt,
+            email: auth.currentUser.email,
+            userID: auth.currentUser.uid,
+          })
+          .then(this.props.history.push(`/profile`));
       })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-  googleSignOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function () {
-        // Sign-out successful.
-        console.log("signout success");
-      })
-      .catch(function (error) {
-        // An error happened.
-        console.log(error);
+      .catch((error) => {
+        // var errorCode = error.code;
+        let errorMessage = error.message;
+        console.log(errorMessage);
       });
   };
 
   nativeSignUp = () => {
-    let firestore = firebase.firestore();
-    let auth = firebase.auth();
     firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        const createAt = new Date();
-        firestore.collection("schedule").doc(auth.currentUser.uid).set({
+        auth.currentUser.updateProfile({
           displayName: this.state.displayName,
-          createAt: createAt,
-          email: auth.currentUser.email,
-          userID: auth.currentUser.uid,
+          photoURL:
+            "https://blog.cpanel.com/wp-content/uploads/2019/08/user-01.png",
         });
+        const createAt = new Date();
+        firestore
+          .collection("schedule")
+          .doc(auth.currentUser.uid)
+          .set({
+            displayName: this.state.displayName,
+            createAt: createAt,
+            email: auth.currentUser.email,
+            userID: auth.currentUser.uid,
+            photoURL: "",
+          })
+          .then(this.props.history.push(`/profile`));
+      })
+      .catch((error) => {
+        // var errorCode = error.code;
+        let errorMessage = error.message;
+        console.log(errorMessage);
+      });
+  };
+  nativeSignIn = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
+      .then(() => {
+        console.log("sign in success");
+        this.props.history.push(`/profile`);
+      })
+      .catch((error) => {
+        // var errorCode = error.code;
+        let errorMessage = error.message;
+        console.log(errorMessage);
       });
   };
 
@@ -148,21 +180,27 @@ class MemberIndex extends React.Component {
                       type="email"
                       id="sign-in-email"
                       placeholder="信箱"
-                      value=""
+                      onChange={(e) => this.handleEmailChange(e)}
+                      value={this.state.email}
                     />
                   </div>
 
                   <div className={styles.signinItem}>
                     <FontAwesomeIcon icon={faLock} />
                     <input
-                      type="passwort"
+                      type="password"
                       id="sign-in-email"
                       placeholder="密碼"
-                      value=""
+                      onChange={(e) => this.handlePasswordChange(e)}
+                      value={this.state.password}
                     />
                   </div>
                   <div className={styles.alert}>歡迎</div>
-                  <button id="signInBtn" className={styles.btn}>
+                  <button
+                    id="signInBtn"
+                    className={styles.btn}
+                    onClick={this.nativeSignIn}
+                  >
                     登入
                   </button>
                 </div>
@@ -229,7 +267,11 @@ class MemberIndex extends React.Component {
                     />
                   </div>
                   <div className={styles.alert}>歡迎</div>
-                  <button id="signUpBtn" className={styles.btn}>
+                  <button
+                    id="signUpBtn"
+                    className={styles.btn}
+                    onClick={this.nativeSignUp}
+                  >
                     註冊
                   </button>
                 </div>
@@ -256,8 +298,8 @@ class MemberIndex extends React.Component {
 }
 
 /* <button onClick={this.googleSignOut}>Log Out</button> */
-// MemberIndex.propTypes = {
-//   history: PropTypes.object.isRequired
-// };
+MemberIndex.propTypes = {
+  history: PropTypes.object.isRequired,
+};
 
 export default MemberIndex;

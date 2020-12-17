@@ -395,25 +395,6 @@ class LocationDetail extends React.Component {
     return (
       <div className={styles.locationAll}>
         <div className={styles.left}>
-          {/* <div className={styles.navBar}>
-            <div
-              className={styles.icon1}
-              id="icon1"
-              onClick={() => {
-                let el = document.querySelector("#icon1");
-                el.classList.toggle(styles.open);
-              }}
-            >
-              <span></span>
-              <span></span>
-              <span></span>
-            </div>
-          </div>
-          <div className={styles.navBarList}>
-            <Link to="/">Home</Link>
-            <Link to="/schedule">行程規劃</Link>
-            <Link to="/member">會員登入</Link>
-          </div> */}
           <div className={styles.title}>挑選景點</div>
           <AsyncSelect
             className={styles.locationInput}
