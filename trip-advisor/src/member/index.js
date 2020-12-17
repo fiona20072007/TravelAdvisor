@@ -80,8 +80,8 @@ class MemberIndex extends React.Component {
       .then(() => {
         auth.currentUser.updateProfile({
           displayName: this.state.displayName,
-          photoURL:
-            "https://blog.cpanel.com/wp-content/uploads/2019/08/user-01.png",
+          // photoURL:
+          //   "https://blog.cpanel.com/wp-content/uploads/2019/08/user-01.png",
         });
         const createAt = new Date();
         firestore

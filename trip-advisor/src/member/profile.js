@@ -8,6 +8,7 @@ import {
   faSuitcase,
   faPassport,
   faPlane,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 const db = firebase.firestore();
@@ -21,6 +22,8 @@ class Profile extends React.Component {
       photoUrl: "",
       uid: "",
       schedule: [],
+      scheduleShow: [],
+      title: "旅行中",
     };
   }
   componentDidMount = () => {
@@ -28,36 +31,50 @@ class Profile extends React.Component {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log("sign in success");
-
+        let url = "";
+        if (user.photoURL !== "") {
+          url = user.photoURL;
+        }
         this.setState({
           name: auth.currentUser.displayName,
           email: user.email,
-          photoUrl: user.photoURL,
+          photoUrl: url,
           uid: user.uid,
         });
+
+        let arr = [];
+
+        db.collection("schedule")
+          .doc(user.uid)
+          .collection("data")
+          .get()
+          .then((docs) => {
+            docs.forEach((doc) => {
+              let obj = {};
+              obj["StartDate"] = doc.data().StartDate;
+              obj["EndDate"] = doc.data().EndDate;
+              obj["CoverImgUrl"] = doc.data().CoverImgUrl;
+              obj["TravelScheduleName"] = doc.data().TravelScheduleName;
+              obj["StartDateStamp"] = doc.data().StartDateStamp;
+              obj["EndDateStamp"] = doc.data().EndDateStamp;
+              obj["id"] = doc.data().id;
+              arr.push(obj);
+            });
+            console.log(arr);
+            let time = Date.now();
+            let newArr = arr.filter((item) => {
+              return item.StartDateStamp <= time && time <= item.EndDateStamp;
+            });
+
+            this.setState({
+              schedule: arr,
+              scheduleShow: newArr,
+            });
+          });
       } else {
         this.props.history.push(`/member`);
       }
     });
-    let arr = [];
-    db.collection("schedule")
-      .doc("userId")
-      .collection("data")
-      .get()
-      .then((docs) => {
-        docs.forEach((doc) => {
-          console.log(doc.data());
-          let obj = {};
-          obj["StartDate"] = doc.data().StartDate;
-          obj["EndDate"] = doc.data().EndDate;
-          obj["CoverImgUrl"] = doc.data().CoverImgUrl;
-          obj["TravelScheduleName"] = doc.data().TravelScheduleName;
-          arr.push(obj);
-        });
-        this.setState({
-          schedule: arr,
-        });
-      });
 
     if (window.location.pathname.substring(1, 9) === "profile") {
       document.querySelectorAll("svg").forEach((item) => {
@@ -84,9 +101,44 @@ class Profile extends React.Component {
         console.log(error);
       });
   };
+  handleMiddle = () => {
+    let arr = [...this.state.schedule];
+    let time = Date.now();
+    let newArr = arr.filter((item) => {
+      return item.StartDateStamp <= time && time <= item.EndDateStamp;
+    });
+    this.setState({
+      scheduleShow: newArr,
+      title: "旅行中",
+    });
+  };
+  handlePrev = () => {
+    let arr = [...this.state.schedule];
+    let time = Date.now();
+    let newArr = arr.filter((item) => {
+      return item.StartDateStamp >= time;
+    });
+    this.setState({
+      scheduleShow: newArr,
+      title: "待出發",
+    });
+  };
+  handlePast = () => {
+    let arr = [...this.state.schedule];
+    let time = Date.now();
+    let newArr = arr.filter((item) => {
+      return item.EndDateStamp <= time;
+    });
+    this.setState({
+      scheduleShow: newArr,
+      title: "回憶錄",
+    });
+  };
+  handleNavigate(id) {
+    this.props.history.push(`/schedule/editSchedule/${id}`);
+  }
 
   render() {
-    console.log(this.state.schedule);
     return (
       <div className={styles.profile}>
         <div className={styles.wrap}>
@@ -94,21 +146,26 @@ class Profile extends React.Component {
             <div className={styles.pad}>
               <div className={styles.user}>
                 <div className={styles.userImg}>
-                  <img src={this.state.photoUrl} alt="user photo" />
+                  {this.state.photoUrl !== null && (
+                    <img src={this.state.photoUrl} alt="user photo" />
+                  )}
+                  {this.state.photoUrl === null && (
+                    <FontAwesomeIcon icon={faUser} />
+                  )}
                 </div>
                 <div className={styles.userName}>{this.state.name}</div>
                 <div className={styles.userEmail}>{this.state.email}</div>
                 <div className={styles.userList}>
                   <ul>
-                    <li>
+                    <li onClick={this.handleMiddle}>
                       <FontAwesomeIcon icon={faCocktail} />
                       旅行中
                     </li>
-                    <li>
+                    <li onClick={this.handlePrev}>
                       <FontAwesomeIcon icon={faSuitcase} />
                       待出發
                     </li>
-                    <li>
+                    <li onClick={this.handlePast}>
                       <FontAwesomeIcon icon={faPassport} />
                       回憶錄
                     </li>
@@ -121,20 +178,26 @@ class Profile extends React.Component {
             </div>
           </div>
           <div className={styles.profileRight}>
-            <div className={styles.listTitle}>旅行中</div>
+            <div className={styles.listTitle}>{this.state.title}</div>
             <div className={styles.travelNumber}>
               <div>
                 目前共有
                 <span className={styles.travelNum}>
-                  {this.state.schedule.length}
+                  {this.state.scheduleShow.length}
                 </span>
                 個行程
               </div>
             </div>
             <div className={styles.nowTravelList}>
-              {this.state.schedule.map((item, i) => {
+              {this.state.scheduleShow.map((item, i) => {
                 return (
-                  <div className={styles.nowTravelListDetail} key={i}>
+                  <div
+                    className={styles.nowTravelListDetail}
+                    onClick={() => {
+                      this.handleNavigate(item.id);
+                    }}
+                    key={i}
+                  >
                     <div className={styles.travelTitle}>
                       {item.TravelScheduleName}
                     </div>

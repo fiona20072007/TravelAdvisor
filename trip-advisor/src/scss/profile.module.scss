@@ -49,8 +49,16 @@ ul {
   height: 120px;
   border-radius: 99px;
   margin-bottom: 20px;
+  display: flex;
+  justify-content: center;
   img {
     width: 100%;
+  }
+  svg {
+    color: $darkGreen !important;
+    font-size: 80px;
+    align-self: center;
+    // background-color: black;
   }
 }
 .userName,
@@ -111,6 +119,7 @@ ul {
     border-bottom: 1px solid $lineGray;
     padding-bottom: 15px;
     width: 95%;
+    letter-spacing: 5px;
   }
   .travelNumber {
     font-size: 18px;
@@ -137,6 +146,7 @@ ul {
   border: 1px solid $gray;
   border-radius: 10px;
   overflow: hidden;
+  cursor: pointer;
   .travelTitle {
     text-align: center;
     font-size: 20px;
