@@ -1,7 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 import firebase from "../firebase";
-// import styles from "../scss/location.module.scss";
+import styles from "../scss/schedule.module.scss";
 import "react-dates/initialize";
 import { DateRangePicker } from "react-dates";
 import "react-dates/lib/css/_datepicker.css";
@@ -125,10 +125,11 @@ class AddSchedule extends React.Component {
 
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form className={styles.addSchedule} onSubmit={this.handleSubmit}>
         <label>
+          <div>Start Your Trip !</div>
           <div>
-            enter trip name:
+            請輸入旅程名稱：
             <input
               type="text"
               value={this.state.value}
@@ -137,6 +138,13 @@ class AddSchedule extends React.Component {
           </div>
           <div>
             <DateRangePicker
+              withPortal
+              autoFocus
+              showClearDates
+              startDatePlaceholderText="開始日期"
+              endDatePlaceholderText="結束日期"
+              monthFormat="YYYY[年]MM[月]"
+              phrases={{ closeDatePicker: "關閉", clearDates: "清除日期" }}
               onDatesChange={this.onDatesChange}
               onFocusChange={this.onFocusChange}
               focusedInput={this.state.focusedInput}
