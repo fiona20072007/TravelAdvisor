@@ -164,7 +164,7 @@ const ScheduleIndex = (props) => {
 
         <div>
           {AddScheduleStatus === true && (
-            <div className={styles.scheduleListAll}>
+            <div className={styles.scheduleListAdd}>
               <Route
                 path={`${path}/addSchedule`}
                 component={AddSchedule}

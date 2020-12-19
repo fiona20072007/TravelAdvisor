@@ -6,6 +6,7 @@ import "react-dates/initialize";
 import { DateRangePicker } from "react-dates";
 import "react-dates/lib/css/_datepicker.css";
 import moment from "moment";
+import anime from "animejs/lib/anime.es.js";
 // import { nanoid } from "nanoid";
 
 const db = firebase.firestore();
@@ -13,6 +14,7 @@ const db = firebase.firestore();
 class AddSchedule extends React.Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
     this.state = {
       value: "",
       focusedInput: "",
@@ -37,6 +39,120 @@ class AddSchedule extends React.Component {
         this.setState({
           size: snap.size,
         });
+      });
+
+    anime
+      .timeline({ loop: 1 })
+      .add({
+        targets: document.getElementById("line1"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 700,
+      })
+      .add({
+        targets: document.getElementById("line2"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 50,
+      })
+      .add({
+        targets: document.getElementById("line1"),
+        duration: 600,
+        easing: "easeOutExpo",
+        translateY: -0.625 + 0 + "em",
+      });
+
+    anime
+      .timeline({ loop: 1 })
+      .add({
+        targets: document.getElementById("line1"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 700,
+      })
+      .add({
+        targets: document.getElementById("line2"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 50,
+      })
+
+      .add({
+        targets: document.getElementById("line2"),
+        duration: 600,
+        easing: "easeOutExpo",
+        translateY: -0.625 + 0.625 * 2 * 1 + "em",
+      });
+
+    anime
+      .timeline({ loop: 1 })
+      .add({
+        targets: document.getElementById("line1"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 700,
+      })
+      .add({
+        targets: document.getElementById("line2"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 50,
+      })
+
+      .add({
+        targets: "#ampersand",
+        opacity: [0, 1],
+        scaleY: [0.5, 1],
+        easing: "easeOutExpo",
+        duration: 600,
+        offset: "-=600",
+      })
+      .add({
+        targets: document.getElementById("lettersLeft"),
+        opacity: [0, 1],
+        translateX: ["0.5em", 0],
+        easing: "easeOutExpo",
+        duration: 600,
+        offset: "-=300",
+      });
+    anime
+      .timeline({ loop: 1 })
+      .add({
+        targets: document.getElementById("line1"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 700,
+      })
+      .add({
+        targets: document.getElementById("line2"),
+        opacity: [0.5, 1],
+        scaleX: [0, 1],
+        easing: "easeInOutExpo",
+        duration: 50,
+      })
+
+      .add({
+        targets: "#ampersand",
+        opacity: [0, 1],
+        scaleY: [0.5, 1],
+        easing: "easeOutExpo",
+        duration: 600,
+        offset: "-=600",
+      })
+      .add({
+        targets: document.getElementById("lettersRight"),
+        opacity: [0, 1],
+        translateX: ["-0.5em", 0],
+        easing: "easeOutExpo",
+        duration: 600,
+        offset: "-=600",
       });
   }
 
@@ -127,7 +243,22 @@ class AddSchedule extends React.Component {
     return (
       <form className={styles.addSchedule} onSubmit={this.handleSubmit}>
         <label>
-          <div>Start Your Trip !</div>
+          <h1 className={styles.ml5}>
+            <span className={styles.textWrapper}>
+              <span className={styles.line} id="line1"></span>
+              <p className={styles.lettersLeft} id="lettersLeft">
+                Plan
+              </p>
+              <p className={styles.ampersand} id="ampersand">
+                &amp;
+              </p>
+              <p className={styles.lettersRight} id="lettersRight">
+                Start
+              </p>
+              <span className={styles.line} id="line2"></span>
+            </span>
+          </h1>
+
           <div>
             請輸入旅程名稱：
             <input
