@@ -6,6 +6,8 @@ import "react-dates/initialize";
 import { DateRangePicker } from "react-dates";
 import "react-dates/lib/css/_datepicker.css";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlane, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import anime from "animejs/lib/anime.es.js";
 // import { nanoid } from "nanoid";
 
@@ -32,7 +34,7 @@ class AddSchedule extends React.Component {
   }
   componentDidMount() {
     db.collection("schedule")
-      .doc("userId")
+      .doc(this.props.UserUid)
       .collection("data")
       .get()
       .then((snap) => {
@@ -61,7 +63,7 @@ class AddSchedule extends React.Component {
         targets: document.getElementById("line1"),
         duration: 600,
         easing: "easeOutExpo",
-        translateY: -0.625 + 0 + "em",
+        translateY: -1 + 0 + "em",
       });
 
     anime
@@ -85,7 +87,7 @@ class AddSchedule extends React.Component {
         targets: document.getElementById("line2"),
         duration: 600,
         easing: "easeOutExpo",
-        translateY: -0.625 + 0.625 * 2 * 1 + "em",
+        translateY: -1 + 1 * 2 * 1 + "em",
       });
 
     anime
@@ -161,9 +163,10 @@ class AddSchedule extends React.Component {
   };
 
   handleSubmit = (event) => {
+    let date = Date.now();
     event.preventDefault();
     db.collection("schedule")
-      .doc("userId")
+      .doc(this.props.UserUid)
       .collection("data")
       .doc("travel" + this.state.size)
       .set({
@@ -181,10 +184,11 @@ class AddSchedule extends React.Component {
         comment: "",
         id: this.state.size,
         dateBlock: this.state.dateBlock,
+        setDateStamp: date,
       });
     for (let i = 0; i < this.state.totalDay; i++) {
       db.collection("schedule")
-        .doc("userId")
+        .doc(this.props.UserUid)
         .collection("data")
         .doc("travel" + this.state.size)
         .collection("dateBlockDetail")
@@ -193,19 +197,17 @@ class AddSchedule extends React.Component {
           id: i,
           name: this.state.dateBlock[i],
           morning: [],
-          afternoon: [],
-          night: [],
         });
     }
 
-    alert(
-      "Submitted: " +
-        this.state.startDateSubmit +
-        "~" +
-        this.state.endDateSubmit
-    );
+    // alert(
+    //   "Submitted: " +
+    //     this.state.startDateSubmit +
+    //     "~" +
+    //     this.state.endDateSubmit
+    // );
     this.setState({ value: "" });
-    // this.props.history.push(`/editSchedule`);
+    this.props.handleSubmitChange();
   };
 
   onDatesChange = ({ startDate, endDate }) => {
@@ -241,9 +243,9 @@ class AddSchedule extends React.Component {
 
   render() {
     return (
-      <form className={styles.addSchedule} onSubmit={this.handleSubmit}>
-        <label>
-          <h1 className={styles.ml5}>
+      <div className={styles.addSchedule}>
+        <label className={styles.addScheduleLabel}>
+          <h2 className={styles.ml5}>
             <span className={styles.textWrapper}>
               <span className={styles.line} id="line1"></span>
               <p className={styles.lettersLeft} id="lettersLeft">
@@ -257,17 +259,19 @@ class AddSchedule extends React.Component {
               </p>
               <span className={styles.line} id="line2"></span>
             </span>
-          </h1>
+          </h2>
 
-          <div>
-            請輸入旅程名稱：
+          <div className={styles.titleInput}>
+            <FontAwesomeIcon icon={faPlane} />
             <input
               type="text"
               value={this.state.value}
+              placeholder="請輸入旅程名稱"
               onChange={this.handleChange}
             />
           </div>
-          <div>
+          <div className={styles.dateInputAll}>
+            <FontAwesomeIcon icon={faCalendarCheck} />
             <DateRangePicker
               withPortal
               autoFocus
@@ -287,14 +291,20 @@ class AddSchedule extends React.Component {
           </div>
           <div>{this.state.date}</div>
         </label>
-        <input type="submit" value="Submit" />
-      </form>
+        <div className={styles.wrapper}>
+          <a className={styles.button} onClick={this.handleSubmit}>
+            Submit!
+          </a>
+        </div>
+      </div>
     );
   }
 }
 
 AddSchedule.propTypes = {
   history: PropTypes.object.isRequired,
+  handleSubmitChange: PropTypes.func,
+  UserUid: PropTypes.string,
 };
 
 export default AddSchedule;

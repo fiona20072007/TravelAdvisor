@@ -24,7 +24,7 @@ class DropSchedule extends React.Component {
     let travelDateDetailTemp = [];
 
     db.collection("schedule")
-      .doc("userId")
+      .doc(this.props.userUid)
       .collection("data")
       .doc(`travel${travelShowId}`)
       .collection("dateBlockDetail")
@@ -94,6 +94,7 @@ class DropSchedule extends React.Component {
                     traffic={this.props.traffic}
                     handleTraffic={this.props.handleTraffic}
                     trafficDetail={this.props.trafficDetail}
+                    userUid={this.props.userUid}
                   />
 
                   {provided.placeholder}
@@ -101,13 +102,16 @@ class DropSchedule extends React.Component {
 
                 {i == this.state.travelDateDetail.length - 1 && (
                   <div className="findLocationShow">
-                    <FindLocation getCountry={this.props.getCountry} />
+                    <FindLocation
+                      getCountry={this.props.getCountry}
+                      userUid={this.props.userUid}
+                    />
                   </div>
                 )}
 
                 {i == this.state.travelDateDetail.length - 1 && (
                   <div className="likeLocationShow">
-                    <LikeLocation />
+                    <LikeLocation userUid={this.props.userUid} />
                   </div>
                 )}
               </div>
@@ -127,6 +131,7 @@ DropSchedule.propTypes = {
   traffic: PropTypes.object,
   handleTraffic: PropTypes.func,
   trafficDetail: PropTypes.object,
+  userUid: PropTypes.string,
 };
 
 export default DropSchedule;

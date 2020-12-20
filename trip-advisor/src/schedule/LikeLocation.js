@@ -1,6 +1,7 @@
 import React from "react";
 import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
+import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
 const db = firebase.firestore();
@@ -21,7 +22,7 @@ class LikeLocation extends React.Component {
     });
 
     db.collection("schedule")
-      .doc("userId")
+      .doc(this.props.userUid)
       .onSnapshot((docAll) => {
         this.setState({
           locationDetail: docAll.data().like,
@@ -74,7 +75,7 @@ class LikeLocation extends React.Component {
       locationLikeDetail: arr,
     });
     console.log(setArr);
-    db.collection("schedule").doc("userId").set(
+    db.collection("schedule").doc(this.props.userUid).set(
       {
         like: setArr,
       },
@@ -123,5 +124,9 @@ class LikeLocation extends React.Component {
     );
   }
 }
+
+LikeLocation.propTypes = {
+  userUid: PropTypes.string,
+};
 
 export default LikeLocation;

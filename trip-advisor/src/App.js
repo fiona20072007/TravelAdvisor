@@ -41,6 +41,13 @@ class App extends React.Component {
       this.setState({ hidden: false });
     }
   };
+  handleShowEditNav = () => {
+    if (window.location.pathname.substring(0, 9) === "/schedule") {
+      window.location.replace("/schedule");
+    } else {
+      return;
+    }
+  };
   render() {
     return (
       <Router>
@@ -59,7 +66,9 @@ class App extends React.Component {
                 </li>
                 <li>
                   <FontAwesomeIcon icon={faMapMarkedAlt} />
-                  <Link to="/schedule">規劃行程</Link>
+                  <Link to="/schedule" onClick={this.handleShowEditNav}>
+                    規劃行程
+                  </Link>
                 </li>
                 <li>
                   <FontAwesomeIcon icon={faUserCircle} />

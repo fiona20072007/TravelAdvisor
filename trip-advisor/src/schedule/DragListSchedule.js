@@ -30,7 +30,7 @@ class DragListSchedule extends React.Component {
     });
 
     db.collection("schedule")
-      .doc("userId")
+      .doc(this.props.userUid)
       .collection("data")
       .doc(`travel${window.location.pathname.substring(23)}`)
       .collection("dateBlockDetail")
@@ -48,13 +48,6 @@ class DragListSchedule extends React.Component {
     }
   };
 
-  // componentDidUpdate(prevProps) {
-  //   if (prevProps.traffic !== this.props.traffic) {
-  //     console.log(123);
-  //     this.handleNewTraffic;
-  //     console.log("this.props.traffic", this.props.traffic);
-  //   }
-  // }
   render() {
     console.log(
       "this.props.traffic[this.props.item]",
@@ -139,6 +132,7 @@ DragListSchedule.propTypes = {
   traffic: PropTypes.object,
   handleTraffic: PropTypes.func,
   trafficDetail: PropTypes.object,
+  userUid: PropTypes.string,
 };
 
 export default DragListSchedule;

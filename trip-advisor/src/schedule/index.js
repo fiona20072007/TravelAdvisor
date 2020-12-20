@@ -7,7 +7,13 @@ import styles from "../scss/schedule.module.scss";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlane } from "@fortawesome/free-solid-svg-icons";
-import { Route, Link, useRouteMatch, useLocation } from "react-router-dom";
+import {
+  Route,
+  Link,
+  useRouteMatch,
+  useLocation,
+  useHistory,
+} from "react-router-dom";
 
 const db = firebase.firestore();
 
@@ -18,7 +24,10 @@ const ScheduleIndex = (props) => {
   const [TravelId, setTravelId] = useState(null);
   const [ScheduleStatus, setScheduleStatus] = useState(true);
   const [AddScheduleStatus, setAddScheduleStatus] = useState(false);
+  const [userUid, setUserUid] = useState("");
+
   let location = useLocation();
+  let history = useHistory();
   let travelShow = location.pathname.charAt(location.pathname.length - 1);
   // const addNewTravel = newTravel => {
   //   setTravelSchedule([...TravelSchedule, newTravel]);
@@ -60,6 +69,11 @@ const ScheduleIndex = (props) => {
     setTravelScheduleShow(newArr);
   };
 
+  const handleSubmitChange = () => {
+    setScheduleStatus(true);
+    setAddScheduleStatus(false);
+  };
+
   useEffect(() => {
     if (window.location.pathname.substring(1, 9) === "schedule") {
       document.querySelectorAll("svg").forEach((item) => {
@@ -72,32 +86,33 @@ const ScheduleIndex = (props) => {
       document.querySelector("nav").style.boxShadow =
         "0 0 8px rgba(0, 0, 0, 0.2)";
     }
-    db.collection("schedule")
-      .doc("userId")
-      .collection("data")
-      .onSnapshot((querySnapshot) => {
-        let TravelScheduleTemp = [];
-        querySnapshot.forEach((doc) => {
-          TravelScheduleTemp.push(doc.data());
-        });
-        console.log(TravelScheduleTemp);
-        setTravelSchedule(TravelScheduleTemp);
-        setTravelScheduleShow(TravelScheduleTemp);
-      });
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log("sign in success");
+        setUserUid(user.uid);
+        db.collection("schedule")
+          .doc(user.uid)
+          .collection("data")
+          .onSnapshot((querySnapshot) => {
+            let TravelScheduleTemp = [];
+            querySnapshot.forEach((doc) => {
+              TravelScheduleTemp.push(doc.data());
+            });
+            console.log(TravelScheduleTemp);
+            setTravelSchedule(TravelScheduleTemp);
+            setTravelScheduleShow(TravelScheduleTemp);
+          });
+      } else {
+        alert("請先登入");
+        history.push("/member");
+      }
+    });
   }, []);
 
   return (
     <div className={styles.scheduleLayout}>
-      <ul className={styles.scheduleNav}>
-        <li onClick={() => setTravelId(null)}>
-          <Link to={`${url}/addSchedule`}>新增行程</Link>
-        </li>
-        <li onClick={() => setTravelId(null)}>
-          <Link to="/schedule">所有行程</Link>
-        </li>
-      </ul>
-
-      <div className={styles.scheduleListRange}>
+      <div className={styles.scheduleListRange} id="scheduleListRange">
         <div className={styles.scheduleNavMain}>
           <ul className={styles.Nav}>
             <li
@@ -130,53 +145,75 @@ const ScheduleIndex = (props) => {
               </div>
             </div>
             <div className={styles.scheduleListDetail}>
-              {TravelScheduleShow.map((item) => {
-                return (
-                  <div key={item.id} id={item.id}>
-                    <div
-                      className={styles.scheduleList}
-                      onClick={() => {
-                        setTravelId(item.id);
-                        props.history.push(`${url}/editSchedule/${item.id}`);
-                      }}
-                    >
-                      <div className={styles.scheduleTitle}>
-                        {item.TravelScheduleName}
-                      </div>
-                      <div className={styles.date}>
-                        <div className={styles.travelDate}>
-                          {item.StartDate}
+              {TravelScheduleShow.slice(0)
+                .reverse()
+                .map((item) => {
+                  return (
+                    <div key={item.id} id={item.id} className={styles.All}>
+                      {Date.now() - item.setDateStamp < 10800000 && (
+                        <div className={styles.tag}>
+                          <li>New</li>
                         </div>
-                        <FontAwesomeIcon icon={faPlane} />
-                        <div className={styles.travelDate}> {item.EndDate}</div>
+                      )}
+                      <div
+                        className={styles.scheduleList}
+                        onClick={() => {
+                          setTravelId(item.id);
+                          props.history.push(`${url}/editSchedule/${item.id}`);
+                        }}
+                      >
+                        <div className={styles.scheduleTitle}>
+                          {item.TravelScheduleName}
+                        </div>
+                        <div className={styles.date}>
+                          <div className={styles.travelDate}>
+                            {item.StartDate}
+                          </div>
+                          <FontAwesomeIcon icon={faPlane} />
+                          <div className={styles.travelDate}>
+                            {" "}
+                            {item.EndDate}
+                          </div>
+                        </div>
+                        <img
+                          className={styles.schedulePhoto}
+                          src={item.CoverImgUrl}
+                        />
                       </div>
-                      <img
-                        className={styles.schedulePhoto}
-                        src={item.CoverImgUrl}
-                      />
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
             </div>
           </div>
         )}
 
-        <div>
-          {AddScheduleStatus === true && (
-            <div className={styles.scheduleListAdd}>
-              <Route
-                path={`${path}/addSchedule`}
-                component={AddSchedule}
-              ></Route>
-            </div>
-          )}
-
-          <Route
-            path={`${path}/editSchedule/:travelShow`}
-            component={EditSchedule}
-          ></Route>
-        </div>
+        {AddScheduleStatus === true && (
+          <div className={styles.scheduleListAdd}>
+            <Route
+              path={`${path}/addSchedule`}
+              component={() => (
+                <AddSchedule
+                  handleSubmitChange={handleSubmitChange}
+                  userUid={userUid}
+                />
+              )}
+            ></Route>
+          </div>
+        )}
+      </div>
+      <div className={styles.scheduleAll}>
+        {/* <ul className={styles.scheduleNav}>
+          <li onClick={() => setTravelId(null)}>
+            <Link to={`${url}/addSchedule`}>新增行程</Link>
+          </li>
+          <li onClick={() => setTravelId(null)}>
+            <Link to="/schedule">所有行程</Link>
+          </li>
+        </ul> */}
+        <Route
+          path={`${path}/editSchedule/:travelShow`}
+          component={EditSchedule}
+        ></Route>
       </div>
     </div>
   );

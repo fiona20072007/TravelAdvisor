@@ -23,10 +23,10 @@ class FindLocation extends React.Component {
 
   componentDidMount() {
     db.collection("schedule")
-      .doc("userId")
+      .doc(this.props.userUid)
       .onSnapshot((doc) => {
         if (doc.data()["like"] === undefined) {
-          db.collection("schedule").doc("userId").set(
+          db.collection("schedule").doc(this.props.userUid).set(
             {
               like: [],
             },
@@ -214,21 +214,21 @@ class FindLocation extends React.Component {
         });
       });
 
-    // if (this.state.value !== "") {
-    //   window.setTimeout(
-    //     () =>
-    //       this.state.likeList.forEach(likeItem => {
-    //         if (document.getElementById(`likeSearch-${likeItem.id}`) === null) {
-    //           return;
-    //         } else {
-    //           document.getElementById(
-    //             `likeSearch-${likeItem.id}`
-    //           ).style.display = "block";
-    //         }
-    //       }),
-    //     300
-    //   );
-    // }
+    if (this.state.value !== "") {
+      window.setTimeout(
+        () =>
+          this.state.likeList.forEach((likeItem) => {
+            if (document.getElementById(`likeSearch-${likeItem.id}`) === null) {
+              return;
+            } else {
+              document.getElementById(
+                `likeSearch-${likeItem.id}`
+              ).style.display = "block";
+            }
+          }),
+        300
+      );
+    }
   };
 
   componentDidUpdate(prevState) {
@@ -292,7 +292,7 @@ class FindLocation extends React.Component {
     this.setState({
       likeList: likeArr,
     });
-    db.collection("schedule").doc("userId").set(
+    db.collection("schedule").doc(this.props.userUid).set(
       {
         like: likeArr,
       },
@@ -330,6 +330,7 @@ class FindLocation extends React.Component {
 
 FindLocation.propTypes = {
   getCountry: PropTypes.func,
+  userUid: PropTypes.string,
 };
 
 export default FindLocation;
