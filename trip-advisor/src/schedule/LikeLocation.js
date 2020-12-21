@@ -85,7 +85,7 @@ class LikeLocation extends React.Component {
 
   render() {
     return (
-      <div className={styles.likeList}>
+      <div className={styles.likeList} id="likeList">
         {this.state.locationLikeDetail.map((item, i) => {
           return (
             <Draggable draggableId={`Ld-${item.id}`} index={i} key={i}>

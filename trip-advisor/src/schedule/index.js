@@ -202,14 +202,6 @@ const ScheduleIndex = (props) => {
         )}
       </div>
       <div className={styles.scheduleAll}>
-        {/* <ul className={styles.scheduleNav}>
-          <li onClick={() => setTravelId(null)}>
-            <Link to={`${url}/addSchedule`}>新增行程</Link>
-          </li>
-          <li onClick={() => setTravelId(null)}>
-            <Link to="/schedule">所有行程</Link>
-          </li>
-        </ul> */}
         <Route
           path={`${path}/editSchedule/:travelShow`}
           component={EditSchedule}

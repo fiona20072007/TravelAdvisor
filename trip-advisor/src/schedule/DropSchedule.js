@@ -5,6 +5,8 @@ import FindLocation from "./FindLocation";
 import LikeLocation from "./LikeLocation";
 import DragListSchedule from "./DragListSchedule";
 import PropTypes from "prop-types";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { Droppable } from "react-beautiful-dnd";
 
 const db = firebase.firestore();
@@ -68,17 +70,42 @@ class DropSchedule extends React.Component {
         });
       });
   }
+  handleDateScroll = (id) => {
+    document.getElementById(`day${id + 1}`).scrollIntoView({
+      behavior: "smooth",
+    });
+  };
 
   render() {
     // console.log(this.state.travelDetailCountry);
     //把這個state往上拉到editSchedule.js再set
     return (
       <div className={styles.scheduleDateAll}>
+        <div className={styles.scheduleDateSelect}>
+          <FontAwesomeIcon icon={faCalendarAlt} />
+          <div className={styles.scheduleDateTitle}>Day </div>
+          {this.state.travelDateDetail.map((item, i) => {
+            return (
+              <div
+                key={i}
+                className={styles.scheduleDateDetail}
+                onClick={() => {
+                  this.handleDateScroll(i);
+                }}
+              >
+                {i + 1}
+              </div>
+            );
+          })}
+        </div>
+
         {this.state.travelDateDetail.map((item, i) => (
           <Droppable droppableId={`drop-${item.name}`} key={i}>
             {(provided) => (
-              <div>
-                <div className={styles.scheduleDateOnly}>{item.name}</div>
+              <div className={styles.scheduleDetailForDrop}>
+                <div className={styles.scheduleDateOnly} id={`day${i + 1}`}>
+                  Day-{i + 1} {`\xa0\xa0\xa0\xa0`} {item.name}
+                </div>
                 <div
                   className={styles.scheduleDetail}
                   ref={provided.innerRef}
@@ -99,21 +126,29 @@ class DropSchedule extends React.Component {
 
                   {provided.placeholder}
                 </div>
-
-                {i == this.state.travelDateDetail.length - 1 && (
-                  <div className="findLocationShow">
+                <div
+                  className={styles.locationSection}
+                  id={`locationSection${i}`}
+                >
+                  <div
+                    className={styles.findLocationShow}
+                    id="findLocationShow"
+                  >
                     <FindLocation
                       getCountry={this.props.getCountry}
                       userUid={this.props.userUid}
                     />
                   </div>
-                )}
-
-                {i == this.state.travelDateDetail.length - 1 && (
-                  <div className="likeLocationShow">
+                  <div
+                    className={styles.likeLocationShow}
+                    id="likeLocationShow"
+                  >
                     <LikeLocation userUid={this.props.userUid} />
                   </div>
-                )}
+                  {/* {i == this.state.travelDateDetail.length - 1 && (
+                    
+                  )} */}
+                </div>
               </div>
             )}
           </Droppable>

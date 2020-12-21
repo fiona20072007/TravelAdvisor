@@ -4,7 +4,8 @@ import styles from "../scss/schedule.module.scss";
 import PropTypes from "prop-types";
 import DropSchedule from "./DropSchedule";
 import ScheduleMap from "./ScheduleMap";
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { DragDropContext } from "react-beautiful-dnd";
 
 const db = firebase.firestore();
@@ -26,6 +27,7 @@ class EditSchedule extends React.Component {
       traffic: {},
       trafficDetail: {},
       userUid: "",
+      showLocationSearch: false,
     };
   }
 
@@ -286,16 +288,15 @@ class EditSchedule extends React.Component {
   };
 
   handleLocationShow = () => {
-    document.getElementsByClassName("findLocationShow")[0].style.display =
-      "block";
-    document.getElementsByClassName("likeLocationShow")[0].style.display =
-      "none";
+    document.getElementById("findLocationShow").style.display = "block";
+    document.getElementById("searchAll").style.animation = "none";
+    document.getElementById("locationList").style.animation = "none";
+    document.getElementById("likeLocationShow").style.display = "none";
   };
   handleCollectionShow = () => {
-    document.getElementsByClassName("findLocationShow")[0].style.display =
-      "none";
-    document.getElementsByClassName("likeLocationShow")[0].style.display =
-      "block";
+    document.getElementById("findLocationShow").style.display = "none";
+    document.getElementById("likeLocationShow").style.display = "block";
+    document.getElementById("likeList").style.display = "block";
   };
 
   setInfoOpen = (state) => {
@@ -343,22 +344,62 @@ class EditSchedule extends React.Component {
     });
   };
 
+  handleShowLocationDrag = () => {
+    if (this.state.showLocationSearch === false) {
+      document.getElementById("locationDetail").style.display = "flex";
+      document.getElementById("locationSection0").style.opacity = 1;
+      document.getElementById("locationSection0").style.width = "300px";
+      document.getElementById("locationList").style.width = "200px";
+      document.getElementById("likeList").style.width = "200px";
+      document.getElementById("switchBtn").style.opacity = 1;
+      document.getElementById("arrow").style.transform = "rotate(-180deg)";
+      document.getElementById("arrow").style.transition = "0.3s";
+      this.setState({ showLocationSearch: true });
+    } else {
+      document.getElementById("locationSection0").style.opacity = 0;
+      document.getElementById("locationSection0").style.width = "0px";
+      document.getElementById("locationList").style.width = "0px";
+      document.getElementById("likeList").style.width = "0px";
+      document.getElementById("switchBtn").style.opacity = 0;
+      document.getElementById("arrow").style.transition = "0.3s";
+      document.getElementById("arrow").style.transform = "rotate(0deg)";
+      this.setState({ showLocationSearch: false });
+    }
+  };
+
   render() {
     return (
       <div className={styles.scheduleWithMap}>
         <div className={styles.schedule}>
-          <div className={styles.switchBtn}>
-            <button onClick={this.handleLocationShow}>景點搜尋</button>
-            <button onClick={this.handleCollectionShow}>我的收藏</button>
+          <div className={styles.switchBtn} id="switchBtn">
+            <button onClick={this.handleLocationShow} className={styles.btn}>
+              <span>景點搜尋</span>
+              <div className={`${styles.triangle} ${styles.t1}`}></div>
+              <div className={`${styles.triangle} ${styles.t2}`}></div>
+            </button>
+
+            <button onClick={this.handleCollectionShow} className={styles.btn}>
+              <span>我的收藏</span>
+              <div className={`${styles.triangle} ${styles.t1}`}></div>
+              <div className={`${styles.triangle} ${styles.t2}`}></div>
+            </button>
           </div>
           {this.state.travelData.map((item) => {
             return (
               <div key={item.id} className={styles.scheduleListTopLeft}>
                 <div className={styles.scheduleListDetailTopLeft}>
+                  <div
+                    className={styles.arrowBounce}
+                    id="arrow"
+                    onClick={this.handleShowLocationDrag}
+                  >
+                    <FontAwesomeIcon icon={faArrowRight} />
+                  </div>
                   <img
                     className={styles.schedulePhoto}
                     src={item.CoverImgUrl}
                   />
+
                   <div className={styles.scheduleTitle}>
                     {item.TravelScheduleName}
                   </div>
@@ -366,6 +407,7 @@ class EditSchedule extends React.Component {
                     {item.StartDate} ～{" "}
                     <span className={styles.date2}>{item.EndDate}</span>
                   </div>
+                  <div className={styles.scheduleLayer}></div>
                 </div>
               </div>
             );

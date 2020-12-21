@@ -50,7 +50,7 @@ class TrafficSchedule extends React.Component {
     // console.log(this.props.traffic);
     return (
       this.props.traffic[this.props.date][this.props.num] !== undefined && (
-        <div>
+        <div className={styles.trafficLength}>
           {
             this.props.traffic[this.props.date][this.props.num].routes[0]
               .legs[0].distance.text

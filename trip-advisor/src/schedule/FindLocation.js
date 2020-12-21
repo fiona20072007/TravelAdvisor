@@ -302,8 +302,8 @@ class FindLocation extends React.Component {
 
   render() {
     return (
-      <div className={styles.locationAll}>
-        <div className={styles.searchAll}>
+      <div className={styles.locationAll} id="locationDetail">
+        <div className={styles.searchAll} id="searchAll">
           <div>
             <div className={styles.title}>挑選國家</div>
             <AsyncSelect
@@ -322,7 +322,9 @@ class FindLocation extends React.Component {
           </div>
         </div>
 
-        <div className={styles.locationList}>{this.state.locationArray}</div>
+        <div className={styles.locationList} id="locationList">
+          {this.state.locationArray}
+        </div>
       </div>
     );
   }

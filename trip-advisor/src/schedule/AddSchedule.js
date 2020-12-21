@@ -34,7 +34,7 @@ class AddSchedule extends React.Component {
   }
   componentDidMount() {
     db.collection("schedule")
-      .doc(this.props.UserUid)
+      .doc(this.props.userUid)
       .collection("data")
       .get()
       .then((snap) => {
@@ -166,7 +166,7 @@ class AddSchedule extends React.Component {
     let date = Date.now();
     event.preventDefault();
     db.collection("schedule")
-      .doc(this.props.UserUid)
+      .doc(this.props.userUid)
       .collection("data")
       .doc("travel" + this.state.size)
       .set({
@@ -188,7 +188,7 @@ class AddSchedule extends React.Component {
       });
     for (let i = 0; i < this.state.totalDay; i++) {
       db.collection("schedule")
-        .doc(this.props.UserUid)
+        .doc(this.props.userUid)
         .collection("data")
         .doc("travel" + this.state.size)
         .collection("dateBlockDetail")
@@ -304,7 +304,7 @@ class AddSchedule extends React.Component {
 AddSchedule.propTypes = {
   history: PropTypes.object.isRequired,
   handleSubmitChange: PropTypes.func,
-  UserUid: PropTypes.string,
+  userUid: PropTypes.string,
 };
 
 export default AddSchedule;
