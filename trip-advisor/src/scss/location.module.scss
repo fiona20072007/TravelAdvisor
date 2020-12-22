@@ -176,7 +176,7 @@ $darkGreen: rgba(43, 92, 83, 0.796);
 
     &__text {
       display: inline;
-      // float: left;
+      float: left;
       margin: 0;
     }
 
@@ -448,6 +448,7 @@ $contentFadeinAT: 0.5s;
     // overflow: hidden;
     position: relative;
     height: 100%;
+    // position: center center;
     transition: transform $initAT;
 
     @include contInactive {
