@@ -23,9 +23,49 @@ class LocationDetail extends React.Component {
       locationArray: [],
       locationArrayT: [],
       likeList: [],
+      userUid: "",
     };
   }
   componentDidMount = () => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log("sign in success");
+        this.setState({
+          userUid: user.uid,
+        });
+        db.collection("schedule")
+          .doc(user.uid)
+          .onSnapshot((doc) => {
+            if (doc.data()["like"] === undefined) {
+              db.collection("schedule").doc(user.uid).set(
+                {
+                  like: [],
+                },
+                { merge: true }
+              );
+            } else {
+              this.setState({ likeList: doc.data()["like"] });
+              doc.data()["like"].forEach((likeItem) => {
+                if (document.getElementById(`like-${likeItem.id}`) === null) {
+                  return;
+                } else {
+                  document.getElementById(`like-${likeItem.id}`).style.display =
+                    "block";
+                  document.getElementById(`like-${likeItem.id}`).style.fill =
+                    "rgb(255, 128, 191)";
+                  document.getElementById(`like-${likeItem.id}`).style[
+                    "fill-opacity"
+                  ] = 1;
+                }
+              });
+            }
+          });
+      } else {
+        alert("請先登入");
+        history.push("/member");
+      }
+    });
+
     console.log(window.location.pathname.substring(1, 9));
     if (window.location.pathname.substring(1, 9) === "location") {
       document.querySelectorAll("svg").forEach((item) => {
@@ -158,34 +198,6 @@ class LocationDetail extends React.Component {
           center: centerTemp,
           zoom: zoomTemp,
         });
-      });
-
-    db.collection("schedule")
-      .doc("userId")
-      .onSnapshot((doc) => {
-        if (doc.data()["like"] === undefined) {
-          db.collection("schedule").doc("userId").set(
-            {
-              like: [],
-            },
-            { merge: true }
-          );
-        } else {
-          this.setState({ likeList: doc.data()["like"] });
-          doc.data()["like"].forEach((likeItem) => {
-            if (document.getElementById(`like-${likeItem.id}`) === null) {
-              return;
-            } else {
-              document.getElementById(`like-${likeItem.id}`).style.display =
-                "block";
-              document.getElementById(`like-${likeItem.id}`).style.fill =
-                "rgb(255, 128, 191)";
-              document.getElementById(`like-${likeItem.id}`).style[
-                "fill-opacity"
-              ] = 1;
-            }
-          });
-        }
       });
   };
 
@@ -351,7 +363,7 @@ class LocationDetail extends React.Component {
       document.getElementById(`like-${likeItem.id}`).style["fill-opacity"] = 1;
       likeAllArr.push(obj);
 
-      db.collection("schedule").doc("userId").set(
+      db.collection("schedule").doc(this.state.userUid).set(
         {
           like: likeAllArr,
         },
@@ -367,7 +379,7 @@ class LocationDetail extends React.Component {
         let removeLikeAllArr = likeAllArr.filter(function (i) {
           return i.id !== likeItem.id;
         });
-        db.collection("schedule").doc("userId").set(
+        db.collection("schedule").doc(this.state.userUid).set(
           {
             like: removeLikeAllArr,
           },
@@ -381,7 +393,7 @@ class LocationDetail extends React.Component {
         ] = 1;
         likeAllArr.push(obj);
 
-        db.collection("schedule").doc("userId").set(
+        db.collection("schedule").doc(this.state.userUid).set(
           {
             like: likeAllArr,
           },
