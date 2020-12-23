@@ -2,73 +2,26 @@ $lightGray: rgba(245, 247, 249, 0.947);
 $gray: rgb(175, 169, 169);
 $darkGray: rgb(138, 134, 134);
 $darkGreen: rgba(43, 92, 83, 0.796);
-.locationAll {
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  // position: relative;
-  justify-content: center;
-  width: 100%;
-  background-color: #1f1f1f;
-}
-.navBar {
-  color: white;
-  z-index: 100;
-  position: fixed;
-  top: 40px;
-  left: 50px;
-  font-size: 30px;
-  cursor: pointer;
-}
-.navBarList {
-  z-index: 100;
-  position: fixed;
-  top: 37px;
-  left: 120px;
-  display: flex;
-  font-size: 20px;
-}
-.navBarList a,
-.navBarList div {
-  margin: 10px;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
 
-.banner {
-  position: absolute;
-  z-index: 0;
-  top: 0;
-  height: 90%;
-  width: 100%;
-  background-image: url(../image/Northern.jpg),
-    linear-gradient(to right, rgba(30, 75, 115, 1), rgba(255, 255, 255, 0));
-  mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%),
-    linear-gradient(to top left, transparent 49.5%, white 50.5%),
-    linear-gradient(white, white);
-  mask-size: 75% 25%, 25% 25%, 100% 75%;
-  mask-position: bottom left, bottom right, top left;
-  mask-repeat: no-repeat;
-  // background-position: bottom right, left;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-// .title {
+// .banner {
+//   position: absolute;
+//   z-index: 0;
+//   top: 0;
+//   height: 90%;
 //   width: 100%;
-//   height: 100%;
-//   position: fixed;
-//   color: rgb(255, 255, 255);
-//   letter-spacing: 5px;
-//   font-size: 100px;
-//   font-family: Apple Chancery;
-//   margin-top: 150px;
-//   margin-bottom: 80px;
-//   z-index: 1;
-//   text-shadow: 0px 3px 0px #b2a98f, 0px 14px 10px rgba(0, 0, 0, 0.15),
-//   0px 24px 2px rgba(0, 0, 0, 0.1), 0px 34px 30px rgba(0, 0, 0, 0.1);
+//   background-image: url(../image/Northern.jpg),
+//     linear-gradient(to right, rgba(30, 75, 115, 1), rgba(255, 255, 255, 0));
+//   mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%),
+//     linear-gradient(to top left, transparent 49.5%, white 50.5%),
+//     linear-gradient(white, white);
+//   mask-size: 75% 25%, 25% 25%, 100% 75%;
+//   mask-position: bottom left, bottom right, top left;
+//   mask-repeat: no-repeat;
+//   // background-position: bottom right, left;
+//   background-repeat: no-repeat;
+//   background-size: cover;
 // }
+
 .locationInput {
   width: 550px;
   align-self: center;
@@ -79,51 +32,6 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   svg {
     color: black !important;
   }
-}
-
-//show
-
-.location {
-  // text-align: center;
-  display: flex;
-  justify-content: center;
-  // margin-top: 600px;
-}
-.locationShow {
-  display: flex;
-  flex-flow: wrap;
-  justify-content: center;
-  width: 1100px;
-}
-
-.titleShow {
-  font-size: 30px;
-}
-.item {
-  width: 350px;
-  position: relative;
-  z-index: 2;
-  cursor: pointer;
-}
-.itemPhoto {
-  width: 300px;
-  height: 180px;
-  // border: 10px solid white;
-  margin-bottom: 40px;
-}
-.itemName {
-  position: absolute;
-  top: 20px;
-  left: 50px;
-  color: white;
-  font-size: 25px;
-}
-.itemDescription {
-  position: absolute;
-  top: 150px;
-  left: 50px;
-  color: white;
-  font-size: 11px;
 }
 
 ///ani
@@ -238,132 +146,25 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   }
 }
 
-// @-webkit-keyframes opacity {
-//   0%,
-//   100% {
-//     opacity: 0;
-//   }
-//   50% {
-//     opacity: 1;
-//   }
-// }
+//show
 
-// @-webkit-keyframes change {
-//   0%,
-//   12.66%,
-//   100% {
-//     transform: translate3d(0, 0, 0);
-//   }
-//   16.66%,
-//   29.32% {
-//     transform: translate3d(0, -25%, 0);
-//   }
-//   33.32%,
-//   45.98% {
-//     transform: translate3d(0, -50%, 0);
-//   }
-//   49.98%,
-//   62.64% {
-//     transform: translate3d(0, -75%, 0);
-//   }
-//   66.64%,
-//   79.3% {
-//     transform: translate3d(0, -50%, 0);
-//   }
-//   83.3%,
-//   95.96% {
-//     transform: translate3d(0, -25%, 0);
-//   }
-// }
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-// @-o-keyframes opacity {
-//   0%,
-//   100% {
-//     opacity: 0;
-//   }
-//   50% {
-//     opacity: 1;
-//   }
-// }
+body {
+  background: #1f1f1f;
+  font-family: "Open Sans", Helvetica, Arial, sans-serif;
+}
 
-// @-o-keyframes change {
-//   0%,
-//   12.66%,
-//   100% {
-//     transform: translate3d(0, 0, 0);
-//   }
-//   16.66%,
-//   29.32% {
-//     transform: translate3d(0, -25%, 0);
-//   }
-//   33.32%,
-//   45.98% {
-//     transform: translate3d(0, -50%, 0);
-//   }
-//   49.98%,
-//   62.64% {
-//     transform: translate3d(0, -75%, 0);
-//   }
-//   66.64%,
-//   79.3% {
-//     transform: translate3d(0, -50%, 0);
-//   }
-//   83.3%,
-//   95.96% {
-//     transform: translate3d(0, -25%, 0);
-//   }
-// }
-
-// @-moz-keyframes opacity {
-//   0%,
-//   100% {
-//     opacity: 0;
-//   }
-//   50% {
-//     opacity: 1;
-//   }
-// }
-
-// @-moz-keyframes change {
-//   0%,
-//   12.66%,
-//   100% {
-//     transform: translate3d(0, 0, 0);
-//   }
-//   16.66%,
-//   29.32% {
-//     transform: translate3d(0, -25%, 0);
-//   }
-//   33.32%,
-//   45.98% {
-//     transform: translate3d(0, -50%, 0);
-//   }
-//   49.98%,
-//   62.64% {
-//     transform: translate3d(0, -75%, 0);
-//   }
-//   66.64%,
-//   79.3% {
-//     transform: translate3d(0, -50%, 0);
-//   }
-//   83.3%,
-//   95.96% {
-//     transform: translate3d(0, -25%, 0);
-//   }
-// }
-
-/// index
-// *,
-// *:before,
-// *:after {
-//   box-sizing: border-box;
-//   margin: 0;
-//   padding: 0;
-// }
 $vertPad: 80px;
 $sidePad: 70px;
 
-$numOfEls: 6;
+$numOfEls: 5;
 $elMrg: 1%;
 
 $initAT: 1s;
@@ -407,7 +208,8 @@ $contentFadeinAT: 0.5s;
 .cont {
   position: relative;
   overflow: hidden;
-  height: 40vh;
+  height: 70vh;
+  margin-top: 28%;
   padding: $vertPad $sidePad;
 
   &__inner {
@@ -445,10 +247,9 @@ $contentFadeinAT: 0.5s;
   }
 
   &__inner {
-    // overflow: hidden;
+    overflow: hidden;
     position: relative;
     height: 100%;
-    // position: center center;
     transition: transform $initAT;
 
     @include contInactive {
@@ -457,7 +258,6 @@ $contentFadeinAT: 0.5s;
   }
 
   &__bg {
-    z-index: 2;
     position: relative;
     width: calc(100vw - #{$sidePad * 2});
     height: 100%;
@@ -531,14 +331,13 @@ $contentFadeinAT: 0.5s;
   }
 
   &__heading {
-    z-index: 10;
     color: #fff;
     text-transform: uppercase;
     font-size: 18px;
   }
 
   &__content {
-    z-index: 2;
+    z-index: -1;
     position: absolute;
     left: 0;
     top: 0;

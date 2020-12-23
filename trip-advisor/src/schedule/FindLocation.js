@@ -19,6 +19,14 @@ class FindLocation extends React.Component {
       locationArrayT: [],
       likeList: [],
     };
+    this.options = [
+      { value: "台北", label: "台北" },
+      { value: "巴黎", label: "巴黎" },
+      { value: "慕尼黑", label: "慕尼黑" },
+      { value: "新加坡", label: "新加坡" },
+      { value: "東京", label: "東京" },
+      { value: "紐約", label: "紐約" },
+    ];
   }
 
   componentDidMount() {
@@ -110,10 +118,10 @@ class FindLocation extends React.Component {
     });
   };
 
-  handleOnChangeCountry = () => {
-    this.props.getCountry(this.state.value);
+  handleOnChangeCountry = (e) => {
+    this.props.getCountry(e.label);
     db.collection("country")
-      .doc(this.state.value)
+      .doc(e.label)
       .collection("location")
       .get()
       .then((doc) => {
@@ -299,6 +307,15 @@ class FindLocation extends React.Component {
       { merge: true }
     );
   };
+  // onInputChange = (inputValue, { action }) => {
+  //   console.log("action", action);
+  //   if (action === "set-value") {
+  //     this.setState({ value: inputValue });
+  //   }
+  //   // if (action === "menu-close") {
+  //   //   this.loadDefaultOptions(this.state.inputValue);
+  //   // }
+  // };
 
   render() {
     return (
@@ -309,7 +326,8 @@ class FindLocation extends React.Component {
             <AsyncSelect
               className={styles.locationInput}
               loadOptions={this.loadOptionsCountry}
-              onChange={this.handleOnChangeCountry}
+              onChange={(e) => this.handleOnChangeCountry(e)}
+              defaultOptions={this.options}
             />
           </div>
           <div>

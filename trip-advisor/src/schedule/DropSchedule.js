@@ -98,7 +98,6 @@ class DropSchedule extends React.Component {
             );
           })}
         </div>
-
         {this.state.travelDateDetail.map((item, i) => (
           <Droppable droppableId={`drop-${item.name}`} key={i}>
             {(provided) => (

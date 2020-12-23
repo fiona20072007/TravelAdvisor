@@ -171,7 +171,7 @@ class AddSchedule extends React.Component {
       .doc("travel" + this.state.size)
       .set({
         CoverImgUrl:
-          "http://img01.jituwang.com/171115/256774-1G11521320727.jpg",
+          "https://imgs.gvm.com.tw/upload/gallery/oimg26/26478_01.jpg",
         EndDate: this.state.endDateSubmit,
         EndDateStamp: this.state.endDateStamp,
         ImMultiEditMember: false,

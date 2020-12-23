@@ -1,6 +1,6 @@
 import React from "react";
 import firebase from "../firebase";
-import AsyncSelect from "react-select/async";
+// import AsyncSelect from "react-select/async";
 // import LocationShow from "./locationShow";
 import styles from "../scss/location.module.scss";
 import PropTypes from "prop-types";
@@ -53,19 +53,24 @@ class LocationIndex extends React.Component {
     let $cont = document.querySelector(`.${styles.cont}`);
     let $elsArr = [].slice.call(document.querySelectorAll(`.${styles.el}`));
     let $closeBtnsArr = [].slice.call(
-      document.querySelectorAll(`.${styles["el__close-btn"]}`)
+      document.querySelectorAll(`.${styles[".el__close-btn"]}`)
     );
 
     setTimeout(() => {
-      $cont.classList.remove(styles["s--inactive"]);
-    }, 500);
+      console.log(123123);
+      console.log($cont);
+      $cont.classList.remove(`.${styles["s--inactive"]}`);
+    }, 200);
+
+    // console.log(document.querySelectorAll(`.${styles.el}`));
 
     $elsArr.forEach(function ($el) {
       // console.log(document.querySelectorAll(`.${styles.el}`));
       $el.addEventListener("click", function () {
+        // console.log(12345);
         if (this.classList.contains(`.${styles["s--active"]}`)) return;
-        $cont.classList.add(styles["s--el-active"]);
-        this.classList.add(styles["s--active"]);
+        $cont.classList.add(`.${styles["s--el-active"]}`);
+        this.classList.add(`.${styles["s--active"]}`);
       });
     });
 
@@ -73,10 +78,10 @@ class LocationIndex extends React.Component {
       $btn.addEventListener("click", function (e) {
         console.log(123);
         e.stopPropagation();
-        $cont.classList.remove(styles["s--el-active"]);
+        $cont.classList.remove(`.${styles["s--el-active"]}`);
         document
-          .querySelector(`.${styles["s--active"]}`)
-          .classList.remove(styles["s--active"]);
+          .querySelector(`.${styles[".el.s--active"]}`)
+          .classList.remove(`.${styles["s--active"]}`);
       });
     });
   };
@@ -141,37 +146,38 @@ class LocationIndex extends React.Component {
       arr.push(item);
     }
     return (
+      // <div className={styles.content}>
+      //   <div className={styles.content__container}>
+      //     <p className={styles.content__container__text}>Hello</p>
+
+      //     <ul className={styles.content__container__list}>
+      //       <li className={styles.content__container__list__item}>
+      //         Taipei !
+      //       </li>
+      //       <li className={styles.content__container__list__item}>Paris !</li>
+      //       <li className={styles.content__container__list__item}>
+      //         Munich !
+      //       </li>
+      //       <li className={styles.content__container__list__item}>
+      //         Singapore !
+      //       </li>
+      //       {/* <li className={styles.content__container__list__item}>Tokyo !</li>
+      //       <li className={styles.content__container__list__item}>
+      //         NewYork !
+      //       </li> */}
+      //     </ul>
+      //   </div>
+      // </div>
+
+      // <AsyncSelect
+      //   className={styles.locationInput}
+      //   loadOptions={this.loadOptions}
+      //   onChange={this.handleOnChange}
+      //   defaultOptions={this.options}
+      //   placeholder={<div>輸入想去的首都 ex.台北</div>}
+      // />
+
       <div className={`${styles.cont} ${styles["s--inactive"]}`}>
-        <div className={styles.content}>
-          <div className={styles.content__container}>
-            <p className={styles.content__container__text}>Hello</p>
-
-            <ul className={styles.content__container__list}>
-              <li className={styles.content__container__list__item}>
-                Taipei !
-              </li>
-              <li className={styles.content__container__list__item}>Paris !</li>
-              <li className={styles.content__container__list__item}>
-                Munich !
-              </li>
-              <li className={styles.content__container__list__item}>
-                Singapore !
-              </li>
-              {/* <li className={styles.content__container__list__item}>Tokyo !</li>
-            <li className={styles.content__container__list__item}>
-              NewYork !
-            </li> */}
-            </ul>
-          </div>
-        </div>
-
-        <AsyncSelect
-          className={styles.locationInput}
-          loadOptions={this.loadOptions}
-          onChange={this.handleOnChange}
-          defaultOptions={this.options}
-          placeholder={<div>輸入想去的首都 ex.台北</div>}
-        />
         <div className={styles.cont__inner}>{arr}</div>
       </div>
     );
