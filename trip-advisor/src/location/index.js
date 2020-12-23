@@ -16,11 +16,34 @@ class LocationIndex extends React.Component {
       // memberLoginState: false
     };
     this.options = [
-      { value: "台北", label: "台北" },
-      { value: "巴黎", label: "巴黎" },
-      { value: "慕尼黑", label: "慕尼黑" },
-      { value: "新加坡", label: "新加坡" },
-      { value: "東京", label: "東京" },
+      {
+        value: "台北",
+        label: "台北",
+        description:
+          "充滿現代氛圍的台灣首都。景點包含知名夜市和國立故宮博物院。",
+      },
+      {
+        value: "巴黎",
+        label: "巴黎",
+        description:
+          "法國首都。艾菲爾鐵塔、羅浮宮、聖母院、露天咖啡店和高級時尚的所在地。",
+      },
+      {
+        value: "慕尼黑",
+        label: "慕尼黑",
+        description:
+          "德國巴伐利亞邦的首府。以十月節、皇家啤酒屋和慕尼黑王宮與博物館聞名。",
+      },
+      {
+        value: "新加坡",
+        label: "新加坡",
+        description: "以巴東、佛牙寺龍華院和烏節路購物中心聞名的國際金融中心。",
+      },
+      {
+        value: "東京",
+        label: "東京",
+        description: "摩天大樓、博物館、皇居和明治神宮所在的日本首都。",
+      },
       { value: "紐約", label: "紐約" },
     ];
   }
@@ -112,6 +135,7 @@ class LocationIndex extends React.Component {
   };
 
   render() {
+    console.log(this.state.indexLocation);
     let arr = [];
     for (let i = 0; i < 5; i++) {
       let item = (
@@ -120,10 +144,12 @@ class LocationIndex extends React.Component {
             <div className={styles.el__inner}>
               <div className={styles.el__bg}></div>
               <div className={styles["el__preview-cont"]}>
-                <h2 className={styles.el__heading}>Section {i + 1}</h2>
+                <h2 className={styles.el__heading}>{this.options[i].value}</h2>
               </div>
               <div className={styles.el__content}>
-                <div className={styles.el__text}>HI</div>
+                <div className={styles.el__text}>
+                  {this.options[i].description}
+                </div>
                 <div className={styles["el__close-btn"]}></div>
               </div>
             </div>
@@ -170,8 +196,9 @@ class LocationIndex extends React.Component {
           loadOptions={this.loadOptions}
           onChange={this.handleOnChange}
           defaultOptions={this.options}
-          placeholder={<div>輸入想去的首都 ex.台北</div>}
+          placeholder={<div>輸入想去的首都 &nbsp;&nbsp; ex.台北</div>}
         />
+
         <div className={styles.cont__inner}>{arr}</div>
       </div>
     );

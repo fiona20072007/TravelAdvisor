@@ -1,8 +1,12 @@
+$lightGray: rgba(245, 247, 249, 0.947);
 $gray: rgb(175, 169, 169);
+$darkGray: rgb(138, 134, 134);
+$darkGreen: rgba(43, 92, 83, 0.796);
 
 .locationAll {
   display: flex;
   position: relative;
+  background-color: white;
 }
 
 .right {
@@ -83,6 +87,7 @@ $gray: rgb(175, 169, 169);
   margin-bottom: 20px;
   margin-left: 13px;
   font-size: 20px;
+  color: $darkGray;
 }
 .locationInput {
   margin: 10px;
@@ -99,7 +104,7 @@ $gray: rgb(175, 169, 169);
 .titleShow {
   margin-left: 10px;
   margin-top: 20px;
-  color: $gray;
+  color: $darkGray;
 }
 .item {
   width: 250px;

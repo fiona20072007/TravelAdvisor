@@ -25,6 +25,7 @@ const ScheduleIndex = (props) => {
   const [ScheduleStatus, setScheduleStatus] = useState(true);
   const [AddScheduleStatus, setAddScheduleStatus] = useState(false);
   const [userUid, setUserUid] = useState("");
+  const [clickNav, setClickNav] = useState(0);
 
   let location = useLocation();
   let history = useHistory();
@@ -51,6 +52,7 @@ const ScheduleIndex = (props) => {
     });
 
     setTravelScheduleShow(newArr);
+    setClickNav(1);
   };
   const handlePrev = () => {
     let arr = [...TravelSchedule];
@@ -59,6 +61,7 @@ const ScheduleIndex = (props) => {
       return item.StartDateStamp >= time;
     });
     setTravelScheduleShow(newArr);
+    setClickNav(2);
   };
   const handlePast = () => {
     let arr = [...TravelSchedule];
@@ -67,6 +70,7 @@ const ScheduleIndex = (props) => {
       return item.EndDateStamp <= time;
     });
     setTravelScheduleShow(newArr);
+    setClickNav(3);
   };
 
   const handleSubmitChange = () => {
@@ -128,6 +132,7 @@ const ScheduleIndex = (props) => {
               className={AddScheduleStatus ? styles.liClick : styles.liUnclick}
               onClick={() => {
                 setTravelId(null);
+                setClickNav(0);
                 handleAdd();
               }}
             >
@@ -139,9 +144,36 @@ const ScheduleIndex = (props) => {
           <div className={styles.scheduleListAll}>
             <div className={styles.userList}>
               <div className={styles.border}>
-                <a onClick={handleMiddle}>旅行中</a>
-                <a onClick={handlePrev}>待出發</a>
-                <a onClick={handlePast}>回憶錄</a>
+                <a
+                  onClick={handleMiddle}
+                  className={
+                    clickNav === 1
+                      ? styles.userListClick
+                      : styles.userListUnclick
+                  }
+                >
+                  旅行中
+                </a>
+                <a
+                  onClick={handlePrev}
+                  className={
+                    clickNav === 2
+                      ? styles.userListClick
+                      : styles.userListUnclick
+                  }
+                >
+                  待出發
+                </a>
+                <a
+                  onClick={handlePast}
+                  className={
+                    clickNav === 3
+                      ? styles.userListClick
+                      : styles.userListUnclick
+                  }
+                >
+                  回憶錄
+                </a>
               </div>
             </div>
             <div className={styles.scheduleListDetail}>

@@ -62,7 +62,7 @@ class LocationDetail extends React.Component {
           });
       } else {
         alert("請先登入");
-        history.push("/member");
+        this.props.history.push("/member");
       }
     });
 
@@ -412,6 +412,7 @@ class LocationDetail extends React.Component {
             className={styles.locationInput}
             loadOptions={this.loadOptions}
             onChange={this.handleOnChange}
+            placeholder={<div>輸入想去的景點</div>}
           />
 
           <Show
@@ -438,6 +439,7 @@ class LocationDetail extends React.Component {
 
 LocationDetail.propTypes = {
   match: PropTypes.object.isRequired,
+  history: PropTypes.object,
 };
 
 export default LocationDetail;

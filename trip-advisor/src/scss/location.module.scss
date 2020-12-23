@@ -2,42 +2,31 @@ $lightGray: rgba(245, 247, 249, 0.947);
 $gray: rgb(175, 169, 169);
 $darkGray: rgb(138, 134, 134);
 $darkGreen: rgba(43, 92, 83, 0.796);
-
-// .banner {
-//   position: absolute;
-//   z-index: 0;
-//   top: 0;
-//   height: 90%;
-//   width: 100%;
-//   background-image: url(../image/Northern.jpg),
-//     linear-gradient(to right, rgba(30, 75, 115, 1), rgba(255, 255, 255, 0));
-//   mask-image: linear-gradient(to top right, transparent 49.5%, white 50.5%),
-//     linear-gradient(to top left, transparent 49.5%, white 50.5%),
-//     linear-gradient(white, white);
-//   mask-size: 75% 25%, 25% 25%, 100% 75%;
-//   mask-position: bottom left, bottom right, top left;
-//   mask-repeat: no-repeat;
-//   // background-position: bottom right, left;
-//   background-repeat: no-repeat;
-//   background-size: cover;
-// }
+$black: #252525;
 
 .locationInput {
-  width: 550px;
-  align-self: center;
-  margin-bottom: 100px;
-  border: 1px solid black;
+  // width: 550px;
+  // align-self: center;
+  position: absolute;
+  top: 8vh;
+  margin-bottom: 18vh;
   border-radius: 5px;
-  margin-top: 400px;
-  svg {
-    color: black !important;
+  margin-top: 23vh;
+  outline: none;
+  div {
+    background-color: $black !important;
+    color: white;
+    overflow: hidden;
   }
+  // svg {
+  //   color: black !important;
+  // }
 }
 
 ///ani
 .content {
   position: absolute;
-  top: 35%;
+  top: 35vh;
   left: 50%;
   transform: translate(-50%, -50%);
   height: 160px;
@@ -163,7 +152,6 @@ body {
 
 $vertPad: 80px;
 $sidePad: 70px;
-
 $numOfEls: 5;
 $elMrg: 1%;
 
@@ -208,13 +196,14 @@ $contentFadeinAT: 0.5s;
 .cont {
   position: relative;
   overflow: hidden;
-  height: 70vh;
-  margin-top: 28%;
+  height: 100vh;
+  // align-items: center;
+  // margin-top: 0;
   padding: $vertPad $sidePad;
 
   &__inner {
     position: relative;
-    height: 100%;
+    height: 40%;
 
     &:hover .el__bg:after {
       opacity: 1;
@@ -358,7 +347,7 @@ $contentFadeinAT: 0.5s;
 
   &__text {
     text-transform: uppercase;
-    font-size: 40px;
+    font-size: 20px;
     color: #fff;
   }
 
