@@ -103,7 +103,8 @@ class DropSchedule extends React.Component {
             {(provided) => (
               <div className={styles.scheduleDetailForDrop}>
                 <div className={styles.scheduleDateOnly} id={`day${i + 1}`}>
-                  Day-{i + 1} {`\xa0\xa0\xa0\xa0`} {item.name}
+                  {`\xa0\xa0\xa0\xa0`}Day-{i + 1} {`\xa0\xa0\xa0\xa0`}{" "}
+                  {item.name}
                 </div>
                 <div
                   className={styles.scheduleDetail}

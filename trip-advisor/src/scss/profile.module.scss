@@ -1,3 +1,4 @@
+@import url("https://use.fontawesome.com/releases/v5.13.0/css/all.css");
 $lightGray: rgba(245, 247, 249, 0.947);
 $gray: rgb(175, 169, 169);
 $darkGray: rgb(138, 134, 134);
@@ -170,5 +171,241 @@ ul {
   }
   img {
     width: 100%;
+  }
+}
+
+///btn
+
+@mixin userButtons() {
+  display: flex;
+  justify-content: space-around;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  flex-direction: column;
+
+  button:active {
+    outline: none;
+    border: none;
+  }
+  button:focus {
+    outline: 0;
+  }
+}
+
+@mixin userProfileBtn($fontIcon) {
+  width: 150px;
+  height: 50px;
+  background-color: white;
+  margin: 20px;
+  color: $darkGray;
+  position: relative;
+  overflow: hidden;
+  font-size: 14px;
+  letter-spacing: 1px;
+  font-weight: 400;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: $darkGreen;
+    transition: all 0.3s cubic-bezier(0.35, 0.1, 0.25, 1);
+  }
+
+  &:before {
+    right: 0;
+    top: 0;
+    transition: all 0.5s cubic-bezier(0.35, 0.1, 0.25, 1);
+  }
+
+  &:after {
+    left: 0;
+    bottom: 0;
+  }
+
+  span {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+
+    &:before,
+    &:after {
+      content: "";
+      position: absolute;
+      width: 2px;
+      height: 0;
+      background-color: $darkGreen;
+      transition: all 0.3s cubic-bezier(0.35, 0.1, 0.25, 1);
+    }
+
+    &:before {
+      right: 0;
+      top: 0;
+      transition: all 0.5s cubic-bezier(0.35, 0.1, 0.25, 1);
+    }
+
+    &:after {
+      left: 0;
+      bottom: 0;
+    }
+  }
+
+  p {
+    padding: 0;
+    margin: 0;
+    transition: all 0.4s cubic-bezier(0.35, 0.1, 0.25, 1);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    &:before,
+    &:after {
+      position: absolute;
+      width: 100%;
+      transition: all 0.4s cubic-bezier(0.35, 0.1, 0.25, 1);
+      z-index: 1;
+      left: 0;
+    }
+
+    &:before {
+      content: attr(data-title);
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 20px;
+      letter-spacing: 10px;
+    }
+
+    &:after {
+      // content: attr(data-text);
+      top: 150%;
+      color: $darkGreen !important;
+      font-family: "Font Awesome 5 Free";
+      content: $fontIcon;
+      font-weight: 900;
+      font-size: 24px;
+    }
+  }
+
+  &:hover {
+    &:before,
+    &:after {
+      width: 100%;
+    }
+
+    span {
+      z-index: 1;
+      &:before,
+      &:after {
+        height: 100%;
+      }
+    }
+
+    p {
+      &:before {
+        top: -50%;
+        transform: rotate(5deg);
+      }
+
+      &:after {
+        top: 50%;
+        transform: translateY(-50%);
+      }
+    }
+  }
+}
+
+@mixin userStart($fontText) {
+  background-color: $darkGreen;
+  box-shadow: 0px 5px 10px -10px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+
+  p {
+    &:before {
+      top: -50%;
+      transform: rotate(5deg);
+    }
+    &:after {
+      color: white !important;
+      transition: all 0s ease;
+      top: 50%;
+      transform: translateY(-50%);
+      animation: start 0.3s ease;
+      animation-fill-mode: forwards;
+
+      font-family: "Font Awesome 5 Free";
+      content: $fontText;
+      font-weight: 900;
+      font-size: 20px;
+
+      @keyframes start {
+        from {
+          top: -50%;
+        }
+      }
+    }
+  }
+
+  &:hover {
+    &:before,
+    &:after {
+      display: none;
+    }
+    span {
+      display: none;
+    }
+  }
+}
+
+.buttons1 {
+  @include userButtons();
+  button {
+    @include userProfileBtn("\f561");
+  }
+  .start {
+    @include userStart("\f561  旅行中");
+  }
+}
+.buttons2 {
+  @include userButtons();
+  button {
+    @include userProfileBtn("\f0f2");
+  }
+  .start {
+    @include userStart("\f0f2  待出發");
+  }
+}
+.buttons3 {
+  @include userButtons();
+  button {
+    @include userProfileBtn("\f5ab");
+  }
+  .start {
+    @include userStart("\f5ab  回憶錄");
+  }
+}
+.buttonsLogout {
+  border-top: 1px solid $lineGray;
+  @include userButtons();
+  button {
+    @include userProfileBtn("\f2f5");
+  }
+  .start {
+    @include userStart("Good Luck!");
   }
 }

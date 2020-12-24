@@ -169,7 +169,7 @@ class LocationIndex extends React.Component {
           <AsyncSelect
             className={styles.locationInput}
             loadOptions={this.loadOptions}
-            onChange={this.handleOnChange}
+            onChange={(e) => this.handleOnChange(e)}
             defaultOptions={this.options}
             placeholder={<div>輸入想去的首都 ex.台北</div>}
           />

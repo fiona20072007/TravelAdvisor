@@ -28,6 +28,7 @@ class EditSchedule extends React.Component {
       trafficDetail: {},
       userUid: "",
       showLocationSearch: false,
+      btnClick: true,
     };
   }
 
@@ -292,11 +293,17 @@ class EditSchedule extends React.Component {
     document.getElementById("searchAll").style.animation = "none";
     document.getElementById("locationList").style.animation = "none";
     document.getElementById("likeLocationShow").style.display = "none";
+    this.setState({
+      btnClick: true,
+    });
   };
   handleCollectionShow = () => {
     document.getElementById("findLocationShow").style.display = "none";
     document.getElementById("likeLocationShow").style.display = "block";
     document.getElementById("likeList").style.display = "block";
+    this.setState({
+      btnClick: false,
+    });
   };
 
   setInfoOpen = (state) => {
@@ -351,7 +358,11 @@ class EditSchedule extends React.Component {
       document.getElementById("locationSection0").style.width = "300px";
       document.getElementById("locationList").style.width = "200px";
       document.getElementById("likeList").style.width = "200px";
+      document.getElementById("searchAll").style.width = "200px";
+
+      document.getElementById("searchAll").style.overflow = "visible";
       document.getElementById("switchBtn").style.opacity = 1;
+      document.getElementById("switchBtn").style.width = "300px";
       document.getElementById("arrow").style.transform = "rotate(-180deg)";
       document.getElementById("arrow").style.transition = "0.3s";
       this.setState({ showLocationSearch: true });
@@ -360,7 +371,10 @@ class EditSchedule extends React.Component {
       document.getElementById("locationSection0").style.width = "0px";
       document.getElementById("locationList").style.width = "0px";
       document.getElementById("likeList").style.width = "0px";
+      document.getElementById("searchAll").style.width = "0px";
+      document.getElementById("searchAll").style.overflow = "hidden";
       document.getElementById("switchBtn").style.opacity = 0;
+      document.getElementById("switchBtn").style.width = "0px";
       document.getElementById("arrow").style.transition = "0.3s";
       document.getElementById("arrow").style.transform = "rotate(0deg)";
       this.setState({ showLocationSearch: false });
@@ -372,13 +386,19 @@ class EditSchedule extends React.Component {
       <div className={styles.scheduleWithMap}>
         <div className={styles.schedule}>
           <div className={styles.switchBtn} id="switchBtn">
-            <button onClick={this.handleLocationShow} className={styles.btn}>
+            <button
+              onClick={this.handleLocationShow}
+              className={this.state.btnClick ? styles.btnClick : styles.btn}
+            >
               <span>景點搜尋</span>
               <div className={`${styles.triangle} ${styles.t1}`}></div>
               <div className={`${styles.triangle} ${styles.t2}`}></div>
             </button>
 
-            <button onClick={this.handleCollectionShow} className={styles.btn}>
+            <button
+              onClick={this.handleCollectionShow}
+              className={this.state.btnClick ? styles.btn : styles.btnClick}
+            >
               <span>我的收藏</span>
               <div className={`${styles.triangle} ${styles.t1}`}></div>
               <div className={`${styles.triangle} ${styles.t2}`}></div>

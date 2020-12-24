@@ -296,7 +296,7 @@ a {
 .scheduleDateSelect {
   position: fixed;
   display: flex;
-  top: 375px;
+  top: 377px;
   left: 70px;
   width: 250px;
 
@@ -304,7 +304,7 @@ a {
   color: $darkGray;
   .scheduleDateTitle {
     position: fixed;
-    top: 388px;
+    top: 390px;
     left: 18px;
     color: white;
     background-color: $darkGray;
@@ -313,9 +313,9 @@ a {
     // margin: 10px;
     display: inline-block;
     text-align: center;
-    min-width: 25px;
+    min-width: 35px;
     min-height: 20px;
-    padding: 5px;
+    padding: 6px 10px;
     margin: 3px 10px 3px 5px;
 
     cursor: pointer;
@@ -342,16 +342,16 @@ a {
   margin-left: -70px;
   // border-radius: 0 10px 10px 0;
   position: relative;
-  &:after {
-    color: white;
-    position: absolute;
-    right: 0;
-    bottom: 8px;
-    margin: 1px 5px;
-    font-weight: bold;
-    font-size: 19px;
-    content: "\00D7";
-  }
+  // &:after {
+  //   color: white;
+  //   position: absolute;
+  //   right: 0;
+  //   bottom: 8px;
+  //   margin: 1px 5px;
+  //   font-weight: bold;
+  //   font-size: 19px;
+  //   content: "\00D7";
+  // }
   &:before {
     position: absolute;
     content: "\25CF";
@@ -359,7 +359,7 @@ a {
     text-shadow: 0 0 1px white;
     font-size: 11px;
     line-height: 0px;
-    text-indent: 12px;
+    text-indent: -290px;
     left: 280px;
     width: 0px;
     // height: 10px;
@@ -375,6 +375,65 @@ a {
   align-items: center;
 }
 
+@mixin switchBtnUnclick() {
+  width: 150px;
+  height: 70px;
+  display: inline-block;
+  border: 1px solid #fff;
+  position: relative;
+  overflow: hidden;
+  span {
+    color: $darkGray;
+    font-size: 20px;
+    line-height: 70px;
+  }
+  &:hover {
+    background-color: $darkGreen;
+    span {
+      color: white;
+    }
+    .t1 {
+      border-bottom: 120px solid #fff;
+      transition: all 0.5s;
+    }
+    .t2 {
+      border-top: 80px solid #fff;
+      transition: all 0.5s;
+    }
+  }
+}
+@mixin switchBtnClick() {
+  width: 150px;
+  height: 70px;
+  display: inline-block;
+  border: 1px solid #fff;
+  position: relative;
+  overflow: hidden;
+  background-color: $darkGreen;
+  span {
+    color: white !important;
+  }
+  .t1 {
+    border-bottom: 120px solid #fff;
+    transition: all 0.5s;
+  }
+  .t2 {
+    border-top: 80px solid #fff;
+    transition: all 0.5s;
+  }
+  span {
+    color: $darkGray;
+    font-size: 20px;
+    line-height: 70px;
+  }
+}
+.btn {
+  @include switchBtnUnclick;
+}
+.btnClick {
+  @include switchBtnClick;
+}
+
 .switchBtn {
   position: fixed;
   top: 75px;
@@ -382,34 +441,8 @@ a {
   z-index: 150;
   opacity: 0;
   transition: opacity 1s;
-
-  .btn {
-    width: 150px;
-    height: 70px;
-    display: inline-block;
-    border: 1px solid #fff;
-    position: relative;
-    overflow: hidden;
-    span {
-      color: $darkGray;
-      font-size: 20px;
-      line-height: 70px;
-    }
-    &:hover {
-      background-color: $darkGreen;
-      span {
-        color: white;
-      }
-      .t1 {
-        border-bottom: 120px solid #fff;
-        transition: all 0.5s;
-      }
-      .t2 {
-        border-top: 80px solid #fff;
-        transition: all 0.5s;
-      }
-    }
-  }
+  width: 300px;
+  overflow: hidden;
 
   .triangle {
     width: 0;
@@ -436,17 +469,7 @@ a {
     transition: all 0.5s;
   }
 }
-// .switchBtn button {
-//   // background-color: ;
-//   border: 1px solid white;
-//   color: $darkGray;
-//   // margin: 15px;
-//   margin-top: 5px;
-//   border-radius: 10px 10px 0 0;
-//   padding: 20px;
-//   font-size: 15px;
-//   cursor: pointer;
-// }
+
 .likeList {
   display: none;
   position: fixed;
@@ -518,7 +541,7 @@ a {
       opacity: 0.5;
       width: 350px;
       height: 80px;
-      bottom: 6px;
+      bottom: 4px;
     }
     img {
       width: 100%;
@@ -635,22 +658,16 @@ a {
   position: fixed;
   top: 173px;
   left: 395px;
-  width: 200px;
+  width: 0px;
   margin: 5px;
   background-color: $lightGray;
-  z-index: 90;
+  z-index: 120;
   // animation: shimmy1 1s forwards;
   transition: opacity 1s;
   color: $darkGray;
+  overflow: hidden;
 }
-// @keyframes shimmy1 {
-//   0% {
-//     left: 60px;
-//   }
-//   100% {
-//     left: 395px;
-//   }
-// }
+
 .locationList {
   background-color: $lightGray;
   margin-top: 320px;
@@ -658,21 +675,12 @@ a {
   top: 0;
   left: 398px;
   width: 0px;
-  height: 64vh;
+  height: 65.5vh;
   overflow-y: scroll;
   border-style: inset;
   z-index: 80;
   transition: width 1s, opacity 1s;
-  // animation: shimmy2 1s forwards;
 }
-// @keyframes shimmy2 {
-//   0% {
-//     left: 60px;
-//   }
-//   100% {
-//     left: 400px;
-//   }
-// }
 
 .locationDetail {
   z-index: 100;

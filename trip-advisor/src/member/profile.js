@@ -3,13 +3,7 @@ import firebase from "../firebase";
 import styles from "../scss/profile.module.scss";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCocktail,
-  faSuitcase,
-  faPassport,
-  faPlane,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faPlane, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -78,7 +72,7 @@ class Profile extends React.Component {
 
     if (window.location.pathname.substring(1, 9) === "profile") {
       document.querySelectorAll("svg").forEach((item) => {
-        item.style.color = "rgb(138, 134, 134)";
+        item.style.color = "white";
       });
       document.querySelectorAll("a").forEach((item) => {
         item.style.color = "rgb(138, 134, 134)";
@@ -87,7 +81,23 @@ class Profile extends React.Component {
       document.querySelector("nav").style.boxShadow =
         "0 0 8px rgba(0, 0, 0, 0.2)";
     }
+    let btn = document.querySelectorAll(".btn");
+    btn[0].classList.add(styles.start);
+
+    btn.forEach((item, i) => {
+      item.addEventListener("click", () => started(i));
+    });
+    function started(i) {
+      btn.forEach((item, j) => {
+        if (i === j) {
+          item.classList.add(styles.start);
+        } else {
+          item.classList.remove(styles.start);
+        }
+      });
+    }
   };
+
   signOut = () => {
     firebase
       .auth()
@@ -157,22 +167,34 @@ class Profile extends React.Component {
                 <div className={styles.userEmail}>{this.state.email}</div>
                 <div className={styles.userList}>
                   <ul>
-                    <li onClick={this.handleMiddle}>
-                      <FontAwesomeIcon icon={faCocktail} />
-                      旅行中
-                    </li>
-                    <li onClick={this.handlePrev}>
-                      <FontAwesomeIcon icon={faSuitcase} />
-                      待出發
-                    </li>
-                    <li onClick={this.handlePast}>
-                      <FontAwesomeIcon icon={faPassport} />
-                      回憶錄
-                    </li>
+                    <div className={styles.buttons1}>
+                      <button className="btn" onClick={this.handleMiddle}>
+                        <span></span>
+                        <p data-title="旅行中"></p>
+                      </button>
+                    </div>
+                    <div className={styles.buttons2}>
+                      <button className="btn" onClick={this.handlePrev}>
+                        <span></span>
+                        <p data-title="待出發"></p>
+                      </button>
+                    </div>
+                    <div className={styles.buttons3}>
+                      <button className="btn" onClick={this.handlePast}>
+                        <span></span>
+                        <p data-title="回憶錄"></p>
+                      </button>
+                    </div>
                   </ul>
-                  <button className={styles.logOut} onClick={this.signOut}>
+                  {/* <button className={styles.logOut} onClick={this.signOut}>
                     <p>登出</p>
-                  </button>
+                  </button> */}
+                  <div className={styles.buttonsLogout}>
+                    <button className="btn" onClick={this.signOut}>
+                      <span></span>
+                      <p data-title="登出"></p>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
