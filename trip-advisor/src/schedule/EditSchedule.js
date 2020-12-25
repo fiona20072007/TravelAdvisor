@@ -180,13 +180,15 @@ class EditSchedule extends React.Component {
 
   onDragEnd = (result) => {
     const { destination, source, draggableId } = result;
+
     if (!destination) {
       console.log("no destination");
       return;
     }
     if (
       destination.droppableId === source.droppableId &&
-      destination.index === source.index
+      destination.index === source.index &&
+      draggableId.substring(0, 1) === "I"
     ) {
       return;
     }
@@ -359,7 +361,6 @@ class EditSchedule extends React.Component {
       document.getElementById("locationList").style.width = "200px";
       document.getElementById("likeList").style.width = "200px";
       document.getElementById("searchAll").style.width = "200px";
-
       document.getElementById("searchAll").style.overflow = "visible";
       document.getElementById("switchBtn").style.opacity = 1;
       document.getElementById("switchBtn").style.width = "300px";
@@ -436,21 +437,18 @@ class EditSchedule extends React.Component {
             onDragEnd={this.onDragEnd}
             onDragStart={this.onDragStart}
           >
-            {this.state.travelData.map((i) => {
-              return (
-                <DropSchedule
-                  key={i}
-                  getCountry={this.getCountry}
-                  setInfoOpen={this.setInfoOpen}
-                  selectedPlace={this.state.selectedPlace}
-                  setSelectedPlace={this.setSelectedPlace}
-                  traffic={this.state.traffic}
-                  handleTraffic={this.handleTraffic}
-                  trafficDetail={this.state.trafficDetail}
-                  userUid={this.state.userUid}
-                />
-              );
-            })}
+            {this.state.userUid && (
+              <DropSchedule
+                getCountry={this.getCountry}
+                setInfoOpen={this.setInfoOpen}
+                selectedPlace={this.state.selectedPlace}
+                setSelectedPlace={this.setSelectedPlace}
+                traffic={this.state.traffic}
+                handleTraffic={this.handleTraffic}
+                trafficDetail={this.state.trafficDetail}
+                userUid={this.state.userUid}
+              />
+            )}
           </DragDropContext>
         </div>
 

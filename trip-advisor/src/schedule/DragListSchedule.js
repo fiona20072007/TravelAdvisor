@@ -44,16 +44,16 @@ class DragListSchedule extends React.Component {
       let obj = Object.assign({}, this.props.trafficDetail);
       obj[this.props.date].splice(i - 1, 1);
       this.props.handleTraffic(obj);
-      console.log(obj);
+      // console.log(obj);
     }
   };
 
   render() {
-    console.log(
-      "this.props.traffic[this.props.item]",
-      this.props.traffic[this.props.item]
-    );
-
+    // console.log(
+    //   "this.props.traffic[this.props.item]",
+    //   this.props.traffic[this.props.item]
+    // );
+    // console.log(this.props.travelDetailCountry);
     return (
       <div>
         {this.props.travelDetailCountry[this.props.item] === undefined && (
@@ -100,7 +100,15 @@ class DragListSchedule extends React.Component {
                         className={styles.itemPhoto}
                       ></img>
                       <div className={styles.itemName}>{item.name}</div>
-                      <div>{item.star_level}</div>
+                      <div className={styles.ratings}>
+                        <div className={styles["empty-stars"]}></div>
+                        <div
+                          className={styles["full-stars"]}
+                          style={{
+                            width: this.props.handleStar(item.star_level),
+                          }}
+                        ></div>
+                      </div>
                     </div>
                   )}
                 </Draggable>
@@ -133,6 +141,7 @@ DragListSchedule.propTypes = {
   handleTraffic: PropTypes.func,
   trafficDetail: PropTypes.object,
   userUid: PropTypes.string,
+  handleStar: PropTypes.func,
 };
 
 export default DragListSchedule;

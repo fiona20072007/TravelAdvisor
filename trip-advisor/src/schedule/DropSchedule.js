@@ -38,11 +38,13 @@ class DropSchedule extends React.Component {
         this.setState({ travelDateDetail: travelDateDetailTemp });
 
         let travelDetailCountryTemp = {};
-
+        console.log("travelDateDetailTemp", travelDateDetailTemp);
+        let n = false;
         travelDateDetailTemp.forEach((dates) => {
           let arr = [];
 
           if (dates.morning.length !== 0) {
+            n = true;
             dates.morning.forEach((date, index) => {
               if (dates.morning.length !== 0) {
                 db.collection("country")
@@ -62,12 +64,14 @@ class DropSchedule extends React.Component {
                   });
               }
             });
-          } else {
-            this.setState({
-              travelDetailCountry: {},
-            });
           }
         });
+        if (n === false) {
+          // console.log(11111);
+          this.setState({
+            travelDetailCountry: {},
+          });
+        }
       });
   }
   handleDateScroll = (id) => {
@@ -77,13 +81,14 @@ class DropSchedule extends React.Component {
   };
 
   handleStar = (num) => {
-    console.log(num);
+    // console.log(num);
     return (Number(num) / 5.4) * 100;
   };
 
   render() {
     // console.log(this.state.travelDetailCountry);
     //把這個state往上拉到editSchedule.js再set
+    // console.log(this.state.travelDateDetail);
     return (
       <div className={styles.scheduleDateAll}>
         <div className={styles.scheduleDateSelect}>
@@ -127,6 +132,7 @@ class DropSchedule extends React.Component {
                     handleTraffic={this.props.handleTraffic}
                     trafficDetail={this.props.trafficDetail}
                     userUid={this.props.userUid}
+                    handleStar={this.handleStar}
                   />
 
                   {provided.placeholder}
@@ -145,15 +151,18 @@ class DropSchedule extends React.Component {
                       handleStar={this.handleStar}
                     />
                   </div>
-                  <div
-                    className={styles.likeLocationShow}
-                    id="likeLocationShow"
-                  >
-                    <LikeLocation
-                      userUid={this.props.userUid}
-                      handleStar={this.handleStar}
-                    />
-                  </div>
+                  {i == 0 && (
+                    <div
+                      className={styles.likeLocationShow}
+                      id="likeLocationShow"
+                    >
+                      <LikeLocation
+                        userUid={this.props.userUid}
+                        handleStar={this.handleStar}
+                      />
+                    </div>
+                  )}
+
                   {/* {i == this.state.travelDateDetail.length - 1 && (
                     
                   )} */}
