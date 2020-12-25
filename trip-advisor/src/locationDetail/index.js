@@ -68,15 +68,10 @@ class LocationDetail extends React.Component {
 
     console.log(window.location.pathname.substring(1, 9));
     if (window.location.pathname.substring(1, 9) === "location") {
-      document.querySelectorAll("svg").forEach((item) => {
-        item.style.color = "rgb(138, 134, 134)";
-      });
-      document.querySelectorAll("a").forEach((item) => {
-        item.style.color = "rgb(138, 134, 134)";
-      });
       document.querySelector("nav").style.backgroundColor = "white";
       document.querySelector("nav").style.boxShadow =
         "0 0 8px rgba(0, 0, 0, 0.2)";
+      document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
     }
     db.collection("country")
       .doc(this.props.match.params.tags)

@@ -50,14 +50,9 @@ class LocationIndex extends React.Component {
   componentDidMount = () => {
     // console.log(window.location.pathname);
     if (window.location.pathname === "/") {
-      document.querySelectorAll("svg").forEach((item) => {
-        item.style.color = "white";
-      });
-      document.querySelectorAll("a").forEach((item) => {
-        item.style.color = "white";
-      });
       document.querySelector("nav").style.backgroundColor = "transparent";
       document.querySelector("nav").style.boxShadow = "0 0 0";
+      document.getElementById("MainTitle").style.color = "white";
     }
     db.collection("indexCountry").onSnapshot((querySnapshot) => {
       let indexLocationTemp = [];

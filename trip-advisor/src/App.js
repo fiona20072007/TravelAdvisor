@@ -56,7 +56,7 @@ class App extends React.Component {
             <div className={styles.flexWrap}>
               <a className={styles.icon}>
                 <img src={icon} alt="icon" />
-                <div>Travel Advisor</div>
+                <div id="MainTitle">Travel Advisor</div>
               </a>
               <nav className={styles.menu}>
                 <input

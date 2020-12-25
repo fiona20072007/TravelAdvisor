@@ -37,15 +37,10 @@ class MemberIndex extends React.Component {
     });
     console.log(window.location.pathname.substring(1, 9));
     if (window.location.pathname.substring(1, 9) === "member") {
-      document.querySelectorAll("svg").forEach((item) => {
-        item.style.color = "rgb(138, 134, 134)";
-      });
-      document.querySelectorAll("a").forEach((item) => {
-        item.style.color = "rgb(138, 134, 134)";
-      });
       document.querySelector("nav").style.backgroundColor = "white";
       document.querySelector("nav").style.boxShadow =
         "0 0 8px rgba(0, 0, 0, 0.2)";
+      document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
     }
   }
   googleLogin = () => {
@@ -80,8 +75,6 @@ class MemberIndex extends React.Component {
       .then(() => {
         auth.currentUser.updateProfile({
           displayName: this.state.displayName,
-          // photoURL:
-          //   "https://blog.cpanel.com/wp-content/uploads/2019/08/user-01.png",
         });
         const createAt = new Date();
         firestore

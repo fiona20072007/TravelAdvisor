@@ -71,15 +71,10 @@ class Profile extends React.Component {
     });
 
     if (window.location.pathname.substring(1, 9) === "profile") {
-      document.querySelectorAll("svg").forEach((item) => {
-        item.style.color = "white";
-      });
-      document.querySelectorAll("a").forEach((item) => {
-        item.style.color = "rgb(138, 134, 134)";
-      });
       document.querySelector("nav").style.backgroundColor = "white";
       document.querySelector("nav").style.boxShadow =
         "0 0 8px rgba(0, 0, 0, 0.2)";
+      document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
     }
     let btn = document.querySelectorAll(".btn");
     btn[0].classList.add(styles.start);
