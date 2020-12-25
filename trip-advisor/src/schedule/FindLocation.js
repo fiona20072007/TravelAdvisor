@@ -209,7 +209,13 @@ class FindLocation extends React.Component {
                   </div>
                   <img src={item.photo} className={styles.itemPhoto}></img>
                   <div className={styles.itemName}>{item.name}</div>
-                  <div>{item.star_level}</div>
+                  <div className={styles.ratings}>
+                    <div className={styles["empty-stars"]}></div>
+                    <div
+                      className={styles["full-stars"]}
+                      style={{ width: this.props.handleStar(item.star_level) }}
+                    ></div>
+                  </div>
                 </div>
               )}
             </Draggable>
@@ -351,6 +357,7 @@ class FindLocation extends React.Component {
 FindLocation.propTypes = {
   getCountry: PropTypes.func,
   userUid: PropTypes.string,
+  handleStar: PropTypes.func,
 };
 
 export default FindLocation;

@@ -16,10 +16,10 @@ class LikeLocation extends React.Component {
   }
 
   componentDidMount() {
-    let elsLike = document.getElementsByClassName("likeLocationShow");
-    Array.from(elsLike).forEach((el) => {
-      el.style.display = "none";
-    });
+    // let elsLike = document.getElementsByClassName("likeLocationShow");
+    // Array.from(elsLike).forEach((el) => {
+    //   el.style.display = "none";
+    // });
 
     db.collection("schedule")
       .doc(this.props.userUid)
@@ -114,7 +114,14 @@ class LikeLocation extends React.Component {
                   </div>
                   <img src={item.photo} className={styles.itemPhoto}></img>
                   <div className={styles.itemName}>{item.name}</div>
-                  <div>{item.star_level}</div>
+                  <div className={styles.ratings}>
+                    <div className={styles["empty-stars"]}></div>
+                    <div
+                      className={styles["full-stars"]}
+                      style={{ width: this.props.handleStar(item.star_level) }}
+                    ></div>
+                  </div>
+                  {/* <div>{item.star_level}</div> */}
                 </div>
               )}
             </Draggable>
@@ -127,6 +134,7 @@ class LikeLocation extends React.Component {
 
 LikeLocation.propTypes = {
   userUid: PropTypes.string,
+  handleStar: PropTypes.func,
 };
 
 export default LikeLocation;

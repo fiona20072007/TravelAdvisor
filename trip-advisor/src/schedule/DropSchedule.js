@@ -76,6 +76,11 @@ class DropSchedule extends React.Component {
     });
   };
 
+  handleStar = (num) => {
+    console.log(num);
+    return (Number(num) / 5.4) * 100;
+  };
+
   render() {
     // console.log(this.state.travelDetailCountry);
     //把這個state往上拉到editSchedule.js再set
@@ -137,13 +142,17 @@ class DropSchedule extends React.Component {
                     <FindLocation
                       getCountry={this.props.getCountry}
                       userUid={this.props.userUid}
+                      handleStar={this.handleStar}
                     />
                   </div>
                   <div
                     className={styles.likeLocationShow}
                     id="likeLocationShow"
                   >
-                    <LikeLocation userUid={this.props.userUid} />
+                    <LikeLocation
+                      userUid={this.props.userUid}
+                      handleStar={this.handleStar}
+                    />
                   </div>
                   {/* {i == this.state.travelDateDetail.length - 1 && (
                     
