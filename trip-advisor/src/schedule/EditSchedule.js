@@ -461,6 +461,37 @@ class EditSchedule extends React.Component {
     });
   };
 
+  handleDeleteLocation = (i, date) => {
+    // this.state.travelDataArr
+
+    if (this.state.travelDetailCountry[date] !== undefined) {
+      let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
+      let travelMorningTemp = [...travelDetailCountryTemp[date]];
+      travelMorningTemp.splice(i, 1);
+      travelDetailCountryTemp[date] = travelMorningTemp;
+      console.log(this.state.travelDetailCountry);
+      this.setState({
+        travelDetailCountry: travelDetailCountryTemp,
+      });
+      db.collection("schedule")
+        .doc(this.state.userUid)
+        .collection("data")
+        .doc(`travel${window.location.pathname.substring(23)}`)
+        .collection("dateBlockDetail")
+        .doc(date)
+        .set({
+          morning: travelMorningTemp,
+          name: date,
+        });
+    }
+
+    if (i === this.state.travelDetailCountry[date].length - 1) {
+      let obj = Object.assign({}, this.state.trafficDetail);
+      obj[date].splice(i - 1, 1);
+      this.handleTraffic(obj);
+    }
+  };
+
   handleShowLocationDrag = () => {
     if (this.state.showLocationSearch === false) {
       document.getElementById("locationDetail").style.display = "flex";
@@ -559,6 +590,7 @@ class EditSchedule extends React.Component {
                 userUid={this.state.userUid}
                 travelDateDetail={this.state.travelDateDetail}
                 travelDetailCountry={this.state.travelDetailCountry}
+                handleDeleteLocation={this.handleDeleteLocation}
               />
             )}
           </DragDropContext>
@@ -573,7 +605,6 @@ class EditSchedule extends React.Component {
             setSelectedPlaceMarker={this.setSelectedPlaceMarker}
             travelShowId={this.state.travelShowId}
             showTraffic={this.showTraffic}
-            // handleTraffic={this.handleTraffic}
             trafficDetail={this.state.trafficDetail}
             userUid={this.state.userUid}
           />

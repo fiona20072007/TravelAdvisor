@@ -1,58 +1,43 @@
 import React from "react";
 import styles from "../scss/schedule.module.scss";
 import TrafficSchedule from "./TrafficSchedule";
-import firebase from "../firebase";
+// import firebase from "../firebase";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
-const db = firebase.firestore();
+// const db = firebase.firestore();
 
 class DragListSchedule extends React.Component {
-  deleteLocation = (i) => {
-    console.log(i);
-    let travelMorningTemp = [];
-    // let travelAll = [];
+  // deleteLocation = (i) => {
+  //   console.log(i);
+  //   let travelMorningTemp = [];
 
-    travelMorningTemp = Array.from(
-      this.props.travelDetailCountry[this.props.date]
-    );
-    travelMorningTemp.splice(i, 1);
-    // travelMorningTemp.forEach(item => {
-    //   let travelSet = {};
-    //   console.log(item);
-    //   travelSet["country"] = item.Country;
-    //   travelSet["name"] = item.name;
-    //   travelSet["id"] = item.id;
-    //   travelSet["PointImgUrl"] = item.PointImgUrl;
-    //   travelSet["star_level"] = item.star_level;
-    //   travelSet["pos"] = {
-    //     lat: parseFloat(item.latitude),
-    //     lng: parseFloat(item.longitude)
-    //   };
+  //   travelMorningTemp = Array.from(
+  //     this.props.travelDetailCountry[this.props.date]
+  //   );
+  //   travelMorningTemp.splice(i, 1);
 
-    //   travelAll.push(travelSet);
-    // });
-    if (this.props.travelDetailCountry[this.props.date] !== undefined) {
-      console.log(travelMorningTemp);
-      db.collection("schedule")
-        .doc(this.props.userUid)
-        .collection("data")
-        .doc(`travel${window.location.pathname.substring(23)}`)
-        .collection("dateBlockDetail")
-        .doc(this.props.date)
-        .set({
-          morning: travelMorningTemp,
-          name: this.props.date,
-        });
-    }
+  //   if (this.props.travelDetailCountry[this.props.date] !== undefined) {
+  //     console.log(travelMorningTemp);
+  //     db.collection("schedule")
+  //       .doc(this.props.userUid)
+  //       .collection("data")
+  //       .doc(`travel${window.location.pathname.substring(23)}`)
+  //       .collection("dateBlockDetail")
+  //       .doc(this.props.date)
+  //       .set({
+  //         morning: travelMorningTemp,
+  //         name: this.props.date,
+  //       });
+  //   }
 
-    if (i === this.props.travelDetailCountry[this.props.date].length - 1) {
-      let obj = Object.assign({}, this.props.trafficDetail);
-      obj[this.props.date].splice(i - 1, 1);
-      this.props.handleTraffic(obj);
-      // console.log(obj);
-    }
-  };
+  //   if (i === this.props.travelDetailCountry[this.props.date].length - 1) {
+  //     let obj = Object.assign({}, this.props.trafficDetail);
+  //     obj[this.props.date].splice(i - 1, 1);
+  //     this.props.handleTraffic(obj);
+  //     // console.log(obj);
+  //   }
+  // };
 
   render() {
     console.log(this.props.travelDetailCountry[this.props.item]);
@@ -96,7 +81,7 @@ class DragListSchedule extends React.Component {
                         className={styles.itemListDelete}
                         id={`delete-${item.id}`}
                         onClick={() => {
-                          this.deleteLocation(i);
+                          this.props.handleDeleteLocation(i, this.props.date);
                         }}
                       >
                         x
@@ -148,6 +133,7 @@ DragListSchedule.propTypes = {
   trafficDetail: PropTypes.object,
   userUid: PropTypes.string,
   handleStar: PropTypes.func,
+  handleDeleteLocation: PropTypes.func,
 };
 
 export default DragListSchedule;

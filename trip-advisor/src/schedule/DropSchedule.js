@@ -83,6 +83,7 @@ class DropSchedule extends React.Component {
                     trafficDetail={this.props.trafficDetail}
                     userUid={this.props.userUid}
                     handleStar={this.handleStar}
+                    handleDeleteLocation={this.props.handleDeleteLocation}
                   />
 
                   {provided.placeholder}
@@ -137,6 +138,7 @@ DropSchedule.propTypes = {
   userUid: PropTypes.string,
   travelDateDetail: PropTypes.array,
   travelDetailCountry: PropTypes.object,
+  handleDeleteLocation: PropTypes.func,
 };
 
 export default DropSchedule;
