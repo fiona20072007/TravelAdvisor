@@ -368,6 +368,23 @@ class EditSchedule extends React.Component {
         );
       }
 
+      let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
+      let travelDateDetailTemp = [...this.state.travelDateDetail];
+
+      travelDateDetailTemp.forEach((item) => {
+        if (item.name === destination.droppableId.substring(5)) {
+          item.morning = travelMorningTemp;
+        }
+      });
+
+      travelDetailCountryTemp[
+        destination.droppableId.substring(5)
+      ] = travelMorningTemp;
+      this.setState({
+        travelDetailCountry: travelDetailCountryTemp,
+        travelDateDetail: travelDateDetailTemp,
+      });
+
       db.collection("schedule")
         .doc(this.state.userUid)
         .collection("data")

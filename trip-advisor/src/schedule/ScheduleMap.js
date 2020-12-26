@@ -85,8 +85,9 @@ const SimpleMap = compose(
   const [colorAll, setColorAll] = useState([]);
 
   useEffect(() => {
-    props.travelDataArr.forEach((arr) => {
+    props.travelDataArr.every((arr) => {
       if (arr.morning.length !== 0) {
+        console.log(arr.morning);
         db.collection("indexCountry")
           .doc(arr.morning[0].country)
           .get()
@@ -96,9 +97,8 @@ const SimpleMap = compose(
             obj["lng"] = parseFloat(doc.data().longitude);
 
             setCenter(obj);
-
-            return;
           });
+        return;
       } else {
         let centerTemp = {
           lat: 25.049,
