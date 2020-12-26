@@ -56,10 +56,10 @@ const SimpleMap = compose(
                   if (status === window.google.maps.DirectionsStatus.OK) {
                     locationArrTemp[index] = result;
                     // location;
-                    console.log("locationArrTemp", locationArrTemp);
+                    // console.log("locationArrTemp", locationArrTemp);
                     locationObj[item] = locationArrTemp;
                     this.props.showTraffic(locationObj);
-                    console.log(locationObj);
+                    // console.log(locationObj);
                     arr.push(result);
                     this.setState({
                       directions: arr,

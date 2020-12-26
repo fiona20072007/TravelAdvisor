@@ -16,7 +16,7 @@ class EditSchedule extends React.Component {
     this.state = {
       travelData: [],
       travelShowId: null,
-      travelMorning: [],
+
       travelMorningAll: {},
       searchCountry: "",
       searchCountryDetail: {},
@@ -29,6 +29,8 @@ class EditSchedule extends React.Component {
       userUid: "",
       showLocationSearch: false,
       btnClick: true,
+      travelDateDetail: [],
+      travelDetailCountry: {},
     };
   }
 
@@ -72,6 +74,58 @@ class EditSchedule extends React.Component {
           this.setState({
             travelDataArr: travelDataArrTemp,
           });
+        });
+
+      let travelDateDetailTemp = [];
+
+      db.collection("schedule")
+        .doc(user.uid)
+        .collection("data")
+        .doc(`travel${travelShowId}`)
+        .collection("dateBlockDetail")
+        .get()
+        .then((docs) => {
+          travelDateDetailTemp = [];
+          docs.forEach((doc) => {
+            travelDateDetailTemp.push(doc.data());
+          });
+          this.setState({ travelDateDetail: travelDateDetailTemp });
+
+          let travelDetailCountryTemp = {};
+          console.log("travelDateDetailTemp", travelDateDetailTemp);
+          let n = false;
+          travelDateDetailTemp.forEach((dates) => {
+            let arr = [];
+
+            if (dates.morning.length !== 0) {
+              n = true;
+              dates.morning.forEach((date, index) => {
+                if (dates.morning.length !== 0) {
+                  db.collection("country")
+                    .doc(date.country)
+                    .collection("location")
+                    .where("id", "==", date.id)
+                    .get()
+                    .then((docs) => {
+                      docs.forEach((doc) => {
+                        arr[index] = doc.data();
+                      });
+                      travelDetailCountryTemp[dates.name] = arr;
+
+                      this.setState({
+                        travelDetailCountry: travelDetailCountryTemp,
+                      });
+                    });
+                }
+              });
+            }
+          });
+          if (n === false) {
+            // console.log(11111);
+            this.setState({
+              travelDetailCountry: {},
+            });
+          }
         });
     });
   }
@@ -127,7 +181,7 @@ class EditSchedule extends React.Component {
           travelMorningAllTemp[doc.data().name] = doc.data().morning;
         });
         this.setState({ travelMorningAll: travelMorningAllTemp });
-        // console.log(travelMorningAllTemp);
+        console.log(travelMorningAllTemp);
       });
 
     if (draggableId.substr(0, 1) === "i") {
@@ -139,10 +193,13 @@ class EditSchedule extends React.Component {
         .then((docs) => {
           docs.forEach((doc) => {
             if (doc.data().id === draggableId.substring(3)) {
+              console.log(doc.data());
               let obj = {
                 country: this.state.searchCountry,
                 name: doc.data().name,
                 id: doc.data().id,
+                PointImgUrl: doc.data().PointImgUrl,
+                star_level: doc.data().star_level,
                 pos: {
                   lat: parseFloat(doc.data().latitude),
                   lng: parseFloat(doc.data().longitude),
@@ -206,7 +263,22 @@ class EditSchedule extends React.Component {
         const [remove] = travelMorningTemp.splice(source.index, 1);
 
         travelMorningTemp.splice(destination.index, 0, remove);
-        this.setState({ travelMorning: travelMorningTemp });
+        console.log(travelMorningTemp);
+        let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
+        let travelDateDetailTemp = [...this.state.travelDateDetail];
+
+        travelDateDetailTemp.forEach((item) => {
+          if (item.name === destination.droppableId.substring(5)) {
+            item.morning = travelMorningTemp;
+          }
+        });
+        travelDetailCountryTemp[
+          destination.droppableId.substring(5)
+        ] = travelMorningTemp;
+        this.setState({
+          travelDetailCountry: travelDetailCountryTemp,
+          travelDateDetail: travelDateDetailTemp,
+        });
 
         db.collection("schedule")
           .doc(this.state.userUid)
@@ -229,6 +301,27 @@ class EditSchedule extends React.Component {
         );
         const [remove] = travelMorningDragTemp.splice(source.index, 1);
         travelMorningDropTemp.splice(destination.index, 0, remove);
+
+        let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
+        let travelDateDetailTemp = [...this.state.travelDateDetail];
+
+        travelDateDetailTemp.forEach((item) => {
+          if (item.name === destination.droppableId.substring(5)) {
+            item.morning = travelMorningDropTemp;
+          } else if (item.name === source.droppableId.substring(5)) {
+            item.morning = travelMorningDragTemp;
+          }
+        });
+        travelDetailCountryTemp[
+          source.droppableId.substring(5)
+        ] = travelMorningDragTemp;
+        travelDetailCountryTemp[
+          destination.droppableId.substring(5)
+        ] = travelMorningDropTemp;
+        this.setState({
+          travelDetailCountry: travelDetailCountryTemp,
+          travelDateDetail: travelDateDetailTemp,
+        });
 
         db.collection("schedule")
           .doc(this.state.userUid)
@@ -274,8 +367,6 @@ class EditSchedule extends React.Component {
           this.state.locationLikeDetail
         );
       }
-
-      this.setState({ travelMorning: travelMorningTemp });
 
       db.collection("schedule")
         .doc(this.state.userUid)
@@ -383,6 +474,8 @@ class EditSchedule extends React.Component {
   };
 
   render() {
+    console.log("travelDateDetail", this.state.travelDateDetail);
+    console.log("travelDetailCountry", this.state.travelDetailCountry);
     return (
       <div className={styles.scheduleWithMap}>
         <div className={styles.schedule}>
@@ -447,6 +540,8 @@ class EditSchedule extends React.Component {
                 handleTraffic={this.handleTraffic}
                 trafficDetail={this.state.trafficDetail}
                 userUid={this.state.userUid}
+                travelDateDetail={this.state.travelDateDetail}
+                travelDetailCountry={this.state.travelDetailCountry}
               />
             )}
           </DragDropContext>

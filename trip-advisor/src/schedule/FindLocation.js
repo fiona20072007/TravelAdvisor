@@ -279,6 +279,8 @@ class FindLocation extends React.Component {
       country: item.country,
       name: item.name,
       id: item.id,
+      PointImgUrl: item.photo,
+      star_level: item.star_level,
       pos: {
         lat: item.latitude,
         lng: item.longitude,

@@ -9,36 +9,42 @@ const db = firebase.firestore();
 
 class DragListSchedule extends React.Component {
   deleteLocation = (i) => {
+    console.log(i);
     let travelMorningTemp = [];
-    let travelAll = [];
+    // let travelAll = [];
 
     travelMorningTemp = Array.from(
       this.props.travelDetailCountry[this.props.date]
     );
     travelMorningTemp.splice(i, 1);
-    travelMorningTemp.forEach((item) => {
-      let travelSet = {};
-      // console.log(item);
-      travelSet["country"] = item.Country;
-      travelSet["name"] = item.name;
-      travelSet["id"] = item.id;
-      travelSet["pos"] = {
-        lat: parseFloat(item.latitude),
-        lng: parseFloat(item.longitude),
-      };
-      travelAll.push(travelSet);
-    });
+    // travelMorningTemp.forEach(item => {
+    //   let travelSet = {};
+    //   console.log(item);
+    //   travelSet["country"] = item.Country;
+    //   travelSet["name"] = item.name;
+    //   travelSet["id"] = item.id;
+    //   travelSet["PointImgUrl"] = item.PointImgUrl;
+    //   travelSet["star_level"] = item.star_level;
+    //   travelSet["pos"] = {
+    //     lat: parseFloat(item.latitude),
+    //     lng: parseFloat(item.longitude)
+    //   };
 
-    db.collection("schedule")
-      .doc(this.props.userUid)
-      .collection("data")
-      .doc(`travel${window.location.pathname.substring(23)}`)
-      .collection("dateBlockDetail")
-      .doc(this.props.date)
-      .set({
-        morning: travelAll,
-        name: this.props.date,
-      });
+    //   travelAll.push(travelSet);
+    // });
+    if (this.props.travelDetailCountry[this.props.date] !== undefined) {
+      console.log(travelMorningTemp);
+      db.collection("schedule")
+        .doc(this.props.userUid)
+        .collection("data")
+        .doc(`travel${window.location.pathname.substring(23)}`)
+        .collection("dateBlockDetail")
+        .doc(this.props.date)
+        .set({
+          morning: travelMorningTemp,
+          name: this.props.date,
+        });
+    }
 
     if (i === this.props.travelDetailCountry[this.props.date].length - 1) {
       let obj = Object.assign({}, this.props.trafficDetail);
@@ -49,16 +55,16 @@ class DragListSchedule extends React.Component {
   };
 
   render() {
-    // console.log(
-    //   "this.props.traffic[this.props.item]",
-    //   this.props.traffic[this.props.item]
-    // );
-    // console.log(this.props.travelDetailCountry);
+    console.log(this.props.travelDetailCountry[this.props.item]);
     return (
       <div>
         {this.props.travelDetailCountry[this.props.item] === undefined && (
           <div className={styles.emptyList}>Drop Here!</div>
         )}
+        {this.props.travelDetailCountry[this.props.item] &&
+          this.props.travelDetailCountry[this.props.item].length === 0 && (
+            <div className={styles.emptyList}>Drop Here!</div>
+          )}
         {this.props.travelDetailCountry[this.props.item] &&
           // this.props.traffic[this.props.item] !== undefined &&
           this.props.travelDetailCountry[this.props.item].map((item, i) => {

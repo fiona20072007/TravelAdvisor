@@ -1,5 +1,5 @@
 import React from "react";
-import firebase from "../firebase";
+// import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
 import FindLocation from "./FindLocation";
 import LikeLocation from "./LikeLocation";
@@ -9,71 +9,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { Droppable } from "react-beautiful-dnd";
 
-const db = firebase.firestore();
+// const db = firebase.firestore();
 
 class DropSchedule extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      travelDateDetail: [],
-      travelDetailCountry: {},
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     travelDateDetail: [],
+  //     travelDetailCountry: {},
+  //   };
+  // }
 
-  componentDidMount() {
-    let travelShowId = window.location.pathname.substring(23);
+  // componentDidMount() {
+  //   let travelShowId = window.location.pathname.substring(23);
 
-    let travelDateDetailTemp = [];
-
-    db.collection("schedule")
-      .doc(this.props.userUid)
-      .collection("data")
-      .doc(`travel${travelShowId}`)
-      .collection("dateBlockDetail")
-      .onSnapshot((querySnapshot) => {
-        travelDateDetailTemp = [];
-        querySnapshot.forEach((doc) => {
-          travelDateDetailTemp.push(doc.data());
-        });
-        this.setState({ travelDateDetail: travelDateDetailTemp });
-
-        let travelDetailCountryTemp = {};
-        console.log("travelDateDetailTemp", travelDateDetailTemp);
-        let n = false;
-        travelDateDetailTemp.forEach((dates) => {
-          let arr = [];
-
-          if (dates.morning.length !== 0) {
-            n = true;
-            dates.morning.forEach((date, index) => {
-              if (dates.morning.length !== 0) {
-                db.collection("country")
-                  .doc(date.country)
-                  .collection("location")
-                  .where("id", "==", date.id)
-                  .get()
-                  .then((docs) => {
-                    docs.forEach((doc) => {
-                      arr[index] = doc.data();
-                    });
-                    travelDetailCountryTemp[dates.name] = arr;
-
-                    this.setState({
-                      travelDetailCountry: travelDetailCountryTemp,
-                    });
-                  });
-              }
-            });
-          }
-        });
-        if (n === false) {
-          // console.log(11111);
-          this.setState({
-            travelDetailCountry: {},
-          });
-        }
-      });
-  }
+  // }
   handleDateScroll = (id) => {
     document.getElementById(`day${id + 1}`).scrollIntoView({
       behavior: "smooth",
@@ -94,7 +44,7 @@ class DropSchedule extends React.Component {
         <div className={styles.scheduleDateSelect}>
           <FontAwesomeIcon icon={faCalendarAlt} />
           <div className={styles.scheduleDateTitle}>Day </div>
-          {this.state.travelDateDetail.map((item, i) => {
+          {this.props.travelDateDetail.map((item, i) => {
             return (
               <div
                 key={i}
@@ -108,7 +58,7 @@ class DropSchedule extends React.Component {
             );
           })}
         </div>
-        {this.state.travelDateDetail.map((item, i) => (
+        {this.props.travelDateDetail.map((item, i) => (
           <Droppable droppableId={`drop-${item.name}`} key={i}>
             {(provided) => (
               <div className={styles.scheduleDetailForDrop}>
@@ -124,7 +74,7 @@ class DropSchedule extends React.Component {
                   <DragListSchedule
                     item={item.name}
                     date={item.name}
-                    travelDetailCountry={this.state.travelDetailCountry}
+                    travelDetailCountry={this.props.travelDetailCountry}
                     setInfoOpen={this.props.setInfoOpen}
                     selectedPlace={this.props.selectedPlace}
                     setSelectedPlace={this.props.setSelectedPlace}
@@ -185,6 +135,8 @@ DropSchedule.propTypes = {
   handleTraffic: PropTypes.func,
   trafficDetail: PropTypes.object,
   userUid: PropTypes.string,
+  travelDateDetail: PropTypes.array,
+  travelDetailCountry: PropTypes.object,
 };
 
 export default DropSchedule;
