@@ -167,9 +167,11 @@ ul {
     justify-content: center;
     align-items: center;
     margin: 10px;
+    font-size: 13px;
     svg {
       color: $darkGreen;
-      padding: 5px 8px 5px 8px;
+      // padding: 5px 8px 5px 8px;
+      margin: 0 8px;
     }
   }
   img {
