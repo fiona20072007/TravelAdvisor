@@ -262,7 +262,7 @@ a {
   display: flex;
   justify-content: center;
 }
-.emptyList {
+@mixin emptyComponent() {
   margin: auto;
   width: 180px;
   min-height: 100px;
@@ -271,6 +271,9 @@ a {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.emptyList {
+  @include emptyComponent;
 }
 
 .scheduleAll {
@@ -723,6 +726,24 @@ a {
   margin-right: 10px;
   svg {
     color: $darkGray !important;
+  }
+}
+.itemSelectHide {
+  z-index: -5;
+  width: 70px;
+  margin-right: 10px;
+
+  div {
+    background-color: $lightGray;
+    border-color: $lightGray;
+    div {
+      span {
+        background-color: $lightGray;
+      }
+    }
+  }
+  svg {
+    color: $lightGray;
   }
 }
 

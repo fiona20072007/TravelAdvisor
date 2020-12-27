@@ -40,7 +40,7 @@ class DragListSchedule extends React.Component {
   // };
 
   render() {
-    console.log(this.props.travelDetailCountry[this.props.item]);
+    // console.log(this.props.travelDetailCountry[this.props.item]);
     return (
       <div>
         {this.props.travelDetailCountry[this.props.item] === undefined && (
@@ -112,6 +112,7 @@ class DragListSchedule extends React.Component {
                       num={i}
                       handleTraffic={this.props.handleTraffic}
                       trafficDetail={this.props.trafficDetail}
+                      dragging={this.props.dragging}
                     />
                   )}
               </div>
@@ -134,6 +135,7 @@ DragListSchedule.propTypes = {
   userUid: PropTypes.string,
   handleStar: PropTypes.func,
   handleDeleteLocation: PropTypes.func,
+  dragging: PropTypes.bool,
 };
 
 export default DragListSchedule;

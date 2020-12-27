@@ -34,7 +34,7 @@ class TrafficSchedule extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedFilter: "",
+      selectedFilter: filterFiedsOptions[0],
     };
   }
   filterSelectedData = function (data) {
@@ -45,9 +45,10 @@ class TrafficSchedule extends React.Component {
     this.setState({
       selectedFilter: data,
     });
+    console.log(data);
   };
   render() {
-    // console.log(this.props.traffic);
+    // console.log(this.props.traffic[this.props.date][this.props.num]);
     return (
       this.props.traffic[this.props.date][this.props.num] !== undefined && (
         <div className={styles.trafficLength}>
@@ -61,8 +62,10 @@ class TrafficSchedule extends React.Component {
               value={this.state.selectedFilter}
               onChange={(e) => this.filterSelectedData(e)}
               options={filterFiedsOptions}
-              placeholder={<FontAwesomeIcon icon={faCar} title={"DRIVING"} />}
-              className={styles.itemSelect}
+              placeholder={this.state.selectedFilter}
+              className={
+                this.props.dragging ? styles.itemSelectHide : styles.itemSelect
+              }
             />
             {
               this.props.traffic[this.props.date][this.props.num].routes[0]
@@ -81,6 +84,7 @@ TrafficSchedule.propTypes = {
   num: PropTypes.number,
   handleTraffic: PropTypes.func,
   trafficDetail: PropTypes.object,
+  dragging: PropTypes.bool,
 };
 
 export default TrafficSchedule;

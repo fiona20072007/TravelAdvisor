@@ -16,7 +16,6 @@ class EditSchedule extends React.Component {
     this.state = {
       travelData: [],
       travelShowId: null,
-
       travelMorningAll: {},
       searchCountry: "",
       searchCountryDetail: {},
@@ -31,6 +30,7 @@ class EditSchedule extends React.Component {
       btnClick: true,
       travelDateDetail: [],
       travelDetailCountry: {},
+      dragging: false,
     };
   }
 
@@ -166,6 +166,20 @@ class EditSchedule extends React.Component {
   };
 
   onDragStart = (result) => {
+    this.setState({
+      dragging: true,
+    });
+    document.querySelectorAll(`.${styles.trafficLength}`).forEach((item) => {
+      item.style.color = "rgba(245, 247, 249, 0.947)";
+    });
+    document.querySelectorAll(`.${styles.itemTraffic}`).forEach((item) => {
+      item.style.color = "rgba(245, 247, 249, 0.947)";
+    });
+
+    document.querySelectorAll(`.${styles.emptyList}`).forEach((item) => {
+      item.style.display = "none";
+    });
+
     const { draggableId } = result;
 
     let travelMorningAllTemp = {};
@@ -236,6 +250,20 @@ class EditSchedule extends React.Component {
   };
 
   onDragEnd = (result) => {
+    this.setState({
+      dragging: false,
+    });
+    document.querySelectorAll(`.${styles.trafficLength}`).forEach((item) => {
+      item.style.color = "rgb(138, 134, 134)";
+    });
+    document.querySelectorAll(`.${styles.itemTraffic}`).forEach((item) => {
+      item.style.color = "rgb(138, 134, 134)";
+    });
+
+    document.querySelectorAll(`.${styles.emptyList}`).forEach((item) => {
+      item.style.display = "flex";
+    });
+
     const { destination, source, draggableId } = result;
 
     if (!destination) {
@@ -522,8 +550,8 @@ class EditSchedule extends React.Component {
   };
 
   render() {
-    console.log("travelDateDetail", this.state.travelDateDetail);
-    console.log("travelDetailCountry", this.state.travelDetailCountry);
+    // console.log("travelDateDetail", this.state.travelDateDetail);
+    // console.log("travelDetailCountry", this.state.travelDetailCountry);
     return (
       <div className={styles.scheduleWithMap}>
         <div className={styles.schedule}>
@@ -591,6 +619,7 @@ class EditSchedule extends React.Component {
                 travelDateDetail={this.state.travelDateDetail}
                 travelDetailCountry={this.state.travelDetailCountry}
                 handleDeleteLocation={this.handleDeleteLocation}
+                dragging={this.state.dragging}
               />
             )}
           </DragDropContext>
