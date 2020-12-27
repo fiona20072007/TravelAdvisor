@@ -6,6 +6,13 @@ import SimpleMap from "./map";
 import styles from "../scss/locationDetail.module.scss";
 import PropTypes from "prop-types";
 import { nanoid } from "nanoid";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faMapPin,
+  faPhone,
+  faBusinessTime,
+  faCocktail,
+} from "@fortawesome/free-solid-svg-icons";
 
 const db = firebase.firestore();
 
@@ -45,19 +52,28 @@ class LocationDetail extends React.Component {
               );
             } else {
               this.setState({ likeList: doc.data()["like"] });
-              doc.data()["like"].forEach((likeItem) => {
-                if (document.getElementById(`like-${likeItem.id}`) === null) {
-                  return;
-                } else {
-                  document.getElementById(`like-${likeItem.id}`).style.display =
-                    "block";
-                  document.getElementById(`like-${likeItem.id}`).style.fill =
-                    "rgb(255, 128, 191)";
-                  document.getElementById(`like-${likeItem.id}`).style[
-                    "fill-opacity"
-                  ] = 1;
-                }
-              });
+
+              window.setTimeout(
+                () =>
+                  doc.data()["like"].forEach((likeItem) => {
+                    if (
+                      document.getElementById(`like-${likeItem.id}`) === null
+                    ) {
+                      return;
+                    } else {
+                      document.getElementById(
+                        `like-${likeItem.id}`
+                      ).style.display = "block";
+                      document.getElementById(
+                        `like-${likeItem.id}`
+                      ).style.fill = "rgb(255, 128, 191)";
+                      document.getElementById(`like-${likeItem.id}`).style[
+                        "fill-opacity"
+                      ] = 1;
+                    }
+                  }),
+                400
+              );
             }
           });
       } else {
@@ -143,8 +159,15 @@ class LocationDetail extends React.Component {
               }}
             >
               <img src={item.photo} className={styles.itemPhoto}></img>
-              <div className={styles.itemName}>{item.name}</div>
-              <div>{item.star_level}</div>
+              <div className={styles.itemCardName}>{item.name}</div>
+
+              <div className={styles.ratings}>
+                <div className={styles["empty-stars"]}></div>
+                <div
+                  className={styles["full-stars"]}
+                  style={{ width: this.handleStar(item.star_level) }}
+                ></div>
+              </div>
               <div
                 id={`like-${item.id}`}
                 className={styles.itemLike}
@@ -240,10 +263,38 @@ class LocationDetail extends React.Component {
           >
             <img src={item.photo} className={styles.itemSelectPhoto}></img>
             <div className={styles.selectDetail}>
-              <div className={styles.itemName}>{item.name}</div>
-              <div>{item.address}</div>
-              <div>{item.telephone}</div>
-              <div>{item.star_level}</div>
+              <div className={styles.itemName}>
+                <FontAwesomeIcon icon={faCocktail} />
+                {item.name}
+              </div>
+              <div className={styles.ratings}>
+                <div className={styles["empty-stars"]}></div>
+                <div
+                  className={styles["full-stars"]}
+                  style={{ width: this.handleStar(item.star_level) }}
+                ></div>
+              </div>
+              <div>
+                <div className={styles.itemTitle}>
+                  <FontAwesomeIcon icon={faMapPin} />
+                  地點
+                </div>
+                <div className={styles.itemComment}>{item.address}</div>
+              </div>
+              <div>
+                <div className={styles.itemTitle}>
+                  <FontAwesomeIcon icon={faPhone} />
+                  電話
+                </div>
+                <div className={styles.itemComment}>{item.telephone}</div>
+              </div>
+              <div className={styles.itemOpenTime}>
+                <div className={styles.itemTitle}>
+                  <FontAwesomeIcon icon={faBusinessTime} />
+                  營業時間
+                </div>
+                <div className={styles.itemComment}>{item.open_time}</div>
+              </div>
             </div>
           </div>
         );
@@ -278,7 +329,12 @@ class LocationDetail extends React.Component {
     );
   };
 
+  handleStar = (num) => {
+    return (Number(num) / 5.4) * 100;
+  };
+
   markerClickHandler = (event, place, n) => {
+    console.log(place.open_time);
     if (event !== "path") {
       let locationArrayTemp = [...this.state.locationArrayT];
       let showId = nanoid();
@@ -293,10 +349,38 @@ class LocationDetail extends React.Component {
         >
           <img src={place.photo} className={styles.itemSelectPhoto}></img>
           <div className={styles.selectDetail}>
-            <div className={styles.itemName}>{place.name}</div>
-            <div>{place.address}</div>
-            <div>{place.telephone}</div>
-            <div>{place.star_level}</div>
+            <div className={styles.itemName}>
+              <FontAwesomeIcon icon={faCocktail} />
+              {place.name}
+            </div>
+            <div className={styles.ratings}>
+              <div className={styles["empty-stars"]}></div>
+              <div
+                className={styles["full-stars"]}
+                style={{ width: this.handleStar(place.star_level) }}
+              ></div>
+            </div>
+            <div>
+              <div className={styles.itemTitle}>
+                <FontAwesomeIcon icon={faMapPin} />
+                地點
+              </div>
+              <div className={styles.itemComment}>{place.address}</div>
+            </div>
+            <div>
+              <div className={styles.itemTitle}>
+                <FontAwesomeIcon icon={faPhone} />
+                電話
+              </div>
+              <div className={styles.itemComment}>{place.telephone}</div>
+            </div>
+            <div className={styles.itemOpenTime}>
+              <div className={styles.itemTitle}>
+                <FontAwesomeIcon icon={faBusinessTime} />
+                營業時間
+              </div>
+              <div className={styles.itemComment}>{place.open_time}</div>
+            </div>
           </div>
         </div>
       );
@@ -349,6 +433,8 @@ class LocationDetail extends React.Component {
       country: likeItem.country,
       name: likeItem.name,
       id: likeItem.id,
+      PointImgUrl: likeItem.photo,
+      star_level: likeItem.star_level,
       pos: { lat: likeItem.latitude, lng: likeItem.longitude },
     };
 

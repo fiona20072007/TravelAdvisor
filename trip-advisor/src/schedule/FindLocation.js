@@ -42,19 +42,19 @@ class FindLocation extends React.Component {
           );
         } else {
           this.setState({ likeList: doc.data()["like"] });
-          if (this.state.value !== "") {
-            doc.data()["like"].forEach((likeItem) => {
-              if (
-                document.getElementById(`likeSearch-${likeItem.id}`) === null
-              ) {
-                return;
-              } else {
-                document.getElementById(
-                  `likeSearch-${likeItem.id}`
-                ).style.display = "block";
-              }
-            });
-          }
+          // if (this.state.value !== "") {
+          //   doc.data()["like"].forEach(likeItem => {
+          //     if (
+          //       document.getElementById(`likeSearch-${likeItem.id}`) === null
+          //     ) {
+          //       return;
+          //     } else {
+          //       document.getElementById(
+          //         `likeSearch-${likeItem.id}`
+          //       ).style.display = "block";
+          //     }
+          //   });
+          // }
         }
       });
   }
@@ -120,6 +120,9 @@ class FindLocation extends React.Component {
 
   handleOnChangeCountry = (e) => {
     this.props.getCountry(e.label);
+    this.setState({
+      value: e.label,
+    });
     db.collection("country")
       .doc(e.label)
       .collection("location")
@@ -228,7 +231,7 @@ class FindLocation extends React.Component {
         });
       });
 
-    if (this.state.value !== "") {
+    if (e.label) {
       window.setTimeout(
         () =>
           this.state.likeList.forEach((likeItem) => {
@@ -240,7 +243,7 @@ class FindLocation extends React.Component {
               ).style.display = "block";
             }
           }),
-        300
+        400
       );
     }
   };

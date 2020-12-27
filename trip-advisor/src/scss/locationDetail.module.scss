@@ -106,6 +106,10 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   margin-top: 20px;
   color: $darkGray;
 }
+.itemCardName {
+  margin: 4px 0 0 0;
+  color: $darkGray;
+}
 .item {
   width: 250px;
   display: flex;
@@ -123,7 +127,7 @@ $darkGreen: rgba(43, 92, 83, 0.796);
 .itemSelect {
   width: 835px;
   height: 300px;
-  border: 1px solid black;
+  box-shadow: 0 0 17px rgba(0, 0, 0, 0.24);
   border-radius: 10px;
   overflow: hidden;
   margin: 25px;
@@ -132,9 +136,20 @@ $darkGreen: rgba(43, 92, 83, 0.796);
 }
 
 .selectDetail {
-  margin: 10px;
+  margin: 20px;
+  width: 100%;
+  overflow: scroll;
+  color: $darkGray;
+  svg {
+    margin-right: 10px;
+  }
 }
-
+.itemName {
+  font-size: 20px;
+  margin: 0 0 5px 0;
+  font-weight: 500;
+  color: $darkGreen;
+}
 .itemPhoto {
   width: 100%;
   height: 100px;
@@ -154,6 +169,19 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   fill: rgb(255, 128, 191);
   fill-opacity: 1;
   display: none;
+}
+.itemTitle {
+  margin: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  svg {
+    color: $darkGreen;
+    font-size: 17px;
+  }
+}
+.itemComment {
+  font-size: 14px;
+  margin: 10px 0;
 }
 
 //map
@@ -228,4 +256,36 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   -moz-transform: rotate(-135deg);
   -o-transform: rotate(-135deg);
   transform: rotate(-135deg);
+}
+
+///star
+.ratings {
+  position: relative;
+  vertical-align: middle;
+  display: inline-block;
+  color: #b1b1b1;
+  overflow: hidden;
+}
+.full-stars {
+  position: absolute;
+  left: 0;
+  top: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  color: #fde16d;
+}
+.empty-stars:before,
+.full-stars:before {
+  content: "\2605\2605\2605\2605\2605";
+  font-size: 14pt;
+}
+.empty-stars:before {
+  -webkit-text-stroke: 1px #848484;
+}
+.full-stars:before {
+  -webkit-text-stroke: 1px orange;
+}
+
+.itemOpenTime {
+  white-space: pre-line;
 }
