@@ -250,6 +250,7 @@ class EditSchedule extends React.Component {
   };
 
   onDragEnd = (result) => {
+    console.log(result);
     this.setState({
       dragging: false,
     });

@@ -126,6 +126,8 @@ class LocationIndex extends React.Component {
   };
 
   handleOnChange = (tags) => {
+    document.getElementById("loading").style.display = "flex";
+    document.getElementById("loading").style.backgroundColor = "#252525";
     this.props.history.push(`/locationDetail/${tags.label}`);
   };
 

@@ -31,7 +31,7 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   justify-content: center;
   position: relative;
   z-index: 0;
-  border: 1px solid black;
+  box-shadow: 0 0 17px rgba(0, 0, 0, 0.24);
   border-radius: 10px;
 }
 .bannerName {
@@ -122,6 +122,13 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   margin: 20px;
   cursor: pointer;
   position: relative;
+  &:hover {
+    border: none;
+    box-shadow: 0 0 17px rgba(0, 0, 0, 0.24);
+    .itemPhoto {
+      width: 105%;
+    }
+  }
 }
 
 .itemSelect {
@@ -154,6 +161,7 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   width: 100%;
   height: 100px;
   object-fit: cover;
+  transition: width 0.5s;
 }
 .itemSelectPhoto {
   height: 100%;

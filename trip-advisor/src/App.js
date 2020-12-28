@@ -51,6 +51,13 @@ class App extends React.Component {
   render() {
     return (
       <Router>
+        <div className={styles.loading} id="loading">
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+          <div className={styles.dot}></div>
+        </div>
         <div className={styles.app}>
           <nav className={this.state.hidden ? styles.hide : styles.active}>
             <div className={styles.flexWrap}>

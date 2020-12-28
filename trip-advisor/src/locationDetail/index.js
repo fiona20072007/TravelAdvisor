@@ -77,6 +77,7 @@ class LocationDetail extends React.Component {
             }
           });
       } else {
+        document.getElementById("loading").style.display = "none";
         alert("請先登入");
         this.props.history.push("/member");
       }
@@ -187,6 +188,7 @@ class LocationDetail extends React.Component {
           locationArray: locationArrayTemp,
           locationArrayT: locationArrayTemp,
         });
+        document.getElementById("loading").style.display = "none";
       });
     db.collection("indexCountry")
       .get()

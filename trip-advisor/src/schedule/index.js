@@ -17,7 +17,7 @@ import {
 
 const db = firebase.firestore();
 
-const ScheduleIndex = (props) => {
+const ScheduleIndex = () => {
   const { path, url } = useRouteMatch();
   const [TravelSchedule, setTravelSchedule] = useState([]);
   const [TravelScheduleShow, setTravelScheduleShow] = useState([]);
@@ -186,7 +186,7 @@ const ScheduleIndex = (props) => {
                         className={styles.scheduleList}
                         onClick={() => {
                           setTravelId(item.id);
-                          props.history.push(`${url}/editSchedule/${item.id}`);
+                          history.push(`${url}/editSchedule/${item.id}`);
                         }}
                       >
                         <div className={styles.scheduleTitle}>

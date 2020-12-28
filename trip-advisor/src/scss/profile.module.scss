@@ -176,6 +176,16 @@ ul {
   }
   img {
     width: 100%;
+    height: 150px;
+    object-fit: cover;
+    transition: width 0.5s;
+  }
+  &:hover {
+    border: none;
+    box-shadow: 0 0 17px rgba(0, 0, 0, 0.24);
+    img {
+      width: 105%;
+    }
   }
 }
 
