@@ -121,7 +121,6 @@ class EditSchedule extends React.Component {
             }
           });
           if (n === false) {
-            // console.log(11111);
             this.setState({
               travelDetailCountry: {},
             });
@@ -135,6 +134,7 @@ class EditSchedule extends React.Component {
 
       this.state.travelDataArr.forEach((item) => {
         let arr = [];
+
         if (item.morning.length > 1) {
           for (let i = 0; i < item.morning.length - 1; i++) {
             let obj = {};
@@ -296,17 +296,21 @@ class EditSchedule extends React.Component {
         let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
         let travelDateDetailTemp = [...this.state.travelDateDetail];
 
-        travelDateDetailTemp.forEach((item) => {
+        const travelDateDetailTemp2 = travelDateDetailTemp.map((item) => {
           if (item.name === destination.droppableId.substring(5)) {
-            item.morning = travelMorningTemp;
+            return {
+              ...item,
+              morning: travelMorningTemp,
+            };
           }
+          return item;
         });
         travelDetailCountryTemp[
           destination.droppableId.substring(5)
         ] = travelMorningTemp;
         this.setState({
           travelDetailCountry: travelDetailCountryTemp,
-          travelDateDetail: travelDateDetailTemp,
+          travelDateDetail: travelDateDetailTemp2,
         });
 
         db.collection("schedule")
@@ -551,8 +555,9 @@ class EditSchedule extends React.Component {
   };
 
   render() {
-    // console.log("travelDateDetail", this.state.travelDateDetail);
-    // console.log("travelDetailCountry", this.state.travelDetailCountry);
+    console.log("travelDetailCountry", this.state.travelDetailCountry);
+    console.log("travelDateDetail", this.state.travelDateDetail);
+
     return (
       <div className={styles.scheduleWithMap}>
         <div className={styles.schedule}>

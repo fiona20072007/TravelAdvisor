@@ -1,5 +1,4 @@
 import React from "react";
-// import PropTypes from "prop-types";
 import LocationIndex from "./location";
 import LocationDetail from "./locationDetail";
 import ScheduleIndex from "./schedule";
@@ -61,10 +60,11 @@ class App extends React.Component {
         <div className={styles.app}>
           <nav className={this.state.hidden ? styles.hide : styles.active}>
             <div className={styles.flexWrap}>
-              <a className={styles.icon}>
+              <Link to="/" className={styles.icon}>
                 <img src={icon} alt="icon" />
                 <div id="MainTitle">Travel Advisor</div>
-              </a>
+              </Link>
+
               <nav className={styles.menu}>
                 <input
                   type="checkbox"

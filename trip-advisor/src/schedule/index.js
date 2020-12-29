@@ -98,7 +98,7 @@ const ScheduleIndex = () => {
             querySnapshot.forEach((doc) => {
               TravelScheduleTemp.push(doc.data());
             });
-            console.log(TravelScheduleTemp);
+
             setTravelSchedule(TravelScheduleTemp);
             setTravelScheduleShow(TravelScheduleTemp);
           });
@@ -186,6 +186,11 @@ const ScheduleIndex = () => {
                         className={styles.scheduleList}
                         onClick={() => {
                           setTravelId(item.id);
+                          document.getElementById("loading").style.display =
+                            "flex";
+                          document.getElementById(
+                            "loading"
+                          ).style.backgroundColor = "white";
                           history.push(`${url}/editSchedule/${item.id}`);
                         }}
                       >

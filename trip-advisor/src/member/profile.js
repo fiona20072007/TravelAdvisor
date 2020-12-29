@@ -54,7 +54,7 @@ class Profile extends React.Component {
               obj["id"] = doc.data().id;
               arr.push(obj);
             });
-            console.log(arr);
+
             let time = Date.now();
             let newArr = arr.filter((item) => {
               return item.StartDateStamp <= time && time <= item.EndDateStamp;
@@ -140,6 +140,8 @@ class Profile extends React.Component {
     });
   };
   handleNavigate(id) {
+    document.getElementById("loading").style.display = "flex";
+    document.getElementById("loading").style.backgroundColor = "white";
     this.props.history.push(`/schedule/editSchedule/${id}`);
   }
 

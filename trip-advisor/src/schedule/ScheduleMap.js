@@ -27,25 +27,18 @@ const SimpleMap = compose(
   withGoogleMap,
   lifecycle({
     componentDidUpdate(prevProps) {
-      // console.log("trafficDetail", this.props.trafficDetail);
       let locationObj = {};
       let arr = [];
       let state = false;
-      if (
-        // prevProps.travelDataArr !== this.props.travelDataArr ||
-        prevProps.trafficDetail !== this.props.trafficDetail
-      ) {
+      if (prevProps.trafficDetail !== this.props.trafficDetail) {
         const DirectionsService = new window.google.maps.DirectionsService();
 
         Object.keys(this.props.trafficDetail).forEach((item) => {
-          // console.log(item);
           let locationArrTemp = [];
-          // console.log(this.props.trafficDetail[item]);
 
           if (this.props.trafficDetail[item].length !== 0) {
             state = true;
             this.props.trafficDetail[item].forEach((route, index) => {
-              console.log(123312);
               DirectionsService.route(
                 {
                   origin: route.origin,
@@ -55,15 +48,15 @@ const SimpleMap = compose(
                 (result, status) => {
                   if (status === window.google.maps.DirectionsStatus.OK) {
                     locationArrTemp[index] = result;
-                    // location;
-                    // console.log("locationArrTemp", locationArrTemp);
+
                     locationObj[item] = locationArrTemp;
                     this.props.showTraffic(locationObj);
-                    // console.log(locationObj);
+
                     arr.push(result);
                     this.setState({
                       directions: arr,
                     });
+                    document.getElementById("loading").style.display = "none";
                   } else {
                     console.error(`error fetching directions ${result}`);
                   }
@@ -81,13 +74,11 @@ const SimpleMap = compose(
   })
 )((props) => {
   const [center, setCenter] = useState({});
-  // const [locationSpot, setLocationSpot] = useState({});
   const [colorAll, setColorAll] = useState([]);
 
   useEffect(() => {
     props.travelDataArr.every((arr) => {
       if (arr.morning.length !== 0) {
-        console.log(arr.morning);
         db.collection("indexCountry")
           .doc(arr.morning[0].country)
           .get()
@@ -124,7 +115,6 @@ const SimpleMap = compose(
   }, [props.travelDataArr]);
 
   const renderMap = () => {
-    // console.log(props.directions);
     return (
       <GoogleMap defaultZoom={11} center={center}>
         {props.travelDataArr.map((date, j) => {

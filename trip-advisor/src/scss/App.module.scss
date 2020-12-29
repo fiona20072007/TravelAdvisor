@@ -15,16 +15,17 @@ $darkGreen: rgb(56, 118, 107);
   display: flex;
   justify-content: space-between;
   height: 75px;
-  // background: rgba(255, 255, 255, 0.2);
 }
 .icon {
   margin: 8px;
   margin-left: 50px;
   border: none;
   display: flex;
-  width: 400px;
+  width: 260px;
   align-items: center;
   color: white;
+  cursor: pointer;
+  z-index: 1000;
 }
 .icon div {
   font-size: 30px;
@@ -32,7 +33,7 @@ $darkGreen: rgb(56, 118, 107);
 }
 
 .icon img {
-  width: 15%;
+  width: 60px;
 }
 nav {
   position: fixed;
@@ -43,29 +44,6 @@ nav {
   transition: top 0.4s ease-in-out;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
 }
-
-// .app nav ul {
-//   list-style: none;
-//   display: flex;
-//   justify-content: flex-end;
-//   height: 70px;
-// }
-// .app nav ul li {
-//   width: 150px;
-//   align-self: center;
-//   margin-right: 30px;
-//   font-size: 20px;
-// }
-// .app nav ul li a {
-//   border: none;
-//   color: white;
-//   margin-left: 8px;
-// }
-// .app {
-//   svg {
-//     color: white;
-//   }
-// }
 
 .active {
   transition: top 0.4s ease-in-out;

@@ -40,7 +40,6 @@ class DragListSchedule extends React.Component {
   // };
 
   render() {
-    // console.log(this.props.travelDetailCountry[this.props.item]);
     return (
       <div>
         {this.props.travelDetailCountry[this.props.item] === undefined && (

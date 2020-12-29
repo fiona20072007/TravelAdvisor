@@ -29,13 +29,12 @@ class MemberIndex extends React.Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // console.log("already login");
         this.props.history.push(`/profile`);
       } else {
         return;
       }
     });
-    console.log(window.location.pathname.substring(1, 9));
+
     if (window.location.pathname.substring(1, 9) === "member") {
       document.querySelector("nav").style.backgroundColor = "white";
       document.querySelector("nav").style.boxShadow =
@@ -147,11 +146,6 @@ class MemberIndex extends React.Component {
               <div className={styles.layer}></div>
             </div>
             <div className={styles.panel}>
-              {/* <div
-                className={
-                  this.state.loginState ? styles.layer : styles.layerchangeState
-                }
-              ></div> */}
               <div
                 className={
                   this.state.loginState ? styles.loginPanel : styles.changeState
@@ -290,7 +284,6 @@ class MemberIndex extends React.Component {
   }
 }
 
-/* <button onClick={this.googleSignOut}>Log Out</button> */
 MemberIndex.propTypes = {
   history: PropTypes.object.isRequired,
 };

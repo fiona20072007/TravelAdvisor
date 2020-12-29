@@ -13,6 +13,15 @@ import {
   faBusinessTime,
   faCocktail,
 } from "@fortawesome/free-solid-svg-icons";
+import {
+  setNavbarColor,
+  setLikeRed,
+  setLikeGray,
+  showLike,
+  hideLike,
+  handleStar,
+  scrollIntoView,
+} from "../Utils";
 
 const db = firebase.firestore();
 
@@ -61,18 +70,11 @@ class LocationDetail extends React.Component {
                     ) {
                       return;
                     } else {
-                      document.getElementById(
-                        `like-${likeItem.id}`
-                      ).style.display = "block";
-                      document.getElementById(
-                        `like-${likeItem.id}`
-                      ).style.fill = "rgb(255, 128, 191)";
-                      document.getElementById(`like-${likeItem.id}`).style[
-                        "fill-opacity"
-                      ] = 1;
+                      showLike(likeItem.id);
+                      setLikeRed(likeItem.id);
                     }
                   }),
-                400
+                350
               );
             }
           });
@@ -83,19 +85,13 @@ class LocationDetail extends React.Component {
       }
     });
 
-    console.log(window.location.pathname.substring(1, 9));
-    if (window.location.pathname.substring(1, 9) === "location") {
-      document.querySelector("nav").style.backgroundColor = "white";
-      document.querySelector("nav").style.boxShadow =
-        "0 0 8px rgba(0, 0, 0, 0.2)";
-      document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
-    }
+    setNavbarColor("location");
+
     db.collection("country")
       .doc(this.props.match.params.tags)
       .collection("location")
       .get()
       .then((doc) => {
-        // .onSnapshot(querySnapshot => {
         let locationDetailTemp = [];
         doc.forEach(function (doc) {
           locationDetailTemp.push({
@@ -134,28 +130,18 @@ class LocationDetail extends React.Component {
               }
               className={styles.item}
               onMouseOver={() => {
-                document.getElementById(`like-${item.id}`).style.display =
-                  "block";
+                showLike(item.id);
                 if (this.state.likeList.find((i) => i.id === item.id)) {
-                  document.getElementById(`like-${item.id}`).style.fill =
-                    "rgb(255, 128, 191)";
-                  document.getElementById(`like-${item.id}`).style[
-                    "fill-opacity"
-                  ] = 1;
+                  setLikeRed(item.id);
                 } else {
-                  document.getElementById(`like-${item.id}`).style.fill =
-                    "rgb(255, 255, 255)";
-                  document.getElementById(`like-${item.id}`).style[
-                    "fill-opacity"
-                  ] = 0.3;
+                  setLikeGray(item.id);
                 }
               }}
               onMouseLeave={() => {
                 if (this.state.likeList.find((i) => i.id === item.id)) {
                   return;
                 } else {
-                  document.getElementById(`like-${item.id}`).style.display =
-                    "none";
+                  hideLike(item.id);
                 }
               }}
             >
@@ -166,7 +152,7 @@ class LocationDetail extends React.Component {
                 <div className={styles["empty-stars"]}></div>
                 <div
                   className={styles["full-stars"]}
-                  style={{ width: this.handleStar(item.star_level) }}
+                  style={{ width: handleStar(item.star_level) }}
                 ></div>
               </div>
               <div
@@ -222,7 +208,6 @@ class LocationDetail extends React.Component {
   };
 
   loadOptions = async (inputValue) => {
-    inputValue = inputValue.toLowerCase().replace(/\W/g, "");
     return new Promise((resolve) => {
       db.collection("country")
         .doc(this.props.match.params.tags)
@@ -257,12 +242,7 @@ class LocationDetail extends React.Component {
         locationArrayTemp.splice(
           Math.floor(i / 3) * 3 + 3,
           0,
-          <div
-            key={showId}
-            id="show"
-            // onClick={event => props.markerClickHandler(event, item)}
-            className={styles.itemSelect}
-          >
+          <div key={showId} id="show" className={styles.itemSelect}>
             <img src={item.photo} className={styles.itemSelectPhoto}></img>
             <div className={styles.selectDetail}>
               <div className={styles.itemName}>
@@ -273,7 +253,7 @@ class LocationDetail extends React.Component {
                 <div className={styles["empty-stars"]}></div>
                 <div
                   className={styles["full-stars"]}
-                  style={{ width: this.handleStar(item.star_level) }}
+                  style={{ width: handleStar(item.star_level) }}
                 ></div>
               </div>
               <div>
@@ -331,24 +311,14 @@ class LocationDetail extends React.Component {
     );
   };
 
-  handleStar = (num) => {
-    return (Number(num) / 5.4) * 100;
-  };
-
   markerClickHandler = (event, place, n) => {
-    console.log(place.open_time);
     if (event !== "path") {
       let locationArrayTemp = [...this.state.locationArrayT];
       let showId = nanoid();
       locationArrayTemp.splice(
         n * 3 + 3,
         0,
-        <div
-          key={showId}
-          id="show"
-          // onClick={event => props.markerClickHandler(event, item)}
-          className={styles.itemSelect}
-        >
+        <div key={showId} id="show" className={styles.itemSelect}>
           <img src={place.photo} className={styles.itemSelectPhoto}></img>
           <div className={styles.selectDetail}>
             <div className={styles.itemName}>
@@ -359,7 +329,7 @@ class LocationDetail extends React.Component {
               <div className={styles["empty-stars"]}></div>
               <div
                 className={styles["full-stars"]}
-                style={{ width: this.handleStar(place.star_level) }}
+                style={{ width: handleStar(place.star_level) }}
               ></div>
             </div>
             <div>
@@ -387,13 +357,11 @@ class LocationDetail extends React.Component {
         </div>
       );
 
-      // Remember which place was clicked
       this.setState({
         selectedPlace: place,
         locationArray: locationArrayTemp,
-        // center: place.pos
       });
-      // Required so clicking a 2nd marker works as expected
+
       if (this.state.infoOpen) {
         this.setState({
           infoOpen: false,
@@ -402,22 +370,13 @@ class LocationDetail extends React.Component {
       this.setState({
         infoOpen: true,
       });
-      // zoom in a little on marker click
+
       if (this.state.zoom < 13) {
         this.setState({
           zoom: 13,
         });
       }
-
-      window.setTimeout(
-        () =>
-          document.getElementById("show").scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-            inline: "center",
-          }),
-        10
-      );
+      scrollIntoView("show");
     } else {
       return;
     }
@@ -441,9 +400,6 @@ class LocationDetail extends React.Component {
     };
 
     if (likeAllArr.length === 0) {
-      document.getElementById(`like-${likeItem.id}`).style.fill =
-        "rgb(255, 128, 191)";
-      document.getElementById(`like-${likeItem.id}`).style["fill-opacity"] = 1;
       likeAllArr.push(obj);
 
       db.collection("schedule").doc(this.state.userUid).set(
@@ -454,11 +410,7 @@ class LocationDetail extends React.Component {
       );
     } else {
       if (likeAllArr.find((item) => item.id === likeItem.id)) {
-        document.getElementById(`like-${likeItem.id}`).style.fill =
-          "rgb(255, 255, 255)";
-        document.getElementById(`like-${likeItem.id}`).style[
-          "fill-opacity"
-        ] = 0.3;
+        setLikeGray(likeItem.id);
         let removeLikeAllArr = likeAllArr.filter(function (i) {
           return i.id !== likeItem.id;
         });
@@ -469,11 +421,7 @@ class LocationDetail extends React.Component {
           { merge: true }
         );
       } else {
-        document.getElementById(`like-${likeItem.id}`).style.fill =
-          "rgb(255, 128, 191)";
-        document.getElementById(`like-${likeItem.id}`).style[
-          "fill-opacity"
-        ] = 1;
+        setLikeRed(likeItem.id);
         likeAllArr.push(obj);
 
         db.collection("schedule").doc(this.state.userUid).set(
