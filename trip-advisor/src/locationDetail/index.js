@@ -21,6 +21,8 @@ import {
   hideLike,
   handleStar,
   scrollIntoView,
+  setLikeListEmpty,
+  searchLocationLoadOptions,
 } from "../Utils";
 
 const db = firebase.firestore();
@@ -45,7 +47,6 @@ class LocationDetail extends React.Component {
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log("sign in success");
         this.setState({
           userUid: user.uid,
         });
@@ -53,12 +54,7 @@ class LocationDetail extends React.Component {
           .doc(user.uid)
           .onSnapshot((doc) => {
             if (doc.data()["like"] === undefined) {
-              db.collection("schedule").doc(user.uid).set(
-                {
-                  like: [],
-                },
-                { merge: true }
-              );
+              setLikeListEmpty(user.uid);
             } else {
               this.setState({ likeList: doc.data()["like"] });
 
@@ -205,33 +201,6 @@ class LocationDetail extends React.Component {
           zoom: zoomTemp,
         });
       });
-  };
-
-  loadOptions = async (inputValue) => {
-    return new Promise((resolve) => {
-      db.collection("country")
-        .doc(this.props.match.params.tags)
-        .collection("location")
-        .orderBy("plainName")
-        .startAt(inputValue)
-        .endAt(inputValue + "\uf8ff")
-        .get()
-        .then((docs) => {
-          if (!docs.empty) {
-            let recommendedTags = [];
-            docs.forEach(function (doc) {
-              const tag = {
-                value: doc.id,
-                label: doc.data().tagName,
-              };
-              recommendedTags.push(tag);
-            });
-            return resolve(recommendedTags);
-          } else {
-            return resolve([]);
-          }
-        });
-    });
   };
 
   handleOnChange = (tags) => {
@@ -441,7 +410,12 @@ class LocationDetail extends React.Component {
           <div className={styles.title}>挑選景點</div>
           <AsyncSelect
             className={styles.locationInput}
-            loadOptions={this.loadOptions}
+            loadOptions={(inputValue) =>
+              searchLocationLoadOptions(
+                inputValue,
+                this.props.match.params.tags
+              )
+            }
             onChange={this.handleOnChange}
             placeholder={<div>輸入想去的景點</div>}
           />

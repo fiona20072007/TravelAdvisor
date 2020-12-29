@@ -679,7 +679,6 @@ a {
   margin: 5px;
   background-color: $lightGray;
   z-index: 120;
-  // animation: shimmy1 1s forwards;
   transition: opacity 1s;
   color: $darkGray;
   overflow: hidden;
@@ -742,22 +741,23 @@ a {
   }
 }
 .itemSelectHide {
-  z-index: -5;
-  width: 70px;
-  margin-right: 10px;
+  display: none;
+  // z-index: -5;
+  // width: 70px;
+  // margin-right: 10px;
 
-  div {
-    background-color: $lightGray;
-    border-color: $lightGray;
-    div {
-      span {
-        background-color: $lightGray;
-      }
-    }
-  }
-  svg {
-    color: $lightGray;
-  }
+  // div {
+  //   background-color: $lightGray;
+  //   border-color: $lightGray;
+  //   div {
+  //     span {
+  //       background-color: $lightGray;
+  //     }
+  //   }
+  // }
+  // svg {
+  //   color: $lightGray;
+  // }
 }
 
 ///Add Schedule

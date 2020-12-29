@@ -1,18 +1,14 @@
 import React from "react";
-import firebase from "../firebase";
 import AsyncSelect from "react-select/async";
 import styles from "../scss/location.module.scss";
 import PropTypes from "prop-types";
-import { searchLoadOptions } from "../Utils";
-
-const db = firebase.firestore();
+import { searchLoadOptions, setNavbarTransparent } from "../Utils";
 
 class LocationIndex extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       selectedTag: [],
-      indexLocation: [],
     };
     this.options = [
       {
@@ -47,24 +43,7 @@ class LocationIndex extends React.Component {
     ];
   }
   componentDidMount = () => {
-    if (window.location.pathname === "/") {
-      document.querySelector("nav").style.backgroundColor = "transparent";
-      document.querySelector("nav").style.boxShadow = "0 0 0";
-      document.getElementById("MainTitle").style.color = "white";
-    }
-    db.collection("indexCountry").onSnapshot((querySnapshot) => {
-      let indexLocationTemp = [];
-      querySnapshot.forEach(function (doc) {
-        indexLocationTemp.push({
-          name: doc.data().name,
-          description: doc.data().description,
-          photo: doc.data().photo,
-        });
-      });
-      this.setState({
-        indexLocation: indexLocationTemp,
-      });
-    });
+    setNavbarTransparent("/");
 
     let $cont = document.querySelector(`.${styles.cont}`);
     let $elsArr = [].slice.call(document.querySelectorAll(`.${styles.el}`));
@@ -77,7 +56,6 @@ class LocationIndex extends React.Component {
     }, 500);
 
     $elsArr.forEach(function ($el) {
-      // console.log(document.querySelectorAll(`.${styles.el}`));
       $el.addEventListener("click", function () {
         if (this.classList.contains(`.${styles["s--active"]}`)) return;
         $cont.classList.add(styles["s--el-active"]);
@@ -87,7 +65,6 @@ class LocationIndex extends React.Component {
 
     $closeBtnsArr.forEach(function ($btn) {
       $btn.addEventListener("click", function (e) {
-        console.log(123);
         e.stopPropagation();
         $cont.classList.remove(styles["s--el-active"]);
         document
@@ -96,31 +73,6 @@ class LocationIndex extends React.Component {
       });
     });
   };
-
-  // loadOptions = async inputValue => {
-  //   return new Promise(resolve => {
-  //     db.collection("indexCountry")
-  //       .orderBy("name")
-  //       .startAt(inputValue)
-  //       .endAt(inputValue + "\uf8ff")
-  //       .get()
-  //       .then(docs => {
-  //         if (!docs.empty) {
-  //           let recommendedTags = [];
-  //           docs.forEach(function(doc) {
-  //             const tag = {
-  //               value: doc.id,
-  //               label: doc.data().name
-  //             };
-  //             recommendedTags.push(tag);
-  //           });
-  //           return resolve(recommendedTags);
-  //         } else {
-  //           return resolve([]);
-  //         }
-  //       });
-  //   });
-  // };
 
   handleOnChange = (tags) => {
     document.getElementById("loading").style.display = "flex";
