@@ -1,5 +1,4 @@
 import React from "react";
-// import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
 import FindLocation from "./FindLocation";
 import LikeLocation from "./LikeLocation";
@@ -9,21 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { Droppable } from "react-beautiful-dnd";
 
-// const db = firebase.firestore();
-
 class DropSchedule extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     travelDateDetail: [],
-  //     travelDetailCountry: {},
-  //   };
-  // }
-
-  // componentDidMount() {
-  //   let travelShowId = window.location.pathname.substring(23);
-
-  // }
   handleDateScroll = (id) => {
     document.getElementById(`day${id + 1}`).scrollIntoView({
       behavior: "smooth",
@@ -31,7 +16,6 @@ class DropSchedule extends React.Component {
   };
 
   handleStar = (num) => {
-    // console.log(num);
     return (Number(num) / 5.4) * 100;
   };
 
@@ -89,40 +73,35 @@ class DropSchedule extends React.Component {
 
                   {provided.placeholder}
                 </div>
-                <div
-                  className={styles.locationSection}
-                  id={`locationSection${i}`}
-                >
-                  <div
-                    className={styles.findLocationShow}
-                    id="findLocationShow"
-                  >
-                    <FindLocation
-                      getCountry={this.props.getCountry}
-                      userUid={this.props.userUid}
-                      handleStar={this.handleStar}
-                    />
-                  </div>
-                  {i == 0 && (
-                    <div
-                      className={styles.likeLocationShow}
-                      id="likeLocationShow"
-                    >
-                      <LikeLocation
-                        userUid={this.props.userUid}
-                        handleStar={this.handleStar}
-                      />
-                    </div>
-                  )}
-
-                  {/* {i == this.state.travelDateDetail.length - 1 && (
-                    
-                  )} */}
-                </div>
               </div>
             )}
           </Droppable>
         ))}
+        <Droppable droppableId={"locationList"}>
+          {(provided) => (
+            <div
+              className={styles.locationSection}
+              id={`locationSection0`}
+              ref={provided.innerRef}
+              {...provided.droppableProps}
+            >
+              <div className={styles.findLocationShow} id="findLocationShow">
+                <FindLocation
+                  getCountry={this.props.getCountry}
+                  userUid={this.props.userUid}
+                  handleStar={this.handleStar}
+                />
+              </div>
+
+              <div className={styles.likeLocationShow} id="likeLocationShow">
+                <LikeLocation
+                  userUid={this.props.userUid}
+                  handleStar={this.handleStar}
+                />
+              </div>
+            </div>
+          )}
+        </Droppable>
       </div>
     );
   }

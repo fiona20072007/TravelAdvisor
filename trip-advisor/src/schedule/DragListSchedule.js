@@ -1,44 +1,10 @@
 import React from "react";
 import styles from "../scss/schedule.module.scss";
 import TrafficSchedule from "./TrafficSchedule";
-// import firebase from "../firebase";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 
-// const db = firebase.firestore();
-
 class DragListSchedule extends React.Component {
-  // deleteLocation = (i) => {
-  //   console.log(i);
-  //   let travelMorningTemp = [];
-
-  //   travelMorningTemp = Array.from(
-  //     this.props.travelDetailCountry[this.props.date]
-  //   );
-  //   travelMorningTemp.splice(i, 1);
-
-  //   if (this.props.travelDetailCountry[this.props.date] !== undefined) {
-  //     console.log(travelMorningTemp);
-  //     db.collection("schedule")
-  //       .doc(this.props.userUid)
-  //       .collection("data")
-  //       .doc(`travel${window.location.pathname.substring(23)}`)
-  //       .collection("dateBlockDetail")
-  //       .doc(this.props.date)
-  //       .set({
-  //         morning: travelMorningTemp,
-  //         name: this.props.date,
-  //       });
-  //   }
-
-  //   if (i === this.props.travelDetailCountry[this.props.date].length - 1) {
-  //     let obj = Object.assign({}, this.props.trafficDetail);
-  //     obj[this.props.date].splice(i - 1, 1);
-  //     this.props.handleTraffic(obj);
-  //     // console.log(obj);
-  //   }
-  // };
-
   render() {
     return (
       <div>
@@ -50,7 +16,6 @@ class DragListSchedule extends React.Component {
             <div className={styles.emptyList}>Drop Here!</div>
           )}
         {this.props.travelDetailCountry[this.props.item] &&
-          // this.props.traffic[this.props.item] !== undefined &&
           this.props.travelDetailCountry[this.props.item].map((item, i) => {
             return (
               <div key={item.id}>

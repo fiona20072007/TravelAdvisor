@@ -555,9 +555,6 @@ class EditSchedule extends React.Component {
   };
 
   render() {
-    console.log("travelDetailCountry", this.state.travelDetailCountry);
-    console.log("travelDateDetail", this.state.travelDateDetail);
-
     return (
       <div className={styles.scheduleWithMap}>
         <div className={styles.schedule}>
