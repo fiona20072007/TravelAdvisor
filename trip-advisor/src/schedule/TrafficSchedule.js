@@ -47,23 +47,35 @@ class TrafficSchedule extends React.Component {
     });
   };
   render() {
+    console.log(this.props.traffic);
+    console.log(this.state.selectedFilter);
     return (
       this.props.traffic[this.props.date][this.props.num] !== undefined && (
-        <div className={styles.trafficLength}>
+        <div
+          className={styles.trafficLength}
+          // className={
+          //   this.props.dragging
+          //     ? styles.trafficLengthHide
+          //     : styles.trafficLength
+          // }
+        >
           {
             this.props.traffic[this.props.date][this.props.num].routes[0]
               .legs[0].distance.text
           }
           <br />
-          <div className={styles.itemTraffic}>
+          <div
+            // className={styles.itemTraffic}
+            className={
+              this.props.dragging ? styles.itemTrafficHide : styles.itemTraffic
+            }
+          >
             <Select
               value={this.state.selectedFilter}
               onChange={(e) => this.filterSelectedData(e)}
               options={filterFiedsOptions}
               placeholder={this.state.selectedFilter}
-              className={
-                this.props.dragging ? styles.itemSelectHide : styles.itemSelect
-              }
+              className={styles.itemSelect}
             />
             {
               this.props.traffic[this.props.date][this.props.num].routes[0]

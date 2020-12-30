@@ -9,11 +9,23 @@ class DragListSchedule extends React.Component {
     return (
       <div>
         {this.props.travelDetailCountry[this.props.item] === undefined && (
-          <div className={styles.emptyList}>Drop Here!</div>
+          <div
+            className={
+              this.props.dragging ? styles.emptyListHide : styles.emptyList
+            }
+          >
+            Drop Here!
+          </div>
         )}
         {this.props.travelDetailCountry[this.props.item] &&
           this.props.travelDetailCountry[this.props.item].length === 0 && (
-            <div className={styles.emptyList}>Drop Here!</div>
+            <div
+              className={
+                this.props.dragging ? styles.emptyListHide : styles.emptyList
+              }
+            >
+              Drop Here!
+            </div>
           )}
         {this.props.travelDetailCountry[this.props.item] &&
           this.props.travelDetailCountry[this.props.item].map((item, i) => {

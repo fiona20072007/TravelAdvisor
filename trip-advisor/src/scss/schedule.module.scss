@@ -278,7 +278,7 @@ a {
 @mixin emptyComponent() {
   margin: auto;
   width: 180px;
-  min-height: 100px;
+  height: 100px;
   border: 1px dashed $gray;
   color: $gray;
   display: flex;
@@ -287,6 +287,12 @@ a {
 }
 .emptyList {
   @include emptyComponent;
+}
+.emptyListHide {
+  display: none;
+  height: 0px;
+  min-height: 0px;
+  font-size: 0px;
 }
 
 .scheduleAll {
@@ -729,35 +735,32 @@ a {
     font-size: 17px;
   }
 }
+.itemTrafficHide {
+  // display: none;
+  // height: 0px;
+  // font-size: 0px;
+  color: $lightGray;
+  div {
+    display: none;
+    // height: 0px;
+    // font-size: 0px;
+  }
+}
 .trafficLength {
   color: $darkGray;
   font-size: 17px;
 }
+// .trafficLengthHide {
+// display: none;
+// height: 0px;
+// font-size: 0px;
+// }
 .itemSelect {
   width: 70px;
   margin-right: 10px;
   svg {
     color: $darkGray !important;
   }
-}
-.itemSelectHide {
-  display: none;
-  // z-index: -5;
-  // width: 70px;
-  // margin-right: 10px;
-
-  // div {
-  //   background-color: $lightGray;
-  //   border-color: $lightGray;
-  //   div {
-  //     span {
-  //       background-color: $lightGray;
-  //     }
-  //   }
-  // }
-  // svg {
-  //   color: $lightGray;
-  // }
 }
 
 ///Add Schedule

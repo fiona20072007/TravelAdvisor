@@ -134,7 +134,7 @@ class EditSchedule extends React.Component {
 
       this.state.travelDataArr.forEach((item) => {
         let arr = [];
-
+        console.log(item.morning);
         if (item.morning.length > 1) {
           for (let i = 0; i < item.morning.length - 1; i++) {
             let obj = {};
@@ -169,12 +169,12 @@ class EditSchedule extends React.Component {
     this.setState({
       dragging: true,
     });
-    document.querySelectorAll(`.${styles.trafficLength}`).forEach((item) => {
-      item.style.color = "rgba(245, 247, 249, 0.947)";
-    });
-    document.querySelectorAll(`.${styles.itemTraffic}`).forEach((item) => {
-      item.style.color = "rgba(245, 247, 249, 0.947)";
-    });
+    // document.querySelectorAll(`.${styles.trafficLength}`).forEach(item => {
+    //   item.style.color = "rgba(245, 247, 249, 0.947)";
+    // });
+    // document.querySelectorAll(`.${styles.itemTraffic}`).forEach(item => {
+    //   item.style.color = "rgba(245, 247, 249, 0.947)";
+    // });
 
     document.querySelectorAll(`.${styles.emptyList}`).forEach((item) => {
       item.style.display = "none";
@@ -250,10 +250,11 @@ class EditSchedule extends React.Component {
   };
 
   onDragEnd = (result) => {
-    console.log(result);
-    this.setState({
-      dragging: false,
-    });
+    window.setTimeout(() => {
+      this.setState({
+        dragging: false,
+      });
+    }, 300);
     document.querySelectorAll(`.${styles.trafficLength}`).forEach((item) => {
       item.style.color = "rgb(138, 134, 134)";
     });
@@ -394,6 +395,7 @@ class EditSchedule extends React.Component {
           this.state.searchCountryDetail
         );
       } else {
+        console.log(this.state.locationLikeDetail);
         travelMorningTemp.splice(
           destination.index,
           0,

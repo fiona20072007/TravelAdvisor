@@ -77,8 +77,9 @@ const SimpleMap = compose(
   const [colorAll, setColorAll] = useState([]);
 
   useEffect(() => {
-    props.travelDataArr.every((arr) => {
+    const findCenter = props.travelDataArr.some((arr) => {
       if (arr.morning.length !== 0) {
+        console.log(arr.morning[0]);
         db.collection("indexCountry")
           .doc(arr.morning[0].country)
           .get()
@@ -89,15 +90,18 @@ const SimpleMap = compose(
 
             setCenter(obj);
           });
-        return;
+        return true;
       } else {
-        let centerTemp = {
-          lat: 25.049,
-          lng: 121.51557,
-        };
-        setCenter(centerTemp);
+        return false;
       }
     });
+    if (!findCenter) {
+      let centerTemp = {
+        lat: 25.049,
+        lng: 121.51557,
+      };
+      setCenter(centerTemp);
+    }
 
     let colorArr = [];
     let n = props.travelDataArr.length;
