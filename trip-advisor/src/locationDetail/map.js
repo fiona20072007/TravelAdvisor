@@ -28,8 +28,8 @@ const SimpleMap = compose(
               <Marker
                 key={place.id}
                 position={place.pos}
-                onClick={(event) =>
-                  props.markerClickHandler(event, place, Math.floor(i / 3))
+                onClick={() =>
+                  props.markerClickHandler(place, Math.floor(i / 3))
                 }
               >
                 {props.infoOpen && props.selectedPlace.pos == place.pos && (
