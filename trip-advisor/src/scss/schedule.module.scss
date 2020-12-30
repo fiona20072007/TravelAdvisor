@@ -736,25 +736,18 @@ a {
   }
 }
 .itemTrafficHide {
-  // display: none;
-  // height: 0px;
-  // font-size: 0px;
   color: $lightGray;
   div {
     display: none;
-    // height: 0px;
-    // font-size: 0px;
   }
 }
 .trafficLength {
   color: $darkGray;
   font-size: 17px;
 }
-// .trafficLengthHide {
-// display: none;
-// height: 0px;
-// font-size: 0px;
-// }
+.trafficLengthHide {
+  color: $lightGray;
+}
 .itemSelect {
   width: 70px;
   margin-right: 10px;

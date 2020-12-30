@@ -31,33 +31,32 @@ const filterFiedsOptions = [
 ];
 
 class TrafficSchedule extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      selectedFilter: filterFiedsOptions[0],
-    };
-  }
   filterSelectedData = function (data) {
     let obj = Object.assign({}, this.props.trafficDetail);
     obj[this.props.date][this.props.num].travelMode = data.value;
     this.props.handleTraffic(obj);
-
-    this.setState({
-      selectedFilter: data,
-    });
+  };
+  handleTrafficMethod = () => {
+    if (
+      this.props.trafficDetail[this.props.date][this.props.num] !== undefined
+    ) {
+      return filterFiedsOptions.find(
+        (item) =>
+          item.value ===
+          this.props.trafficDetail[this.props.date][this.props.num].travelMode
+      );
+    }
   };
   render() {
-    console.log(this.props.traffic);
-    console.log(this.state.selectedFilter);
     return (
       this.props.traffic[this.props.date][this.props.num] !== undefined && (
         <div
-          className={styles.trafficLength}
-          // className={
-          //   this.props.dragging
-          //     ? styles.trafficLengthHide
-          //     : styles.trafficLength
-          // }
+          // className={styles.trafficLength}
+          className={
+            this.props.dragging
+              ? styles.trafficLengthHide
+              : styles.trafficLength
+          }
         >
           {
             this.props.traffic[this.props.date][this.props.num].routes[0]
@@ -71,10 +70,17 @@ class TrafficSchedule extends React.Component {
             }
           >
             <Select
-              value={this.state.selectedFilter}
+              value={
+                //   filterFiedsOptions.find(
+                //   item =>
+                //     item.value ===
+                //     this.props.trafficDetail[this.props.date][this.props.num]
+                //       .travelMode
+                // )
+                this.handleTrafficMethod()
+              }
               onChange={(e) => this.filterSelectedData(e)}
               options={filterFiedsOptions}
-              placeholder={this.state.selectedFilter}
               className={styles.itemSelect}
             />
             {
