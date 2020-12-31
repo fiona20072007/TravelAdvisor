@@ -182,7 +182,7 @@ $darkGreen: rgba(43, 92, 83, 0.796);
   @include likeComponent(rgb(255, 128, 191), 1, block);
 }
 .grayLike {
-  @include likeComponent(rgb(255, 255, 255), 0.3, block);
+  @include likeComponent(rgb(255, 255, 255), 0.8, block);
 }
 .hideLike {
   @include likeComponent(rgb(255, 255, 255), 0.3, none);
