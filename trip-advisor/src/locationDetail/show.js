@@ -1,38 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "../scss/locationDetail.module.scss";
-import {
-  setLikeRed,
-  setLikeGray,
-  showLike,
-  hideLike,
-  handleStar,
-  // scrollIntoView
-} from "../Utils";
+import { handleStar } from "../Utils";
 
 const Show = (props) => {
-  // const [locationDetailCard, setLocationDetailCard] = useState([]);
+  const [likeState, setLikeState] = useState("hide");
 
+  const handleLike = (likeItem) => {
+    const likeAllArr = [...props.likeList];
+    const obj = {
+      country: likeItem.country,
+      name: likeItem.name,
+      id: likeItem.id,
+      PointImgUrl: likeItem.photo,
+      star_level: likeItem.star_level,
+      pos: { lat: likeItem.latitude, lng: likeItem.longitude },
+    };
+
+    if (likeAllArr.length === 0) {
+      likeAllArr.push(obj);
+      props.setLikeDb(likeAllArr);
+    } else {
+      if (likeAllArr.find((item) => item.id === likeItem.id)) {
+        setLikeState("showGray");
+        const removeLikeAllArr = likeAllArr.filter(function (i) {
+          return i.id !== likeItem.id;
+        });
+        props.setLikeDb(removeLikeAllArr);
+      } else {
+        setLikeState("showRed");
+        likeAllArr.push(obj);
+        props.setLikeDb(likeAllArr);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const findLike = props.likeList.find((item) => item.id === props.item.id);
+    findLike !== undefined ? setLikeState("showRed") : setLikeState("hide");
+  }, [props.likeList]);
   return (
     <div
       id={props.item.id}
-      onClick={() =>
-        props.markerClickHandler(props.item, Math.floor(props.i / 3))
+      onClick={(event) =>
+        props.markerClickHandler(event, props.item, Math.floor(props.i / 3))
       }
       className={styles.item}
       onMouseOver={() => {
-        showLike(props.item.id);
         if (props.likeList.find((i) => i.id === props.item.id)) {
-          setLikeRed(props.item.id);
+          setLikeState("showRed");
         } else {
-          setLikeGray(props.item.id);
+          setLikeState("showGray");
         }
       }}
       onMouseLeave={() => {
         if (props.likeList.find((i) => i.id === props.item.id)) {
           return;
         } else {
-          hideLike(props.item.id);
+          setLikeState("hide");
         }
       }}
     >
@@ -48,8 +73,14 @@ const Show = (props) => {
       </div>
       <div
         id={`like-${props.item.id}`}
-        className={styles.itemLike}
-        onClick={() => this.handleLike(props.item)}
+        className={
+          likeState === "hide"
+            ? styles.hideLike
+            : likeState === "showRed"
+            ? styles.redLike
+            : styles.grayLike
+        }
+        onClick={() => handleLike(props.item)}
       >
         <svg id="icon-heart" viewBox="0 0 32 32" width="30" height="20">
           <title>heart</title>
@@ -63,6 +94,7 @@ const Show = (props) => {
 Show.propTypes = {
   item: PropTypes.object,
   likeList: PropTypes.array,
+  setLikeDb: PropTypes.func,
   i: PropTypes.number,
   markerClickHandler: PropTypes.func,
 };

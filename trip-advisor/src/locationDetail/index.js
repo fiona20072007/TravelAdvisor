@@ -9,8 +9,6 @@ import PropTypes from "prop-types";
 
 import {
   setNavbarColor,
-  setLikeRed,
-  setLikeGray,
   setLikeListEmpty,
   searchLocationLoadOptions,
   scrollIntoView,
@@ -152,18 +150,20 @@ class LocationDetail extends React.Component {
     scrollIntoView("show");
   };
 
-  markerClickHandler = (place, n) => {
-    this.setState({
-      selectedPlace: place,
-      detailCardNum: n + 1,
-    });
-    this.handleInfoOpen(this.state.infoOpen);
-    if (this.state.zoom < 13) {
+  markerClickHandler = (event, place, n) => {
+    if (event.target.tagName !== "path") {
       this.setState({
-        zoom: 13,
+        selectedPlace: place,
+        detailCardNum: n + 1,
       });
+      this.handleInfoOpen(this.state.infoOpen);
+      if (this.state.zoom < 13) {
+        this.setState({
+          zoom: 13,
+        });
+      }
+      scrollIntoView("show");
     }
-    scrollIntoView("show");
   };
 
   setInfoOpen = (state) => {
@@ -180,36 +180,6 @@ class LocationDetail extends React.Component {
     );
   };
 
-  handleLike = (likeItem) => {
-    let likeAllArr = [...this.state.likeList];
-    let obj = {
-      country: likeItem.country,
-      name: likeItem.name,
-      id: likeItem.id,
-      PointImgUrl: likeItem.photo,
-      star_level: likeItem.star_level,
-      pos: { lat: likeItem.latitude, lng: likeItem.longitude },
-    };
-
-    if (likeAllArr.length === 0) {
-      likeAllArr.push(obj);
-      this.setLikeDb(likeAllArr);
-    } else {
-      if (likeAllArr.find((item) => item.id === likeItem.id)) {
-        setLikeGray(likeItem.id);
-        let removeLikeAllArr = likeAllArr.filter(function (i) {
-          return i.id !== likeItem.id;
-        });
-        this.setLikeDb(removeLikeAllArr);
-      } else {
-        setLikeRed(likeItem.id);
-        likeAllArr.push(obj);
-
-        this.setLikeDb(likeAllArr);
-      }
-    }
-  };
-
   render() {
     const showCardArr = this.state.locationDetail.map((item, i) => (
       <Show
@@ -217,8 +187,9 @@ class LocationDetail extends React.Component {
         i={i}
         key={i}
         likeList={this.state.likeList}
-        markerClickHandler={() =>
-          this.markerClickHandler(item, Math.floor(i / 3))
+        setLikeDb={this.setLikeDb}
+        markerClickHandler={(event) =>
+          this.markerClickHandler(event, item, Math.floor(i / 3))
         }
       />
     ));
