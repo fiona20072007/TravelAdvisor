@@ -11,6 +11,7 @@ import {
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from "../image/google-icon-10.png";
+import { setNavbarColor } from "../Utils";
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
@@ -35,12 +36,7 @@ class MemberIndex extends React.Component {
       }
     });
 
-    if (window.location.pathname.substring(1, 9) === "member") {
-      document.querySelector("nav").style.backgroundColor = "white";
-      document.querySelector("nav").style.boxShadow =
-        "0 0 8px rgba(0, 0, 0, 0.2)";
-      document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
-    }
+    setNavbarColor("member");
   }
   googleLogin = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -61,7 +57,6 @@ class MemberIndex extends React.Component {
           .then(this.props.history.push(`/profile`));
       })
       .catch((error) => {
-        // var errorCode = error.code;
         let errorMessage = error.message;
         console.log(errorMessage);
       });
@@ -89,7 +84,6 @@ class MemberIndex extends React.Component {
           .then(this.props.history.push(`/profile`));
       })
       .catch((error) => {
-        // var errorCode = error.code;
         let errorMessage = error.message;
         console.log(errorMessage);
       });
@@ -99,11 +93,9 @@ class MemberIndex extends React.Component {
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(() => {
-        console.log("sign in success");
         this.props.history.push(`/profile`);
       })
       .catch((error) => {
-        // var errorCode = error.code;
         let errorMessage = error.message;
         console.log(errorMessage);
       });

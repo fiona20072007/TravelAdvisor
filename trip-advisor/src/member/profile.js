@@ -4,6 +4,7 @@ import styles from "../scss/profile.module.scss";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlane, faUser } from "@fortawesome/free-solid-svg-icons";
+import { setNavbarColor } from "../Utils";
 
 const db = firebase.firestore();
 const auth = firebase.auth();
@@ -21,10 +22,8 @@ class Profile extends React.Component {
     };
   }
   componentDidMount = () => {
-    // let user = firebase.auth().currentUser;
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log("sign in success");
         let url = "";
         if (user.photoURL !== "") {
           url = user.photoURL;
@@ -69,13 +68,8 @@ class Profile extends React.Component {
         this.props.history.push(`/member`);
       }
     });
+    setNavbarColor("profile");
 
-    if (window.location.pathname.substring(1, 9) === "profile") {
-      document.querySelector("nav").style.backgroundColor = "white";
-      document.querySelector("nav").style.boxShadow =
-        "0 0 8px rgba(0, 0, 0, 0.2)";
-      document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
-    }
     let btn = document.querySelectorAll(".btn");
     btn[0].classList.add(styles.start);
 
@@ -94,17 +88,7 @@ class Profile extends React.Component {
   };
 
   signOut = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function () {
-        // Sign-out successful.
-        console.log("signout success");
-      })
-      .catch(function (error) {
-        // An error happened.
-        console.log(error);
-      });
+    firebase.auth().signOut();
   };
   handleMiddle = () => {
     let arr = [...this.state.schedule];
@@ -183,9 +167,7 @@ class Profile extends React.Component {
                       </button>
                     </div>
                   </ul>
-                  {/* <button className={styles.logOut} onClick={this.signOut}>
-                    <p>登出</p>
-                  </button> */}
+
                   <div className={styles.buttonsLogout}>
                     <button className="btn" onClick={this.signOut}>
                       <span></span>

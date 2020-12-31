@@ -35,9 +35,8 @@ class EditSchedule extends React.Component {
   }
 
   componentDidMount() {
-    let travelShowId = window.location.pathname.substring(23);
+    const travelShowId = window.location.pathname.substring(23);
     this.setState({ travelShowId: travelShowId });
-    let travelDataTemp = [];
 
     document.getElementById("scheduleListRange").style.display = "none";
 
@@ -50,12 +49,13 @@ class EditSchedule extends React.Component {
         alert("請先登入");
         this.props.history.push("/member");
       }
-
+      let travelDataTemp = [];
       db.collection("schedule")
         .doc(user.uid)
         .collection("data")
         .doc(`travel${travelShowId}`)
-        .onSnapshot((doc) => {
+        .get()
+        .then((doc) => {
           travelDataTemp.push(doc.data());
           this.setState({ travelData: travelDataTemp });
         });
@@ -90,9 +90,9 @@ class EditSchedule extends React.Component {
             travelDateDetailTemp.push(doc.data());
           });
           this.setState({ travelDateDetail: travelDateDetailTemp });
-
+          document.getElementById("loading").style.display = "none";
           let travelDetailCountryTemp = {};
-          console.log("travelDateDetailTemp", travelDateDetailTemp);
+
           let n = false;
           travelDateDetailTemp.forEach((dates) => {
             let arr = [];
@@ -134,7 +134,7 @@ class EditSchedule extends React.Component {
 
       this.state.travelDataArr.forEach((item) => {
         let arr = [];
-        console.log(item.morning);
+
         if (item.morning.length > 1) {
           for (let i = 0; i < item.morning.length - 1; i++) {
             let obj = {};
@@ -169,12 +169,6 @@ class EditSchedule extends React.Component {
     this.setState({
       dragging: true,
     });
-    // document.querySelectorAll(`.${styles.trafficLength}`).forEach(item => {
-    //   item.style.color = "rgba(245, 247, 249, 0.947)";
-    // });
-    // document.querySelectorAll(`.${styles.itemTraffic}`).forEach(item => {
-    //   item.style.color = "rgba(245, 247, 249, 0.947)";
-    // });
 
     document.querySelectorAll(`.${styles.emptyList}`).forEach((item) => {
       item.style.display = "none";
@@ -195,11 +189,9 @@ class EditSchedule extends React.Component {
           travelMorningAllTemp[doc.data().name] = doc.data().morning;
         });
         this.setState({ travelMorningAll: travelMorningAllTemp });
-        console.log(travelMorningAllTemp);
       });
 
     if (draggableId.substr(0, 1) === "i") {
-      // console.log(result);
       db.collection("country")
         .doc(this.state.searchCountry)
         .collection("location")
@@ -207,7 +199,6 @@ class EditSchedule extends React.Component {
         .then((docs) => {
           docs.forEach((doc) => {
             if (doc.data().id === draggableId.substring(3)) {
-              console.log(doc.data());
               let obj = {
                 country: this.state.searchCountry,
                 name: doc.data().name,
@@ -229,7 +220,6 @@ class EditSchedule extends React.Component {
     }
 
     if (draggableId.substr(0, 1) === "L") {
-      // console.log(result);
       db.collection("schedule")
         .doc(this.state.userUid)
         .get()
@@ -242,7 +232,6 @@ class EditSchedule extends React.Component {
               this.setState({
                 locationLikeDetail: locationLikeDetailTemp,
               });
-              // console.log(locationLikeDetailTemp);
             }
           });
         });
@@ -293,7 +282,7 @@ class EditSchedule extends React.Component {
         const [remove] = travelMorningTemp.splice(source.index, 1);
 
         travelMorningTemp.splice(destination.index, 0, remove);
-        console.log(travelMorningTemp);
+
         let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
         let travelDateDetailTemp = [...this.state.travelDateDetail];
 
@@ -395,7 +384,6 @@ class EditSchedule extends React.Component {
           this.state.searchCountryDetail
         );
       } else {
-        console.log(this.state.locationLikeDetail);
         travelMorningTemp.splice(
           destination.index,
           0,
@@ -484,27 +472,23 @@ class EditSchedule extends React.Component {
   };
 
   showTraffic = (data) => {
-    // console.log(data);
     this.setState({
       traffic: data,
     });
   };
   handleTraffic = (traffic) => {
-    // console.log(traffic);
     this.setState({
       trafficDetail: traffic,
     });
   };
 
   handleDeleteLocation = (i, date) => {
-    // this.state.travelDataArr
-
     if (this.state.travelDetailCountry[date] !== undefined) {
       let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
       let travelMorningTemp = [...travelDetailCountryTemp[date]];
       travelMorningTemp.splice(i, 1);
       travelDetailCountryTemp[date] = travelMorningTemp;
-      console.log(this.state.travelDetailCountry);
+
       this.setState({
         travelDetailCountry: travelDetailCountryTemp,
       });

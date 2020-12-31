@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import firebase from "../firebase";
 import AddSchedule from "./AddSchedule";
 import EditSchedule from "./EditSchedule";
-
 import styles from "../scss/schedule.module.scss";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,6 +13,7 @@ import {
   useLocation,
   useHistory,
 } from "react-router-dom";
+import { setNavbarColor } from "../Utils";
 
 const db = firebase.firestore();
 
@@ -23,25 +23,24 @@ const ScheduleIndex = () => {
   const [TravelScheduleShow, setTravelScheduleShow] = useState([]);
   const [TravelId, setTravelId] = useState(null);
   const [ScheduleStatus, setScheduleStatus] = useState(true);
-  const [AddScheduleStatus, setAddScheduleStatus] = useState(false);
   const [userUid, setUserUid] = useState("");
   const [clickNav, setClickNav] = useState(0);
 
-  let location = useLocation();
-  let history = useHistory();
-  let travelShow = location.pathname.charAt(location.pathname.length - 1);
-  // const addNewTravel = newTravel => {
-  //   setTravelSchedule([...TravelSchedule, newTravel]);
-  // };
+  const location = useLocation();
+  const history = useHistory();
+  const travelShow = location.pathname.charAt(location.pathname.length - 1);
+
   const handleAll = () => {
     let arr = [...TravelSchedule];
     setTravelScheduleShow(arr);
     setScheduleStatus(true);
-    setAddScheduleStatus(false);
+    setTravelId(null);
+    setClickNav(0);
   };
   const handleAdd = () => {
     setScheduleStatus(false);
-    setAddScheduleStatus(true);
+    setTravelId(null);
+    setClickNav(0);
   };
 
   const handleMiddle = () => {
@@ -75,20 +74,13 @@ const ScheduleIndex = () => {
 
   const handleSubmitChange = () => {
     setScheduleStatus(true);
-    setAddScheduleStatus(false);
   };
 
   useEffect(() => {
-    if (window.location.pathname.substring(1, 9) === "schedule") {
-      document.querySelector("nav").style.backgroundColor = "white";
-      document.querySelector("nav").style.boxShadow =
-        "0 0 8px rgba(0, 0, 0, 0.2)";
-      document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
-    }
+    setNavbarColor("schedule");
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log("sign in success");
         setUserUid(user.uid);
         db.collection("schedule")
           .doc(user.uid)
@@ -117,17 +109,14 @@ const ScheduleIndex = () => {
             <li
               className={ScheduleStatus ? styles.liClick : styles.liUnclick}
               onClick={() => {
-                setTravelId(null);
                 handleAll();
               }}
             >
               <Link to="/schedule">所有行程</Link>
             </li>
             <li
-              className={AddScheduleStatus ? styles.liClick : styles.liUnclick}
+              className={ScheduleStatus ? styles.liUnclick : styles.liClick}
               onClick={() => {
-                setTravelId(null);
-                setClickNav(0);
                 handleAdd();
               }}
             >
@@ -219,7 +208,7 @@ const ScheduleIndex = () => {
           </div>
         )}
 
-        {AddScheduleStatus === true && (
+        {ScheduleStatus === false && (
           <div className={styles.scheduleListAdd}>
             <Route
               path={`${path}/addSchedule`}

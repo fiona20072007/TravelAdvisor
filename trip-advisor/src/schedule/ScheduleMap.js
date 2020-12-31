@@ -56,7 +56,6 @@ const SimpleMap = compose(
                     this.setState({
                       directions: arr,
                     });
-                    document.getElementById("loading").style.display = "none";
                   } else {
                     console.error(`error fetching directions ${result}`);
                   }
