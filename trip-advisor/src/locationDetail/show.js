@@ -43,7 +43,11 @@ const Show = (props) => {
     <div
       id={props.item.id}
       onClick={(event) =>
-        props.markerClickHandler(event, props.item, Math.floor(props.i / 3))
+        props.markerClickHandler(
+          event.target.tagName,
+          props.item,
+          Math.floor(props.i / 3)
+        )
       }
       className={styles.item}
       onMouseOver={() => {

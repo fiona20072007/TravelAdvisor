@@ -6,6 +6,7 @@ import DetailCard from "./DetailCard";
 import SimpleMap from "./map";
 import styles from "../scss/locationDetail.module.scss";
 import PropTypes from "prop-types";
+import { nanoid } from "nanoid";
 
 import {
   setNavbarColor,
@@ -151,7 +152,7 @@ class LocationDetail extends React.Component {
   };
 
   markerClickHandler = (event, place, n) => {
-    if (event.target.tagName !== "path") {
+    if (event !== "path") {
       this.setState({
         selectedPlace: place,
         detailCardNum: n + 1,
@@ -185,12 +186,12 @@ class LocationDetail extends React.Component {
       <Show
         item={item}
         i={i}
-        key={i}
+        key={nanoid()}
         likeList={this.state.likeList}
         setLikeDb={this.setLikeDb}
-        markerClickHandler={(event) =>
-          this.markerClickHandler(event, item, Math.floor(i / 3))
-        }
+        markerClickHandler={(event) => {
+          this.markerClickHandler(event, item, Math.floor(i / 3));
+        }}
       />
     ));
 
