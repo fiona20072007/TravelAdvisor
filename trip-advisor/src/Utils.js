@@ -69,20 +69,6 @@ export function setNavbarTransparent(path) {
   }
 }
 
-// export function setLikeRed(id) {
-//   document.getElementById(`like-${id}`).style.fill = "rgb(255, 128, 191)";
-//   document.getElementById(`like-${id}`).style["fill-opacity"] = 1;
-// }
-// export function setLikeGray(id) {
-//   document.getElementById(`like-${id}`).style.fill = "rgb(255, 255, 255)";
-//   document.getElementById(`like-${id}`).style["fill-opacity"] = 0.3;
-// }
-// export function showLike(id) {
-//   document.getElementById(`like-${id}`).style.display = "block";
-// }
-// export function hideLike(id) {
-//   document.getElementById(`like-${id}`).style.display = "none";
-// }
 export function handleStar(num) {
   return (Number(num) / 5.4) * 100;
 }
@@ -107,3 +93,30 @@ export function setLikeListEmpty(userId) {
     { merge: true }
   );
 }
+
+export const getTravelTitleData = (userId, travelId) => {
+  return db
+    .collection("schedule")
+    .doc(userId)
+    .collection("data")
+    .doc(`travel${travelId}`)
+    .get();
+};
+
+export const getTravelScheduleData = (userId, travelId) => {
+  return db
+    .collection("schedule")
+    .doc(userId)
+    .collection("data")
+    .doc(`travel${travelId}`)
+    .collection("dateBlockDetail")
+    .get();
+};
+
+export const getLocationDetail = (searchCountry) => {
+  return db
+    .collection("country")
+    .doc(searchCountry)
+    .collection("location")
+    .get();
+};

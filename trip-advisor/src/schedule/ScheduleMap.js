@@ -76,7 +76,7 @@ const SimpleMap = compose(
   const [colorAll, setColorAll] = useState([]);
 
   useEffect(() => {
-    const findCenter = props.travelDataArr.some((arr) => {
+    const findCenter = props.travelDateDetail.some((arr) => {
       if (arr.morning.length !== 0) {
         console.log(arr.morning[0]);
         db.collection("indexCountry")
@@ -103,7 +103,7 @@ const SimpleMap = compose(
     }
 
     let colorArr = [];
-    let n = props.travelDataArr.length;
+    let n = props.travelDateDetail.length;
     let letters = "0123456789ABCDEF".split("");
 
     for (let j = 0; j < n; j++) {
@@ -115,12 +115,12 @@ const SimpleMap = compose(
     }
 
     setColorAll(colorArr);
-  }, [props.travelDataArr]);
+  }, [props.travelDateDetail]);
 
   const renderMap = () => {
     return (
       <GoogleMap defaultZoom={11} center={center}>
-        {props.travelDataArr.map((date, j) => {
+        {props.travelDateDetail.map((date, j) => {
           return date.morning.map((location, i) => {
             return (
               <div key={location.id}>
