@@ -20,15 +20,12 @@ class DropSchedule extends React.Component {
   };
 
   render() {
-    // console.log(this.state.travelDetailCountry);
-    //把這個state往上拉到editSchedule.js再set
-    // console.log(this.state.travelDateDetail);
     return (
       <div className={styles.scheduleDateAll}>
         <div className={styles.scheduleDateSelect}>
           <FontAwesomeIcon icon={faCalendarAlt} />
           <div className={styles.scheduleDateTitle}>Day </div>
-          {this.props.travelDateDetail.map((item, i) => {
+          {Object.keys(this.props.travelDetailCountry).map((item, i) => {
             return (
               <div
                 key={i}
@@ -42,13 +39,12 @@ class DropSchedule extends React.Component {
             );
           })}
         </div>
-        {this.props.travelDateDetail.map((item, i) => (
-          <Droppable droppableId={`drop-${item.name}`} key={i}>
+        {Object.keys(this.props.travelDetailCountry).map((date, i) => (
+          <Droppable droppableId={`drop-${date}`} key={i}>
             {(provided) => (
               <div className={styles.scheduleDetailForDrop}>
                 <div className={styles.scheduleDateOnly} id={`day${i + 1}`}>
-                  {`\xa0\xa0\xa0\xa0`}Day-{i + 1} {`\xa0\xa0\xa0\xa0`}{" "}
-                  {item.name}
+                  {`\xa0\xa0\xa0\xa0`}Day-{i + 1} {`\xa0\xa0\xa0\xa0`} {date}
                 </div>
                 <div
                   className={styles.scheduleDetail}
@@ -56,8 +52,8 @@ class DropSchedule extends React.Component {
                   {...provided.droppableProps}
                 >
                   <DragListSchedule
-                    item={item.name}
-                    date={item.name}
+                    item={date}
+                    date={date}
                     travelDetailCountry={this.props.travelDetailCountry}
                     setInfoOpen={this.props.setInfoOpen}
                     selectedPlace={this.props.selectedPlace}
@@ -80,23 +76,40 @@ class DropSchedule extends React.Component {
         <Droppable droppableId={"locationList"}>
           {(provided) => (
             <div
-              className={styles.locationSection}
-              id={`locationSection0`}
+              className={
+                this.props.showLocationSearch
+                  ? styles.locationSectionShow
+                  : styles.locationSection
+              }
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              <div className={styles.findLocationShow} id="findLocationShow">
+              <div
+                className={
+                  this.props.switchToLocationSearchShow
+                    ? styles.listShow
+                    : styles.displayNone
+                }
+              >
                 <FindLocation
                   getCountry={this.props.getCountry}
                   userUid={this.props.userUid}
                   handleStar={this.handleStar}
+                  showLocationSearch={this.props.showLocationSearch}
                 />
               </div>
 
-              <div className={styles.likeLocationShow} id="likeLocationShow">
+              <div
+                className={
+                  this.props.switchToLocationSearchShow
+                    ? styles.displayNone
+                    : styles.listShow
+                }
+              >
                 <LikeLocation
                   userUid={this.props.userUid}
                   handleStar={this.handleStar}
+                  showLocationSearch={this.props.showLocationSearch}
                 />
               </div>
             </div>
@@ -116,10 +129,11 @@ DropSchedule.propTypes = {
   handleTraffic: PropTypes.func,
   trafficDetail: PropTypes.object,
   userUid: PropTypes.string,
-  travelDateDetail: PropTypes.array,
   travelDetailCountry: PropTypes.object,
   handleDeleteLocation: PropTypes.func,
   dragging: PropTypes.bool,
+  switchToLocationSearchShow: PropTypes.bool,
+  showLocationSearch: PropTypes.bool,
 };
 
 export default DropSchedule;

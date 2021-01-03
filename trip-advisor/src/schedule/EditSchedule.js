@@ -11,9 +11,9 @@ import {
   getTravelTitleData,
   getTravelScheduleData,
   getLocationDetail,
+  getLikeList,
+  setSchedule,
 } from "../Utils";
-
-const db = firebase.firestore();
 
 class EditSchedule extends React.Component {
   constructor(props) {
@@ -30,8 +30,8 @@ class EditSchedule extends React.Component {
       trafficDetail: {},
       userUid: "",
       showLocationSearch: false,
-      btnClick: true,
-      travelDateDetail: [],
+      switchToLocationSearchShow: true,
+
       travelDetailCountry: {},
       dragging: false,
     };
@@ -59,47 +59,44 @@ class EditSchedule extends React.Component {
         this.setState({ titleData: titleDataTemp });
       });
 
-      let travelDateDetailTemp = [];
       let travelDetailCountryTemp = {};
       getTravelScheduleData(user.uid, travelShowId).then((docs) => {
-        travelDateDetailTemp = [];
         docs.forEach((doc) => {
-          travelDateDetailTemp.push(doc.data());
           travelDetailCountryTemp[doc.data().name] = doc.data().morning;
         });
         this.setState({
-          travelDateDetail: travelDateDetailTemp,
           travelDetailCountry: travelDetailCountryTemp,
         });
         document.getElementById("loading").style.display = "none";
       });
     });
   }
+
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.travelDateDetail !== this.state.travelDateDetail) {
-      let locationSpot = {};
+    if (prevState.travelDetailCountry !== this.state.travelDetailCountry) {
+      let locationSpot = new Object();
 
-      this.state.travelDateDetail.forEach((item) => {
+      Object.keys(this.state.travelDetailCountry).forEach((date) => {
         let arr = [];
-
-        if (item.morning.length > 1) {
-          for (let i = 0; i < item.morning.length - 1; i++) {
+        if (this.state.travelDetailCountry[date].length > 1) {
+          let morningArray = this.state.travelDetailCountry[date];
+          for (let i = 0; i < morningArray.length - 1; i++) {
             let obj = {};
 
             obj["origin"] = new window.google.maps.LatLng(
-              item.morning[i].pos.lat,
-              item.morning[i].pos.lng
+              morningArray[i].pos.lat,
+              morningArray[i].pos.lng
             );
             obj["destination"] = new window.google.maps.LatLng(
-              item.morning[i + 1].pos.lat,
-              item.morning[i + 1].pos.lng
+              morningArray[i + 1].pos.lat,
+              morningArray[i + 1].pos.lng
             );
             obj["travelMode"] = "DRIVING";
             obj["id"] = i;
             arr.push(obj);
           }
         }
-        locationSpot[item.name] = arr;
+        locationSpot[date] = arr;
       });
 
       this.setState({
@@ -146,21 +143,18 @@ class EditSchedule extends React.Component {
     }
 
     if (dragCardCategory === "L") {
-      db.collection("schedule")
-        .doc(this.state.userUid)
-        .get()
-        .then((docAll) => {
-          let locationLikeDetailTemp = {};
-          docAll.data().like.forEach((location) => {
-            if (location.id.toString() === dragCardId) {
-              locationLikeDetailTemp = location;
-              locationLikeDetailTemp.id = location.id.toString();
-              this.setState({
-                locationLikeDetail: locationLikeDetailTemp,
-              });
-            }
-          });
+      getLikeList(this.state.userUid).then((docAll) => {
+        let locationLikeDetailTemp = {};
+        docAll.data().like.forEach((location) => {
+          if (location.id.toString() === dragCardId) {
+            locationLikeDetailTemp = location;
+            locationLikeDetailTemp.id = location.id.toString();
+            this.setState({
+              locationLikeDetail: locationLikeDetailTemp,
+            });
+          }
         });
+      });
     }
   };
 
@@ -201,33 +195,17 @@ class EditSchedule extends React.Component {
         travelMorningTemp.splice(destination.index, 0, remove);
 
         let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
-        let travelDateDetailTemp = [...this.state.travelDateDetail];
-
-        const travelDateDetailTemp2 = travelDateDetailTemp.map((item) => {
-          if (item.name === destinationDroppableId) {
-            return {
-              ...item,
-              morning: travelMorningTemp,
-            };
-          }
-          return item;
-        });
         travelDetailCountryTemp[destinationDroppableId] = travelMorningTemp;
         this.setState({
           travelDetailCountry: travelDetailCountryTemp,
-          travelDateDetail: travelDateDetailTemp2,
         });
 
-        db.collection("schedule")
-          .doc(this.state.userUid)
-          .collection("data")
-          .doc(`travel${this.state.travelShowId}`)
-          .collection("dateBlockDetail")
-          .doc(destinationDroppableId)
-          .set({
-            morning: travelMorningTemp,
-            name: destinationDroppableId,
-          });
+        setSchedule(
+          this.state.userUid,
+          this.state.travelShowId,
+          destinationDroppableId,
+          travelMorningTemp
+        );
       } else {
         let travelMorningDragTemp = [];
         let travelMorningDropTemp = [];
@@ -241,43 +219,26 @@ class EditSchedule extends React.Component {
         travelMorningDropTemp.splice(destination.index, 0, remove);
 
         let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
-        let travelDateDetailTemp = [...this.state.travelDateDetail];
 
-        travelDateDetailTemp.forEach((item) => {
-          if (item.name === destinationDroppableId) {
-            item.morning = travelMorningDropTemp;
-          } else if (item.name === sourceDroppableId) {
-            item.morning = travelMorningDragTemp;
-          }
-        });
         travelDetailCountryTemp[sourceDroppableId] = travelMorningDragTemp;
         travelDetailCountryTemp[destinationDroppableId] = travelMorningDropTemp;
         this.setState({
           travelDetailCountry: travelDetailCountryTemp,
-          travelDateDetail: travelDateDetailTemp,
         });
 
-        db.collection("schedule")
-          .doc(this.state.userUid)
-          .collection("data")
-          .doc(`travel${this.state.travelShowId}`)
-          .collection("dateBlockDetail")
-          .doc(sourceDroppableId)
-          .set({
-            morning: travelMorningDragTemp,
-            name: sourceDroppableId,
-          });
+        setSchedule(
+          this.state.userUid,
+          this.state.travelShowId,
+          sourceDroppableId,
+          travelMorningDragTemp
+        );
 
-        db.collection("schedule")
-          .doc(this.state.userUid)
-          .collection("data")
-          .doc(`travel${this.state.travelShowId}`)
-          .collection("dateBlockDetail")
-          .doc(destinationDroppableId)
-          .set({
-            morning: travelMorningDropTemp,
-            name: destinationDroppableId,
-          });
+        setSchedule(
+          this.state.userUid,
+          this.state.travelShowId,
+          destinationDroppableId,
+          travelMorningDropTemp
+        );
       }
     }
 
@@ -303,48 +264,24 @@ class EditSchedule extends React.Component {
       }
 
       let travelDetailCountryTemp = { ...this.state.travelDetailCountry };
-      let travelDateDetailTemp = [...this.state.travelDateDetail];
-
-      travelDateDetailTemp.forEach((item) => {
-        if (item.name === destinationDroppableId) {
-          item.morning = travelMorningTemp;
-        }
-      });
 
       travelDetailCountryTemp[destinationDroppableId] = travelMorningTemp;
       this.setState({
         travelDetailCountry: travelDetailCountryTemp,
-        travelDateDetail: travelDateDetailTemp,
       });
 
-      db.collection("schedule")
-        .doc(this.state.userUid)
-        .collection("data")
-        .doc(`travel${this.state.travelShowId}`)
-        .collection("dateBlockDetail")
-        .doc(destinationDroppableId)
-        .set({
-          morning: travelMorningTemp,
-          name: destinationDroppableId,
-        });
+      setSchedule(
+        this.state.userUid,
+        this.state.travelShowId,
+        destinationDroppableId,
+        travelMorningTemp
+      );
     }
   };
 
-  handleLocationShow = () => {
-    document.getElementById("findLocationShow").style.display = "block";
-    document.getElementById("searchAll").style.animation = "none";
-    document.getElementById("locationList").style.animation = "none";
-    document.getElementById("likeLocationShow").style.display = "none";
+  handleLocationShow = (state) => {
     this.setState({
-      btnClick: true,
-    });
-  };
-  handleCollectionShow = () => {
-    document.getElementById("findLocationShow").style.display = "none";
-    document.getElementById("likeLocationShow").style.display = "block";
-    document.getElementById("likeList").style.display = "block";
-    this.setState({
-      btnClick: false,
+      switchToLocationSearchShow: state,
     });
   };
 
@@ -353,21 +290,8 @@ class EditSchedule extends React.Component {
       infoOpen: state,
     });
   };
-  setSelectedPlace = (item) => {
-    // console.log(item);
-    let obj = {
-      lat: parseFloat(item.latitude),
-      lng: parseFloat(item.longitude),
-    };
-    this.setState({
-      selectedPlace: {
-        pos: obj,
-        name: item.name,
-      },
-    });
-  };
+
   setSelectedPlaceMarker = (item) => {
-    // console.log(item);
     let obj = {};
     obj["pos"] = {
       lat: item.pos.lat,
@@ -401,16 +325,12 @@ class EditSchedule extends React.Component {
       this.setState({
         travelDetailCountry: travelDetailCountryTemp,
       });
-      db.collection("schedule")
-        .doc(this.state.userUid)
-        .collection("data")
-        .doc(`travel${window.location.pathname.substring(23)}`)
-        .collection("dateBlockDetail")
-        .doc(date)
-        .set({
-          morning: travelMorningTemp,
-          name: date,
-        });
+      setSchedule(
+        this.state.userUid,
+        this.state.travelShowId,
+        date,
+        travelMorningTemp
+      );
     }
 
     if (i === this.state.travelDetailCountry[date].length - 1) {
@@ -422,43 +342,31 @@ class EditSchedule extends React.Component {
 
   handleShowLocationDrag = () => {
     if (this.state.showLocationSearch === false) {
-      document.getElementById("locationDetail").style.display = "flex";
-      document.getElementById("locationSection0").style.opacity = 1;
-      document.getElementById("locationSection0").style.width = "300px";
-      document.getElementById("locationList").style.width = "200px";
-      document.getElementById("likeList").style.width = "200px";
-      document.getElementById("searchAll").style.width = "200px";
-      document.getElementById("searchAll").style.overflow = "visible";
-      document.getElementById("switchBtn").style.opacity = 1;
-      document.getElementById("switchBtn").style.width = "300px";
-      document.getElementById("arrow").style.transform = "rotate(-180deg)";
-      document.getElementById("arrow").style.transition = "0.3s";
       this.setState({ showLocationSearch: true });
     } else {
-      document.getElementById("locationSection0").style.opacity = 0;
-      document.getElementById("locationSection0").style.width = "0px";
-      document.getElementById("locationList").style.width = "0px";
-      document.getElementById("likeList").style.width = "0px";
-      document.getElementById("searchAll").style.width = "0px";
-      document.getElementById("searchAll").style.overflow = "hidden";
-      document.getElementById("switchBtn").style.opacity = 0;
-      document.getElementById("switchBtn").style.width = "0px";
-      document.getElementById("arrow").style.transition = "0.3s";
-      document.getElementById("arrow").style.transform = "rotate(0deg)";
       this.setState({ showLocationSearch: false });
     }
   };
 
   render() {
     const titleData = this.state.titleData;
-    console.log(this.state.travelDetailCountry);
     return (
       <div className={styles.scheduleWithMap}>
         <div className={styles.schedule}>
-          <div className={styles.switchBtn} id="switchBtn">
+          <div
+            className={
+              this.state.showLocationSearch
+                ? styles.switchBtnClick
+                : styles.switchBtn
+            }
+          >
             <button
-              onClick={this.handleLocationShow}
-              className={this.state.btnClick ? styles.btnClick : styles.btn}
+              onClick={() => this.handleLocationShow(true)}
+              className={
+                this.state.switchToLocationSearchShow
+                  ? styles.btnClick
+                  : styles.btn
+              }
             >
               <span>景點搜尋</span>
               <div className={`${styles.triangle} ${styles.t1}`}></div>
@@ -466,8 +374,12 @@ class EditSchedule extends React.Component {
             </button>
 
             <button
-              onClick={this.handleCollectionShow}
-              className={this.state.btnClick ? styles.btn : styles.btnClick}
+              onClick={() => this.handleLocationShow(false)}
+              className={
+                this.state.switchToLocationSearchShow
+                  ? styles.btn
+                  : styles.btnClick
+              }
             >
               <span>我的收藏</span>
               <div className={`${styles.triangle} ${styles.t1}`}></div>
@@ -478,8 +390,11 @@ class EditSchedule extends React.Component {
           <div key={titleData.id} className={styles.scheduleListTopLeft}>
             <div className={styles.scheduleListDetailTopLeft}>
               <div
-                className={styles.arrowBounce}
-                id="arrow"
+                className={
+                  this.state.showLocationSearch
+                    ? styles.arrowBounce
+                    : styles.arrowBounceRotate
+                }
                 onClick={this.handleShowLocationDrag}
               >
                 <FontAwesomeIcon icon={faArrowRight} />
@@ -509,15 +424,18 @@ class EditSchedule extends React.Component {
                 getCountry={this.getCountry}
                 setInfoOpen={this.setInfoOpen}
                 selectedPlace={this.state.selectedPlace}
-                setSelectedPlace={this.setSelectedPlace}
+                setSelectedPlace={this.setSelectedPlaceMarker}
                 traffic={this.state.traffic}
                 handleTraffic={this.handleTraffic}
                 trafficDetail={this.state.trafficDetail}
                 userUid={this.state.userUid}
-                travelDateDetail={this.state.travelDateDetail}
                 travelDetailCountry={this.state.travelDetailCountry}
                 handleDeleteLocation={this.handleDeleteLocation}
                 dragging={this.state.dragging}
+                switchToLocationSearchShow={
+                  this.state.switchToLocationSearchShow
+                }
+                showLocationSearch={this.state.showLocationSearch}
               />
             )}
           </DragDropContext>
@@ -525,7 +443,7 @@ class EditSchedule extends React.Component {
 
         <div className={styles.scheduleMap}>
           <ScheduleMap
-            travelDateDetail={this.state.travelDateDetail}
+            travelDetailCountry={this.state.travelDetailCountry}
             infoOpen={this.state.infoOpen}
             setInfoOpen={this.setInfoOpen}
             selectedPlace={this.state.selectedPlace}

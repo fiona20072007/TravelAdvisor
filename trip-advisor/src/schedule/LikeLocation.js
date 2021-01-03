@@ -16,11 +16,6 @@ class LikeLocation extends React.Component {
   }
 
   componentDidMount() {
-    // let elsLike = document.getElementsByClassName("likeLocationShow");
-    // Array.from(elsLike).forEach((el) => {
-    //   el.style.display = "none";
-    // });
-
     db.collection("schedule")
       .doc(this.props.userUid)
       .onSnapshot((docAll) => {
@@ -85,7 +80,11 @@ class LikeLocation extends React.Component {
 
   render() {
     return (
-      <div className={styles.likeList} id="likeList">
+      <div
+        className={
+          this.props.showLocationSearch ? styles.likeListShow : styles.likeList
+        }
+      >
         {this.state.locationLikeDetail.map((item, i) => {
           return (
             <Draggable draggableId={`Ld-${item.id}`} index={i} key={i}>
@@ -121,7 +120,6 @@ class LikeLocation extends React.Component {
                       style={{ width: this.props.handleStar(item.star_level) }}
                     ></div>
                   </div>
-                  {/* <div>{item.star_level}</div> */}
                 </div>
               )}
             </Draggable>
@@ -135,6 +133,7 @@ class LikeLocation extends React.Component {
 LikeLocation.propTypes = {
   userUid: PropTypes.string,
   handleStar: PropTypes.func,
+  showLocationSearch: PropTypes.bool,
 };
 
 export default LikeLocation;

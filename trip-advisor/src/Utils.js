@@ -120,3 +120,26 @@ export const getLocationDetail = (searchCountry) => {
     .collection("location")
     .get();
 };
+
+export const getLikeList = (userId) => {
+  return db.collection("schedule").doc(userId).get();
+};
+
+export const setSchedule = (
+  userId,
+  travelShowId,
+  droppableId,
+  travelMorningArr
+) => {
+  return db
+    .collection("schedule")
+    .doc(userId)
+    .collection("data")
+    .doc(`travel${travelShowId}`)
+    .collection("dateBlockDetail")
+    .doc(droppableId)
+    .set({
+      morning: travelMorningArr,
+      name: droppableId,
+    });
+};
