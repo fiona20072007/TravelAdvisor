@@ -143,3 +143,11 @@ export const setSchedule = (
       name: droppableId,
     });
 };
+
+export const getTravelTitleDetail = (userId, travelShowId) => {
+  return db
+    .collection("schedule")
+    .doc(userId)
+    .collection("data")
+    .doc("travel" + travelShowId);
+};

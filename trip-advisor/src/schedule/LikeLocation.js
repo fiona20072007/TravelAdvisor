@@ -3,6 +3,7 @@ import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
+import { handleStar } from "../Utils";
 
 const db = firebase.firestore();
 
@@ -117,7 +118,7 @@ class LikeLocation extends React.Component {
                     <div className={styles["empty-stars"]}></div>
                     <div
                       className={styles["full-stars"]}
-                      style={{ width: this.props.handleStar(item.star_level) }}
+                      style={{ width: handleStar(item.star_level) }}
                     ></div>
                   </div>
                 </div>
@@ -132,7 +133,6 @@ class LikeLocation extends React.Component {
 
 LikeLocation.propTypes = {
   userUid: PropTypes.string,
-  handleStar: PropTypes.func,
   showLocationSearch: PropTypes.bool,
 };
 

@@ -15,10 +15,6 @@ class DropSchedule extends React.Component {
     });
   };
 
-  handleStar = (num) => {
-    return (Number(num) / 5.4) * 100;
-  };
-
   render() {
     return (
       <div className={styles.scheduleDateAll}>
@@ -52,7 +48,6 @@ class DropSchedule extends React.Component {
                   {...provided.droppableProps}
                 >
                   <DragListSchedule
-                    item={date}
                     date={date}
                     travelDetailCountry={this.props.travelDetailCountry}
                     setInfoOpen={this.props.setInfoOpen}
@@ -62,7 +57,6 @@ class DropSchedule extends React.Component {
                     handleTraffic={this.props.handleTraffic}
                     trafficDetail={this.props.trafficDetail}
                     userUid={this.props.userUid}
-                    handleStar={this.handleStar}
                     handleDeleteLocation={this.props.handleDeleteLocation}
                     dragging={this.props.dragging}
                   />
@@ -94,7 +88,6 @@ class DropSchedule extends React.Component {
                 <FindLocation
                   getCountry={this.props.getCountry}
                   userUid={this.props.userUid}
-                  handleStar={this.handleStar}
                   showLocationSearch={this.props.showLocationSearch}
                 />
               </div>
@@ -108,7 +101,6 @@ class DropSchedule extends React.Component {
               >
                 <LikeLocation
                   userUid={this.props.userUid}
-                  handleStar={this.handleStar}
                   showLocationSearch={this.props.showLocationSearch}
                 />
               </div>

@@ -9,7 +9,7 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlane, faCalendarCheck } from "@fortawesome/free-solid-svg-icons";
 import anime from "animejs/lib/anime.es.js";
-// import { nanoid } from "nanoid";
+import { getTravelTitleDetail, setSchedule } from "../Utils";
 
 const db = firebase.firestore();
 
@@ -165,47 +165,31 @@ class AddSchedule extends React.Component {
   handleSubmit = (event) => {
     let date = Date.now();
     event.preventDefault();
-    db.collection("schedule")
-      .doc(this.props.userUid)
-      .collection("data")
-      .doc("travel" + this.state.size)
-      .set({
-        CoverImgUrl:
-          "https://imgs.gvm.com.tw/upload/gallery/oimg26/26478_01.jpg",
-        EndDate: this.state.endDateSubmit,
-        EndDateStamp: this.state.endDateStamp,
-        ImMultiEditMember: false,
-        ShareLink: "",
-        StartDate: this.state.startDateSubmit,
-        StartDateStamp: this.state.startDateStamp,
-        TotalDay: this.state.totalDay,
-        TravelScheduleDetailInfos: [],
-        TravelScheduleName: this.state.value,
-        comment: "",
-        id: this.state.size,
-        dateBlock: this.state.dateBlock,
-        setDateStamp: date,
-      });
+    getTravelTitleDetail(this.props.userUid, this.state.size).set({
+      CoverImgUrl: "https://imgs.gvm.com.tw/upload/gallery/oimg26/26478_01.jpg",
+      EndDate: this.state.endDateSubmit,
+      EndDateStamp: this.state.endDateStamp,
+      ImMultiEditMember: false,
+      ShareLink: "",
+      StartDate: this.state.startDateSubmit,
+      StartDateStamp: this.state.startDateStamp,
+      TotalDay: this.state.totalDay,
+      TravelScheduleDetailInfos: [],
+      TravelScheduleName: this.state.value,
+      comment: "",
+      id: this.state.size,
+      dateBlock: this.state.dateBlock,
+      setDateStamp: date,
+    });
     for (let i = 0; i < this.state.totalDay; i++) {
-      db.collection("schedule")
-        .doc(this.props.userUid)
-        .collection("data")
-        .doc("travel" + this.state.size)
-        .collection("dateBlockDetail")
-        .doc(this.state.dateBlock[i])
-        .set({
-          id: i,
-          name: this.state.dateBlock[i],
-          morning: [],
-        });
+      setSchedule(
+        this.props.userUid,
+        this.state.size,
+        this.state.dateBlock[i],
+        []
+      );
     }
 
-    // alert(
-    //   "Submitted: " +
-    //     this.state.startDateSubmit +
-    //     "~" +
-    //     this.state.endDateSubmit
-    // );
     this.setState({ value: "" });
     this.props.handleSubmitChange();
   };

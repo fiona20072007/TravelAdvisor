@@ -633,9 +633,11 @@ a {
 }
 .itemListDelete {
   position: absolute;
-  top: 2px;
+  top: 8px;
   right: 10px;
   cursor: pointer;
+  color: white;
+  font-size: 25px;
   display: none;
 }
 .itemLike {
@@ -679,6 +681,7 @@ a {
 .locationSectionShow {
   @include locationComponent(1, 300px);
   z-index: 10;
+  border: 1px solid white;
 }
 
 // .locationSection:global(#locationSection0) {
