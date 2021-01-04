@@ -8,7 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { Droppable } from "react-beautiful-dnd";
 
-class DropSchedule extends React.PureComponent {
+class DropSchedule extends React.Component {
   handleDateScroll = (id) => {
     document.getElementById(`day${id + 1}`).scrollIntoView({
       behavior: "smooth",

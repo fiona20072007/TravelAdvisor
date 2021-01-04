@@ -15,7 +15,7 @@ import {
   setSchedule,
 } from "../Utils";
 
-class EditSchedule extends React.PureComponent {
+class EditSchedule extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -125,7 +125,7 @@ class EditSchedule extends React.PureComponent {
               country: this.state.searchCountry,
               name: doc.data().name,
               id: doc.data().id,
-              PointImgUrl: doc.data().PointImgUrl,
+              photo: doc.data().PointImgUrl,
               star_level: doc.data().star_level,
               pos: {
                 lat: parseFloat(doc.data().latitude),

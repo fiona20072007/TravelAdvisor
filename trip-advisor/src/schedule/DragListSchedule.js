@@ -7,7 +7,7 @@ import { handleStar } from "../Utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
-class DragListSchedule extends React.PureComponent {
+class DragListSchedule extends React.Component {
   render() {
     return (
       <div>
@@ -55,10 +55,7 @@ class DragListSchedule extends React.PureComponent {
                     >
                       <FontAwesomeIcon icon={faWindowClose} />
                     </div>
-                    <img
-                      src={item.PointImgUrl}
-                      className={styles.itemPhoto}
-                    ></img>
+                    <img src={item.photo} className={styles.itemPhoto}></img>
                     <div className={styles.itemName}>{item.name}</div>
                     <div className={styles.ratings}>
                       <div className={styles["empty-stars"]}></div>
