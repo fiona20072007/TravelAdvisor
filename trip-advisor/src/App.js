@@ -11,6 +11,7 @@ import {
   faGlobeAsia,
   faMapMarkedAlt,
   faUserCircle,
+  faExclamationTriangle,
 } from "@fortawesome/free-solid-svg-icons";
 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -56,6 +57,10 @@ class App extends React.Component {
           <div className={styles.dot}></div>
           <div className={styles.dot}></div>
           <div className={styles.dot}></div>
+        </div>
+        <div className={styles.alert} id="alert">
+          <FontAwesomeIcon icon={faExclamationTriangle} />
+          <div> 無法拖曳重複的景點卡片哦！</div>
         </div>
         <div className={styles.app}>
           <nav className={this.state.hidden ? styles.hide : styles.active}>

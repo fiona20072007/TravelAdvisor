@@ -166,12 +166,33 @@ class EditSchedule extends React.Component {
     const dragCardCategory = draggableId.substr(0, 1);
     const sourceDroppableId = source.droppableId.substring(5);
     let destinationDroppableId = null;
+    let repeatDragCardId = "";
 
     if (!destination) {
       return;
     } else {
       destinationDroppableId = destination.droppableId.substring(5);
     }
+
+    Object.keys(this.state.travelDetailCountry).forEach((date) => {
+      if (this.state.travelDetailCountry[date].length !== 0) {
+        this.state.travelDetailCountry[date].forEach((obj) => {
+          if (obj.id === draggableId.substr(3)) {
+            repeatDragCardId = obj.id;
+          }
+        });
+      }
+    });
+
+    if (repeatDragCardId !== "") {
+      document.getElementById("alert").style.display = "flex";
+      window.setTimeout(
+        () => (document.getElementById("alert").style.display = "none"),
+        1500
+      );
+      return;
+    }
+
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
