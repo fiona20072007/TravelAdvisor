@@ -31,7 +31,6 @@ class EditSchedule extends React.Component {
       userUid: "",
       showLocationSearch: false,
       switchToLocationSearchShow: true,
-
       travelDetailCountry: {},
       dragging: false,
     };

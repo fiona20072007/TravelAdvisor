@@ -4,9 +4,7 @@ import PropTypes from "prop-types";
 import firebase from "../firebase";
 import AsyncSelect from "react-select/async";
 import styles from "../scss/schedule.module.scss";
-// import { Draggable } from "react-beautiful-dnd";
 import {
-  getLikeList,
   setLikeListEmpty,
   searchLoadOptions,
   getLocationDetail,
@@ -35,13 +33,15 @@ class FindLocation extends React.Component {
   }
 
   componentDidMount() {
-    getLikeList(this.props.userUid).then((doc) => {
-      if (doc.data()["like"] === undefined) {
-        setLikeListEmpty(this.props.userUid);
-      } else {
-        this.setState({ likeList: doc.data()["like"] });
-      }
-    });
+    db.collection("schedule")
+      .doc(this.props.userUid)
+      .onSnapshot((doc) => {
+        if (doc.data()["like"] === undefined) {
+          setLikeListEmpty(this.props.userUid);
+        } else {
+          this.setState({ likeList: doc.data()["like"] });
+        }
+      });
   }
 
   loadOptions = async (inputValue) => {
@@ -94,52 +94,12 @@ class FindLocation extends React.Component {
           id: parseInt(doc.data().id),
         });
       });
-      let locationArrayTemp = locationDetailTemp.map((item, i) => {
-        return <FindLocationCard key={i} locationDetail={item} />;
-      });
 
       this.setState({
-        locationArray: locationArrayTemp,
+        locationArray: locationDetailTemp,
       });
     });
-
-    // if (e.label) {
-    //   window.setTimeout(
-    //     () =>
-    //       this.state.likeList.forEach(likeItem => {
-    //         if (document.getElementById(`likeSearch-${likeItem.id}`) === null) {
-    //           return;
-    //         } else {
-    //           document.getElementById(
-    //             `likeSearch-${likeItem.id}`
-    //           ).style.display = "block";
-    //         }
-    //       }),
-    //     400
-    //   );
-    // }
   };
-
-  // componentDidUpdate(prevState) {
-  //   if (
-  //     this.state.likeList !== prevState.likeList &&
-  //     this.state.likeList.length !== 0 &&
-  //     this.state.value !== ""
-  //   ) {
-  //     this.state.locationDetail.map(item => {
-  //       if (this.state.likeList.find(i => i.id === item.id)) {
-  //         document.getElementById(`likeSearch-${item.id}`).style.fill =
-  //           "rgb(255, 128, 191)";
-  //         document.getElementById(`likeSearch-${item.id}`).style[
-  //           "fill-opacity"
-  //         ] = 1;
-  //       } else {
-  //         document.getElementById(`likeSearch-${item.id}`).style.display =
-  //           "none";
-  //       }
-  //     });
-  //   }
-  // }
 
   handleOnChange(id) {
     document.getElementById(id).scrollIntoView({
@@ -148,48 +108,6 @@ class FindLocation extends React.Component {
       inline: "nearest",
     });
   }
-
-  handleLike = (item) => {
-    let obj = {
-      country: item.country,
-      name: item.name,
-      id: item.id,
-      PointImgUrl: item.photo,
-      star_level: item.star_level,
-      pos: {
-        lat: item.latitude,
-        lng: item.longitude,
-      },
-    };
-    let likeArr = [...this.state.likeList];
-
-    if (this.state.likeList.find((i) => i.id === item.id)) {
-      document.getElementById(`likeSearch-${item.id}`).style.fill =
-        "rgb(255, 255, 255)";
-      document.getElementById(`likeSearch-${item.id}`).style[
-        "fill-opacity"
-      ] = 0.3;
-      let likeArrFilter = [...this.state.likeList];
-      likeArr = likeArrFilter.filter((i) => i.id !== item.id);
-    } else {
-      document.getElementById(`likeSearch-${item.id}`).style.fill =
-        "rgb(255, 128, 191)";
-      document.getElementById(`likeSearch-${item.id}`).style[
-        "fill-opacity"
-      ] = 1;
-      likeArr.push(obj);
-    }
-
-    this.setState({
-      likeList: likeArr,
-    });
-    db.collection("schedule").doc(this.props.userUid).set(
-      {
-        like: likeArr,
-      },
-      { merge: true }
-    );
-  };
 
   render() {
     return (
@@ -227,7 +145,16 @@ class FindLocation extends React.Component {
               : styles.locationList
           }
         >
-          {this.state.locationArray}
+          {this.state.locationArray.map((item, i) => {
+            return (
+              <FindLocationCard
+                key={i}
+                locationDetail={item}
+                userUid={this.props.userUid}
+                likeList={this.state.likeList}
+              />
+            );
+          })}
         </div>
       </div>
     );

@@ -1,7 +1,7 @@
 import React from "react";
 import firebase from "../firebase";
 import AsyncSelect from "react-select/async";
-import Show from "./show";
+import Card from "./Card";
 import DetailCard from "./DetailCard";
 import SimpleMap from "./map";
 import styles from "../scss/locationDetail.module.scss";
@@ -172,23 +172,15 @@ class LocationDetail extends React.Component {
       infoOpen: state,
     });
   };
-  setLikeDb = (likeArr) => {
-    db.collection("schedule").doc(this.state.userUid).set(
-      {
-        like: likeArr,
-      },
-      { merge: true }
-    );
-  };
 
   render() {
     const showCardArr = this.state.locationDetail.map((item, i) => (
-      <Show
+      <Card
         item={item}
         i={i}
         key={nanoid()}
+        userId={this.state.userUid}
         likeList={this.state.likeList}
-        setLikeDb={this.setLikeDb}
         markerClickHandler={(event) => {
           this.markerClickHandler(event, item, Math.floor(i / 3));
         }}

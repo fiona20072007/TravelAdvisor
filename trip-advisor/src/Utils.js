@@ -94,6 +94,15 @@ export function setLikeListEmpty(userId) {
   );
 }
 
+export function setLikeDb(userId, likeArr) {
+  db.collection("schedule").doc(userId).set(
+    {
+      like: likeArr,
+    },
+    { merge: true }
+  );
+}
+
 export const getTravelTitleData = (userId, travelId) => {
   return db
     .collection("schedule")

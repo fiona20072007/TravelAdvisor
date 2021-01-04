@@ -2,16 +2,46 @@ import React from "react";
 import PropTypes from "prop-types";
 import styles from "../scss/schedule.module.scss";
 import { Draggable } from "react-beautiful-dnd";
-import { handleStar } from "../Utils";
+import { handleStar, setLikeDb } from "../Utils";
 
 class FindLocationCard extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      value: "",
+      likeState: "hide",
     };
   }
+
+  componentDidMount() {
+    const findLike = this.props.likeList.find(
+      (item) => item.id === this.props.locationDetail.id
+    );
+    findLike !== undefined
+      ? this.setState({ likeState: "showRed" })
+      : this.setState({ likeState: "hide" });
+  }
+
+  handleLike = (likeItem) => {
+    const likeAllArr = [...this.props.likeList];
+
+    if (likeAllArr.length === 0) {
+      likeAllArr.push(likeItem);
+      setLikeDb(this.props.userUid, likeAllArr);
+    } else {
+      if (likeAllArr.find((item) => item.id === likeItem.id)) {
+        this.setState({ likeState: "showGray" });
+        const removeLikeAllArr = likeAllArr.filter(function (i) {
+          return i.id !== likeItem.id;
+        });
+        setLikeDb(this.props.userUid, removeLikeAllArr);
+      } else {
+        this.setState({ likeState: "showRed" });
+        likeAllArr.push(likeItem);
+        setLikeDb(this.props.userUid, likeAllArr);
+      }
+    }
+  };
 
   render() {
     return (
@@ -27,46 +57,37 @@ class FindLocationCard extends React.Component {
             {...provided.dragHandleProps}
             ref={provided.innerRef}
             onMouseOver={() => {
-              document.getElementById(
-                `likeSearch-${this.props.locationDetail.id}`
-              ).style.display = "block";
               if (
-                this.state.likeList.find(
+                this.props.likeList.find(
                   (i) => i.id === this.props.locationDetail.id
                 )
               ) {
-                document.getElementById(
-                  `likeSearch-${this.props.locationDetail.id}`
-                ).style.fill = "rgb(255, 128, 191)";
-                document.getElementById(
-                  `likeSearch-${this.props.locationDetail.id}`
-                ).style["fill-opacity"] = 1;
+                this.setState({ likeState: "showRed" });
               } else {
-                document.getElementById(
-                  `likeSearch-${this.props.locationDetail.id}`
-                ).style.fill = "rgb(255, 255, 255)";
-                document.getElementById(
-                  `likeSearch-${this.props.locationDetail.id}`
-                ).style["fill-opacity"] = 0.3;
+                this.setState({ likeState: "showGray" });
               }
             }}
             onMouseLeave={() => {
               if (
-                this.state.likeList.find(
+                this.props.likeList.find(
                   (i) => i.id === this.props.locationDetail.id
                 )
               ) {
                 return;
               } else {
-                document.getElementById(
-                  `likeSearch-${this.props.locationDetail.id}`
-                ).style.display = "none";
+                this.setState({ likeState: "hide" });
               }
             }}
           >
             <div
               id={`likeSearch-${this.props.locationDetail.id}`}
-              className={styles.searchLike}
+              className={
+                this.state.likeState === "hide"
+                  ? styles.hideLike
+                  : this.state.likeState === "showRed"
+                  ? styles.redLike
+                  : styles.grayLike
+              }
               onClick={() => this.handleLike(this.props.locationDetail)}
             >
               <svg id="icon-heart" viewBox="0 0 32 32" width="30" height="20">
@@ -99,6 +120,8 @@ class FindLocationCard extends React.Component {
 
 FindLocationCard.propTypes = {
   locationDetail: PropTypes.object,
+  likeList: PropTypes.array,
+  userUid: PropTypes.string,
 };
 
 export default FindLocationCard;

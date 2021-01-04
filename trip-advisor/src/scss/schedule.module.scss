@@ -1028,3 +1028,24 @@ h2 {
 .full-stars:before {
   -webkit-text-stroke: 1px orange;
 }
+
+//Like component
+@mixin likeComponent($fillColor, $opacity, $show) {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  stroke: rgb(128, 128, 128);
+  stroke-width: 2px;
+  fill: $fillColor;
+  fill-opacity: $opacity;
+  display: $show;
+}
+.redLike {
+  @include likeComponent(rgb(255, 128, 191), 1, block);
+}
+.grayLike {
+  @include likeComponent(rgb(255, 255, 255), 0.8, block);
+}
+.hideLike {
+  @include likeComponent(rgb(255, 255, 255), 0.3, none);
+}

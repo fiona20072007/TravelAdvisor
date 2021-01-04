@@ -20,10 +20,18 @@ class LikeLocation extends React.Component {
     db.collection("schedule")
       .doc(this.props.userUid)
       .onSnapshot((docAll) => {
-        this.setState({
-          locationDetail: docAll.data().like,
-        });
+        if (docAll.data().like.length !== 0) {
+          this.setState({
+            locationDetail: docAll.data().like,
+          });
+        } else {
+          this.setState({
+            locationDetail: [],
+          });
+        }
+
         let locationLikeDetailTemp = [];
+        console.log(docAll.data().like);
         docAll.data().like.map((item) => {
           db.collection("country")
             .doc(item.country)

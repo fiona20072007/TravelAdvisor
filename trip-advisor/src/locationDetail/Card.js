@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import styles from "../scss/locationDetail.module.scss";
-import { handleStar } from "../Utils";
+import { handleStar, setLikeDb } from "../Utils";
 
 const Show = (props) => {
   const [likeState, setLikeState] = useState("hide");
@@ -19,18 +19,18 @@ const Show = (props) => {
 
     if (likeAllArr.length === 0) {
       likeAllArr.push(obj);
-      props.setLikeDb(likeAllArr);
+      setLikeDb(props.userId, likeAllArr);
     } else {
       if (likeAllArr.find((item) => item.id === likeItem.id)) {
         setLikeState("showGray");
         const removeLikeAllArr = likeAllArr.filter(function (i) {
           return i.id !== likeItem.id;
         });
-        props.setLikeDb(removeLikeAllArr);
+        setLikeDb(props.userId, removeLikeAllArr);
       } else {
         setLikeState("showRed");
         likeAllArr.push(obj);
-        props.setLikeDb(likeAllArr);
+        setLikeDb(props.userId, likeAllArr);
       }
     }
   };
@@ -101,6 +101,7 @@ Show.propTypes = {
   setLikeDb: PropTypes.func,
   i: PropTypes.number,
   markerClickHandler: PropTypes.func,
+  userId: PropTypes.string,
 };
 
 export default Show;
