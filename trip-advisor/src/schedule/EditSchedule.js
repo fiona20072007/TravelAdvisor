@@ -15,7 +15,7 @@ import {
   setSchedule,
 } from "../Utils";
 
-class EditSchedule extends React.Component {
+class EditSchedule extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

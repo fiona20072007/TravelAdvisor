@@ -12,7 +12,7 @@ import {
 
 const db = firebase.firestore();
 
-class FindLocation extends React.Component {
+class FindLocation extends React.PureComponent {
   constructor(props) {
     super(props);
 

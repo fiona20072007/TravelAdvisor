@@ -13,7 +13,7 @@ import { getTravelTitleDetail, setSchedule } from "../Utils";
 
 const db = firebase.firestore();
 
-class AddSchedule extends React.Component {
+class AddSchedule extends React.PureComponent {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();

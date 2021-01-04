@@ -4,7 +4,7 @@ import styles from "../scss/schedule.module.scss";
 import { Draggable } from "react-beautiful-dnd";
 import { handleStar, setLikeDb } from "../Utils";
 
-class FindLocationCard extends React.Component {
+class FindLocationCard extends React.PureComponent {
   constructor(props) {
     super(props);
 

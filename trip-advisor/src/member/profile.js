@@ -8,7 +8,7 @@ import { setNavbarColor } from "../Utils";
 
 const db = firebase.firestore();
 const auth = firebase.auth();
-class Profile extends React.Component {
+class Profile extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

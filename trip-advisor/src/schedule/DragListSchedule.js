@@ -7,7 +7,7 @@ import { handleStar } from "../Utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
-class DragListSchedule extends React.Component {
+class DragListSchedule extends React.PureComponent {
   render() {
     return (
       <div>

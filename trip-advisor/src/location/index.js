@@ -4,7 +4,7 @@ import styles from "../scss/location.module.scss";
 import PropTypes from "prop-types";
 import { searchLoadOptions, setNavbarTransparent } from "../Utils";
 
-class LocationIndex extends React.Component {
+class LocationIndex extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -128,10 +128,6 @@ class LocationIndex extends React.Component {
               <li className={styles.content__container__list__item}>
                 Singapore !
               </li>
-              {/* <li className={styles.content__container__list__item}>Tokyo !</li>
-            <li className={styles.content__container__list__item}>
-              NewYork !
-            </li> */}
             </ul>
           </div>
         </div>

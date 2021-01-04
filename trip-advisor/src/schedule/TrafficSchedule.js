@@ -30,7 +30,7 @@ const filterFiedsOptions = [
   },
 ];
 
-class TrafficSchedule extends React.Component {
+class TrafficSchedule extends React.PureComponent {
   filterSelectedData = function (data) {
     let obj = Object.assign({}, this.props.trafficDetail);
     obj[this.props.date][this.props.num].travelMode = data.value;

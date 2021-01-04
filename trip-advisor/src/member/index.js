@@ -15,7 +15,7 @@ import { setNavbarColor } from "../Utils";
 
 const firestore = firebase.firestore();
 const auth = firebase.auth();
-class MemberIndex extends React.Component {
+class MemberIndex extends React.PureComponent {
   constructor(props) {
     super(props);
 

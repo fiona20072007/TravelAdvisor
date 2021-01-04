@@ -181,4 +181,4 @@ const SimpleMap = compose(
   return renderMap();
 });
 
-export default SimpleMap;
+export default React.memo(SimpleMap);

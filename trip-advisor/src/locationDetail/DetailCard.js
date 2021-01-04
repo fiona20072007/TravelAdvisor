@@ -56,4 +56,4 @@ DetailCard.propTypes = {
   place: PropTypes.object,
 };
 
-export default DetailCard;
+export default React.memo(DetailCard);

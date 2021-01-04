@@ -12,7 +12,7 @@ const Show = (props) => {
       country: likeItem.country,
       name: likeItem.name,
       id: likeItem.id,
-      PointImgUrl: likeItem.photo,
+      photo: likeItem.photo,
       star_level: likeItem.star_level,
       pos: { lat: likeItem.latitude, lng: likeItem.longitude },
     };
@@ -39,6 +39,7 @@ const Show = (props) => {
     const findLike = props.likeList.find((item) => item.id === props.item.id);
     findLike !== undefined ? setLikeState("showRed") : setLikeState("hide");
   }, [props.likeList]);
+
   return (
     <div
       id={props.item.id}
@@ -104,4 +105,4 @@ Show.propTypes = {
   userId: PropTypes.string,
 };
 
-export default Show;
+export default React.memo(Show);

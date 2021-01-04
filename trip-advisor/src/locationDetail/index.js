@@ -6,7 +6,7 @@ import DetailCard from "./DetailCard";
 import SimpleMap from "./map";
 import styles from "../scss/locationDetail.module.scss";
 import PropTypes from "prop-types";
-import { nanoid } from "nanoid";
+import { likeList } from "../Utils";
 
 import {
   setNavbarColor,
@@ -33,21 +33,27 @@ class LocationDetail extends React.Component {
       detailCardNum: false,
     };
   }
+  shouldComponentUpdate(nextProps) {
+    if (nextProps.match !== this.props.match) {
+      return false;
+    } else {
+      return true;
+    }
+  }
   componentDidMount = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.setState({
           userUid: user.uid,
         });
-        db.collection("schedule")
-          .doc(user.uid)
-          .onSnapshot((doc) => {
-            if (doc.data()["like"] === undefined) {
-              setLikeListEmpty(user.uid);
-            } else {
-              this.setState({ likeList: doc.data()["like"] });
-            }
-          });
+
+        likeList(user.uid).onSnapshot((doc) => {
+          if (doc.data()["like"] === undefined) {
+            setLikeListEmpty(user.uid);
+          } else {
+            this.setState({ likeList: doc.data()["like"] });
+          }
+        });
       } else {
         document.getElementById("loading").style.display = "none";
         alert("請先登入");
@@ -88,8 +94,6 @@ class LocationDetail extends React.Component {
         this.setState({
           locationDetail: locationDetailTemp,
         });
-
-        document.getElementById("loading").style.display = "none";
       });
     db.collection("indexCountry")
       .get()
@@ -119,6 +123,7 @@ class LocationDetail extends React.Component {
           center: centerTemp,
           zoom: zoomTemp,
         });
+        document.getElementById("loading").style.display = "none";
       });
   };
 
@@ -174,11 +179,12 @@ class LocationDetail extends React.Component {
   };
 
   render() {
+    console.log(12345);
     const showCardArr = this.state.locationDetail.map((item, i) => (
       <Card
         item={item}
         i={i}
-        key={nanoid()}
+        key={i}
         userId={this.state.userUid}
         likeList={this.state.likeList}
         markerClickHandler={(event) => {

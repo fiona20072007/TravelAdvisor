@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
 import { handleStar, likeList, setLikeDb } from "../Utils";
 
-class LikeLocation extends React.Component {
+class LikeLocation extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {

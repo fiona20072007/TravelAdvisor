@@ -236,4 +236,4 @@ ScheduleIndex.propTypes = {
   history: PropTypes.object.isRequired,
 };
 
-export default ScheduleIndex;
+export default React.memo(ScheduleIndex);
