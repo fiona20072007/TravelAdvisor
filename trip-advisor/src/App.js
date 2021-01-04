@@ -94,7 +94,6 @@ class App extends React.Component {
                   data-title="會員"
                 >
                   <FontAwesomeIcon icon={faUserCircle} />
-                  {/* 會員 */}
                 </Link>
 
                 <Link
@@ -104,12 +103,10 @@ class App extends React.Component {
                   data-title="行程"
                 >
                   <FontAwesomeIcon icon={faMapMarkedAlt} />
-                  {/* 規劃行程 */}
                 </Link>
 
                 <Link to="/" className={styles["menu-item"]} data-title="搜尋">
                   <FontAwesomeIcon icon={faGlobeAsia} />
-                  {/* 挑選地點 */}
                 </Link>
               </nav>
               <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -153,23 +150,6 @@ class App extends React.Component {
                   </filter>
                 </defs>
               </svg>
-
-              {/* <ul>
-                <li>
-                  <FontAwesomeIcon icon={faGlobeAsia} />
-                  <Link to="/">挑選地點</Link>
-                </li>
-                <li>
-                  <FontAwesomeIcon icon={faMapMarkedAlt} />
-                  <Link to="/schedule" onClick={this.handleShowEditNav}>
-                    規劃行程
-                  </Link>
-                </li>
-                <li>
-                  <FontAwesomeIcon icon={faUserCircle} />
-                  <Link to="/member">會員</Link>
-                </li>
-              </ul> */}
             </div>
           </nav>
 
@@ -189,9 +169,5 @@ class App extends React.Component {
     );
   }
 }
-
-// App.propTypes = {
-//   history: PropTypes.object.isRequired
-// };
 
 export default App;

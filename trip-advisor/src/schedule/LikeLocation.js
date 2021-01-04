@@ -1,90 +1,36 @@
 import React from "react";
-import firebase from "../firebase";
 import styles from "../scss/schedule.module.scss";
 import PropTypes from "prop-types";
 import { Draggable } from "react-beautiful-dnd";
-import { handleStar } from "../Utils";
-
-const db = firebase.firestore();
+import { handleStar, likeList, setLikeDb } from "../Utils";
 
 class LikeLocation extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       locationDetail: [],
-      locationLikeDetail: [],
     };
   }
 
   componentDidMount() {
-    db.collection("schedule")
-      .doc(this.props.userUid)
-      .onSnapshot((docAll) => {
-        if (docAll.data().like.length !== 0) {
-          this.setState({
-            locationDetail: docAll.data().like,
-          });
-        } else {
-          this.setState({
-            locationDetail: [],
-          });
-        }
-
-        let locationLikeDetailTemp = [];
-        console.log(docAll.data().like);
-        docAll.data().like.map((item) => {
-          db.collection("country")
-            .doc(item.country)
-            .collection("location")
-            .where("id", "==", item.id.toString())
-            .get()
-            .then((docs) => {
-              docs.forEach((doc) => {
-                locationLikeDetailTemp.push({
-                  name: doc.data().name,
-                  country: doc.data().Country,
-                  city: doc.data().City,
-                  area: doc.data().Area,
-                  photo: doc.data().PointImgUrl,
-                  pos: {
-                    lat: parseFloat(doc.data().latitude, 10),
-                    lng: parseFloat(doc.data().longitude, 10),
-                  },
-                  address: doc.data().address,
-                  open_time: doc.data().open_time,
-                  telephone: doc.data().telephone,
-                  star_level: doc.data().star_level,
-                  travelPoint: doc.data().TravelPoint_Be_Added_Count,
-                  url: doc.data().url,
-                  id: parseInt(doc.data().id),
-                });
-
-                this.setState({
-                  locationLikeDetail: locationLikeDetailTemp,
-                });
-              });
-            });
+    likeList(this.props.userUid).onSnapshot((docAll) => {
+      if (docAll.data().like.length !== 0) {
+        this.setState({
+          locationDetail: docAll.data().like,
         });
-      });
+      } else {
+        this.setState({
+          locationDetail: [],
+        });
+      }
+    });
   }
 
   handleLike = (item) => {
-    let arr = this.state.locationLikeDetail.filter(
-      (like) => like.id !== item.id
-    );
     let setArr = this.state.locationDetail.filter(
       (like) => like.id !== item.id
     );
-    this.setState({
-      locationLikeDetail: arr,
-    });
-    console.log(setArr);
-    db.collection("schedule").doc(this.props.userUid).set(
-      {
-        like: setArr,
-      },
-      { merge: true }
-    );
+    setLikeDb(this.props.userUid, setArr);
   };
 
   render() {
@@ -94,7 +40,7 @@ class LikeLocation extends React.Component {
           this.props.showLocationSearch ? styles.likeListShow : styles.likeList
         }
       >
-        {this.state.locationLikeDetail.map((item, i) => {
+        {this.state.locationDetail.map((item, i) => {
           return (
             <Draggable draggableId={`Ld-${item.id}`} index={i} key={i}>
               {(provided) => (

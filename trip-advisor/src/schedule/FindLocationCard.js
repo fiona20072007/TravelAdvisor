@@ -12,14 +12,21 @@ class FindLocationCard extends React.Component {
       likeState: "hide",
     };
   }
-
-  componentDidMount() {
+  findLike = () => {
     const findLike = this.props.likeList.find(
       (item) => item.id === this.props.locationDetail.id
     );
     findLike !== undefined
       ? this.setState({ likeState: "showRed" })
       : this.setState({ likeState: "hide" });
+  };
+  componentDidMount() {
+    this.findLike();
+  }
+  componentDidUpdate(prevProps) {
+    if (prevProps.likeList !== this.props.likeList) {
+      this.findLike();
+    }
   }
 
   handleLike = (likeItem) => {

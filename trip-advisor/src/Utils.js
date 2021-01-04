@@ -133,6 +133,9 @@ export const getLocationDetail = (searchCountry) => {
 export const getLikeList = (userId) => {
   return db.collection("schedule").doc(userId).get();
 };
+export const likeList = (userId) => {
+  return db.collection("schedule").doc(userId);
+};
 
 export const setSchedule = (
   userId,

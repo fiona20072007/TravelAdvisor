@@ -103,14 +103,17 @@ const SimpleMap = compose(
 
     let colorArr = [];
     let n = Object.keys(props.travelDetailCountry).length;
-    let letters = "0123456789ABCDEF".split("");
 
-    for (let j = 0; j < n; j++) {
-      let color = "#";
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      colorArr.push(color);
+    for (let i = 0; i < n; i++) {
+      let cssHSL =
+        "hsl(" +
+        360 * Math.random() +
+        "," +
+        (25 + 70 * Math.random()) +
+        "%," +
+        (80 + 15 * Math.random()) +
+        "%)";
+      colorArr.push(cssHSL);
     }
 
     setColorAll(colorArr);
@@ -129,6 +132,7 @@ const SimpleMap = compose(
                   labelStyle={{
                     backgroundColor: `${colorAll[j]}`,
                     borderRadius: "99em",
+                    border: "2px dotted black",
                     fontSize: "12px",
                     fontWeight: "bold",
                     width: "25px",
@@ -178,15 +182,3 @@ const SimpleMap = compose(
 });
 
 export default SimpleMap;
-
-// polylineOptions: { strokeColor: "#8b0013" }
-
-// var polylineOptionsActual = {
-//   strokeColor: '#FF0000',
-//   strokeOpacity: 1.0,
-//   strokeWeight: 10
-//   };
-
-// console.log("this.props.trafficDetail", this.props.trafficDetail);
-// 想辦法判斷 traffic detail 全都是空的，如果全都是空的就把 state 設成 true
-// 在底下的 REsult 判斷如果是 true 就不要 ｓｅｔＳＴａｔｅ

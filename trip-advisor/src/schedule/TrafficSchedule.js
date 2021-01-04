@@ -51,7 +51,6 @@ class TrafficSchedule extends React.Component {
     return (
       this.props.traffic[this.props.date][this.props.num] !== undefined && (
         <div
-          // className={styles.trafficLength}
           className={
             this.props.dragging
               ? styles.trafficLengthHide
@@ -64,21 +63,12 @@ class TrafficSchedule extends React.Component {
           }
           <br />
           <div
-            // className={styles.itemTraffic}
             className={
               this.props.dragging ? styles.itemTrafficHide : styles.itemTraffic
             }
           >
             <Select
-              value={
-                //   filterFiedsOptions.find(
-                //   item =>
-                //     item.value ===
-                //     this.props.trafficDetail[this.props.date][this.props.num]
-                //       .travelMode
-                // )
-                this.handleTrafficMethod()
-              }
+              value={this.handleTrafficMethod()}
               onChange={(e) => this.filterSelectedData(e)}
               options={filterFiedsOptions}
               className={styles.itemSelect}
