@@ -306,3 +306,24 @@ $darkGreen: rgba(43, 92, 83, 0.796);
 .itemOpenTime {
   white-space: pre-line;
 }
+
+///RWD
+@media (max-width: 1450px) {
+  .item {
+    width: 200px;
+  }
+  .itemSelect {
+    width: 680px;
+  }
+}
+@media (max-width: 1200px) {
+  .item {
+    width: 150px;
+  }
+  .itemSelect {
+    width: 530px;
+  }
+  .left {
+    margin-top: 100px;
+  }
+}

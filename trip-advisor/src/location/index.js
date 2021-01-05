@@ -126,7 +126,7 @@ class LocationIndex extends React.PureComponent {
                 Munich !
               </li>
               <li className={styles.content__container__list__item}>
-                Singapore !
+                Singapore!
               </li>
             </ul>
           </div>
