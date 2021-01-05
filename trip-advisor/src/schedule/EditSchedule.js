@@ -187,15 +187,6 @@ class EditSchedule extends React.Component {
       destinationDroppableId = destination.droppableId.substring(5);
     }
 
-    if (this.state.repeatDragCardId !== "") {
-      document.getElementById("alert").style.display = "flex";
-      window.setTimeout(
-        () => (document.getElementById("alert").style.display = "none"),
-        1500
-      );
-      return;
-    }
-
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
@@ -268,6 +259,14 @@ class EditSchedule extends React.Component {
     if (dragCardCategory === "i" || dragCardCategory === "L") {
       let travelMorningTemp = [];
 
+      if (this.state.repeatDragCardId !== "") {
+        document.getElementById("alert").style.display = "flex";
+        window.setTimeout(
+          () => (document.getElementById("alert").style.display = "none"),
+          1500
+        );
+        return;
+      }
       travelMorningTemp = Array.from(
         this.state.travelDetailCountry[destinationDroppableId]
       );
