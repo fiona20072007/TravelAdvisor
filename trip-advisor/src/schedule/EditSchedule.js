@@ -33,6 +33,7 @@ class EditSchedule extends React.Component {
       switchToLocationSearchShow: true,
       travelDetailCountry: {},
       dragging: false,
+      repeatDragCardId: "",
     };
   }
 
@@ -111,11 +112,24 @@ class EditSchedule extends React.Component {
   onDragStart = (result) => {
     this.setState({
       dragging: true,
+      repeatDragCardId: "",
     });
 
     const { draggableId } = result;
     const dragCardCategory = draggableId.substr(0, 1);
     const dragCardId = draggableId.substring(3);
+
+    Object.keys(this.state.travelDetailCountry).forEach((date) => {
+      if (this.state.travelDetailCountry[date].length !== 0) {
+        this.state.travelDetailCountry[date].forEach((obj) => {
+          if (obj.id === draggableId.substr(3)) {
+            this.setState({
+              repeatDragCardId: obj.id,
+            });
+          }
+        });
+      }
+    });
 
     if (dragCardCategory === "i") {
       getLocationDetail(this.state.searchCountry).then((docs) => {
@@ -166,7 +180,6 @@ class EditSchedule extends React.Component {
     const dragCardCategory = draggableId.substr(0, 1);
     const sourceDroppableId = source.droppableId.substring(5);
     let destinationDroppableId = null;
-    let repeatDragCardId = "";
 
     if (!destination) {
       return;
@@ -174,17 +187,7 @@ class EditSchedule extends React.Component {
       destinationDroppableId = destination.droppableId.substring(5);
     }
 
-    Object.keys(this.state.travelDetailCountry).forEach((date) => {
-      if (this.state.travelDetailCountry[date].length !== 0) {
-        this.state.travelDetailCountry[date].forEach((obj) => {
-          if (obj.id === draggableId.substr(3)) {
-            repeatDragCardId = obj.id;
-          }
-        });
-      }
-    });
-
-    if (repeatDragCardId !== "") {
+    if (this.state.repeatDragCardId !== "") {
       document.getElementById("alert").style.display = "flex";
       window.setTimeout(
         () => (document.getElementById("alert").style.display = "none"),
