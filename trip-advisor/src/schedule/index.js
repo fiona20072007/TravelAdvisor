@@ -95,7 +95,6 @@ const ScheduleIndex = () => {
             setTravelScheduleShow(TravelScheduleTemp);
           });
       } else {
-        alert("請先登入");
         history.push("/member");
       }
     });

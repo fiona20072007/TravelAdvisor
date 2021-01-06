@@ -56,7 +56,7 @@ class LocationDetail extends React.Component {
         });
       } else {
         document.getElementById("loading").style.display = "none";
-        alert("請先登入");
+
         this.props.history.push("/member");
       }
     });

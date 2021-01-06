@@ -49,7 +49,6 @@ class EditSchedule extends React.Component {
           userUid: user.uid,
         });
       } else {
-        alert("請先登入");
         this.props.history.push("/member");
       }
 
