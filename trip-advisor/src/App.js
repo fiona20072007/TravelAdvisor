@@ -158,15 +158,19 @@ class App extends React.Component {
             </div>
           </nav>
           <div className={styles.mobileNav}>
-            <Link to="/">
+            <Link to="/" className={styles.mobileNavLink}>
               <FontAwesomeIcon icon={faGlobeAsia} />
               搜尋
             </Link>
-            <Link to="/schedule" onClick={this.handleShowEditNav}>
+            <Link
+              to="/schedule"
+              onClick={this.handleShowEditNav}
+              className={styles.mobileNavLink}
+            >
               <FontAwesomeIcon icon={faMapMarkedAlt} />
               行程
             </Link>
-            <Link to="/member">
+            <Link to="/member" className={styles.mobileNavLink}>
               <FontAwesomeIcon icon={faUserCircle} />
               會員
             </Link>

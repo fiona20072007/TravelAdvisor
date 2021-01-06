@@ -327,3 +327,90 @@ $darkGreen: rgba(43, 92, 83, 0.796);
     margin-top: 100px;
   }
 }
+
+@media (max-width: 450px) {
+  .left {
+    margin: 117px 0 0 0;
+    width: 100%;
+    height: 50vh;
+    overflow: scroll;
+    z-index: 3;
+    background-color: white;
+  }
+  .right {
+    width: 100%;
+    top: 35vh;
+    position: fixed;
+    overflow: hidden;
+  }
+  .title {
+    font-size: 15px;
+    margin: 5px 13px;
+  }
+  .locationInput {
+    font-size: 15px;
+  }
+  .banner {
+    margin-top: 13px;
+    height: 140px;
+    .bannerName {
+      top: 20px;
+      left: 20px;
+      font-size: 30px;
+    }
+    .bannerDes {
+      top: 100px;
+      left: 20px;
+      font-size: 20px;
+    }
+  }
+  .item {
+    width: 110px;
+    height: 100px;
+    margin: 7px;
+    img {
+      height: 60px;
+    }
+    .itemCardName {
+      font-size: 6px;
+    }
+    .ratings {
+      .empty-stars:before,
+      .full-stars:before {
+        content: "\2605\2605\2605\2605\2605";
+        font-size: 9pt;
+      }
+    }
+  }
+  .itemSelect {
+    height: 150px;
+    width: 450px;
+    img {
+      width: 120px;
+    }
+    .selectDetail {
+      margin: 11px;
+      .itemName {
+        font-size: 12px;
+        margin: 0;
+      }
+      .ratings {
+        .empty-stars:before,
+        .full-stars:before {
+          content: "\2605\2605\2605\2605\2605";
+          font-size: 9pt;
+        }
+      }
+      .itemTitle {
+        font-size: 8px;
+        svg {
+          font-size: 10px;
+        }
+      }
+      .itemComment {
+        font-size: 7px;
+        margin: 1px 0;
+      }
+    }
+  }
+}

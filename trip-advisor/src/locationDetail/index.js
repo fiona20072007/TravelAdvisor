@@ -143,6 +143,7 @@ class LocationDetail extends React.Component {
       if (tags.value === item.name) {
         this.setState({
           selectedPlace: item,
+          center: item.pos,
           detailCardNum: Math.floor(i / 3) + 1,
         });
       }
@@ -161,6 +162,7 @@ class LocationDetail extends React.Component {
       this.setState({
         selectedPlace: place,
         detailCardNum: n + 1,
+        center: place.pos,
       });
       this.handleInfoOpen(this.state.infoOpen);
       if (this.state.zoom < 13) {
@@ -179,7 +181,6 @@ class LocationDetail extends React.Component {
   };
 
   render() {
-    console.log(12345);
     const showCardArr = this.state.locationDetail.map((item, i) => (
       <Card
         item={item}

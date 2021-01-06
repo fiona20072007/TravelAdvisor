@@ -59,6 +59,9 @@ export function setNavbarColor(path) {
     document.querySelector("nav").style.boxShadow =
       "0 0 8px rgba(0, 0, 0, 0.2)";
     document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
+    document.querySelectorAll(`a`).forEach((link) => {
+      link.style.color = "rgb(138, 134, 134)";
+    });
   }
 }
 export function setNavbarTransparent(path) {
@@ -66,6 +69,9 @@ export function setNavbarTransparent(path) {
     document.querySelector("nav").style.backgroundColor = "transparent";
     document.querySelector("nav").style.boxShadow = "0 0 0";
     document.getElementById("MainTitle").style.color = "white";
+    document.querySelectorAll(`a`).forEach((link) => {
+      link.style.color = "white";
+    });
   }
 }
 
