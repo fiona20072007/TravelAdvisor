@@ -157,20 +157,20 @@ class App extends React.Component {
               </svg>
             </div>
           </nav>
-          <div className={styles.mobileNav}>
-            <Link to="/" className={styles.mobileNavLink}>
+          <div className={styles.mobileNav} id="mobileNav">
+            <Link to="/" id="mobileNav1">
               <FontAwesomeIcon icon={faGlobeAsia} />
               搜尋
             </Link>
             <Link
               to="/schedule"
               onClick={this.handleShowEditNav}
-              className={styles.mobileNavLink}
+              id="mobileNav2"
             >
               <FontAwesomeIcon icon={faMapMarkedAlt} />
               行程
             </Link>
-            <Link to="/member" className={styles.mobileNavLink}>
+            <Link to="/member" id="mobileNav3">
               <FontAwesomeIcon icon={faUserCircle} />
               會員
             </Link>

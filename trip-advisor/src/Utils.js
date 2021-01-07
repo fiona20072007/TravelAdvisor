@@ -53,28 +53,6 @@ export async function searchLocationLoadOptions(inputValue, tags) {
   });
 }
 
-export function setNavbarColor(path) {
-  if (window.location.pathname.substring(1, 9) === path) {
-    document.querySelector("nav").style.backgroundColor = "white";
-    document.querySelector("nav").style.boxShadow =
-      "0 0 8px rgba(0, 0, 0, 0.2)";
-    document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
-    document.querySelectorAll(`a`).forEach((link) => {
-      link.style.color = "rgb(138, 134, 134)";
-    });
-  }
-}
-export function setNavbarTransparent(path) {
-  if (window.location.pathname === path) {
-    document.querySelector("nav").style.backgroundColor = "transparent";
-    document.querySelector("nav").style.boxShadow = "0 0 0";
-    document.getElementById("MainTitle").style.color = "white";
-    document.querySelectorAll(`a`).forEach((link) => {
-      link.style.color = "white";
-    });
-  }
-}
-
 export function handleStar(num) {
   return (Number(num) / 5.4) * 100;
 }
@@ -169,3 +147,28 @@ export const getTravelTitleDetail = (userId, travelShowId) => {
     .collection("data")
     .doc("travel" + travelShowId);
 };
+
+export function setNavbarColor(path) {
+  if (window.location.pathname.substring(1, 9) === path) {
+    document.querySelector("nav").style.backgroundColor = "white";
+    document.querySelector("nav").style.boxShadow =
+      "0 0 8px rgba(0, 0, 0, 0.2)";
+    document.getElementById("MainTitle").style.color = "rgb(138, 134, 134)";
+    document.getElementById(`mobileNav1`).style.color = "rgb(138, 134, 134)";
+    document.getElementById(`mobileNav2`).style.color = "rgb(138, 134, 134)";
+    document.getElementById(`mobileNav3`).style.color = "rgb(138, 134, 134)";
+    document.getElementById("mobileNav").style.backgroundColor =
+      "rgba(245, 247, 249, 0.947)";
+  }
+}
+export function setNavbarTransparent(path) {
+  if (window.location.pathname === path) {
+    document.querySelector("nav").style.backgroundColor = "transparent";
+    document.querySelector("nav").style.boxShadow = "0 0 0";
+    document.getElementById("MainTitle").style.color = "white";
+    document.getElementById(`mobileNav1`).style.color = "white";
+    document.getElementById(`mobileNav2`).style.color = "white";
+    document.getElementById(`mobileNav3`).style.color = "white";
+    document.getElementById("mobileNav").style.backgroundColor = "transparent";
+  }
+}
