@@ -1049,3 +1049,62 @@ h2 {
 .hideLike {
   @include likeComponent(rgb(255, 255, 255), 0.3, none);
 }
+
+@media (max-width: 450px) {
+  .scheduleListRange {
+    margin-top: 35%;
+    width: 90%;
+    .scheduleNavMain {
+      .liClick,
+      .liUnclick {
+        padding: 8px;
+        a {
+          font-size: 16px;
+        }
+      }
+    }
+    .scheduleListAll {
+      height: 75vh;
+      flex-direction: column;
+      .userList {
+        margin-top: 30px;
+        width: 100%;
+        height: 40px;
+        .border {
+          flex-direction: row;
+          justify-content: center;
+          a {
+            margin: 6px 15px;
+            font-size: 16px;
+          }
+        }
+      }
+      .scheduleListDetail {
+        margin: 0px auto;
+        width: 100%;
+        .All {
+          .scheduleList {
+            width: 140px;
+            height: 125px;
+            margin: 14px;
+            .scheduleTitle {
+              font-size: 10px;
+              padding: 6px;
+            }
+            .date {
+              font-size: 8px;
+              margin: 6px;
+              svg {
+                margin: 0;
+              }
+            }
+          }
+        }
+        .tag {
+          top: 0px;
+          font-size: 8px;
+        }
+      }
+    }
+  }
+}
