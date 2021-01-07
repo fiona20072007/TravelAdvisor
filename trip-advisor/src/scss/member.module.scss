@@ -209,3 +209,28 @@ button {
 .socialSignin {
   cursor: pointer;
 }
+
+@media (max-width: 450px) {
+  .member {
+    padding-top: 18%;
+    width: 110%;
+    .loginContainer {
+      width: 100%;
+      height: 110vh;
+      .image {
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+      }
+      .panel {
+        .loginPanel,
+        .changeState,
+        .signupPanel {
+          top: 130px;
+          left: 7.5%;
+        }
+      }
+    }
+  }
+}
