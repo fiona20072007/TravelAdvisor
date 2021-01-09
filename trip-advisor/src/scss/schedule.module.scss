@@ -895,7 +895,6 @@ h2 {
 .titleInput,
 .dateInputAll {
   border-bottom: 1px solid $darkGray;
-  overflow: hidden;
   display: flex;
   width: 80%;
   font-size: 20px;
@@ -913,6 +912,7 @@ h2 {
   }
 
   input {
+    color: $darkGray;
     border: none;
     width: 100%;
     font-size: 20px;
@@ -922,16 +922,11 @@ h2 {
 
     div {
       div {
-        width: 80px;
-        // vertical-align: baseline;
-
         input {
           width: 150px;
           color: $darkGray;
           font-weight: 400;
           padding: 8px 7px;
-          // margin: 0;
-          // padding: 0;
         }
       }
     }
@@ -1103,6 +1098,39 @@ h2 {
         .tag {
           top: 0px;
           font-size: 8px;
+        }
+      }
+    }
+  }
+  .ml5 {
+    font-size: 2em;
+  }
+  .titleInput,
+  .dateInputAll {
+    font-size: 15px;
+    input {
+      font-size: 15px;
+    }
+  }
+  .titleInput,
+  .dateInputAll {
+    display: flex;
+    width: 90%;
+    margin-top: 60px;
+    margin-bottom: -20px;
+    svg {
+      margin: 5px;
+      font-size: 20px;
+    }
+    div {
+      div {
+        div {
+          width: 70px;
+          input {
+            width: 100px;
+            font-size: 15px;
+            padding: 5px 7px;
+          }
         }
       }
     }

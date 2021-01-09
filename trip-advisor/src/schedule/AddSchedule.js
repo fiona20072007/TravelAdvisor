@@ -258,6 +258,7 @@ class AddSchedule extends React.PureComponent {
             <FontAwesomeIcon icon={faCalendarCheck} />
             <DateRangePicker
               withPortal
+              numberOfMonths={1}
               autoFocus
               showClearDates
               startDatePlaceholderText="開始日期"
