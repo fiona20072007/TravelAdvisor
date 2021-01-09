@@ -1046,6 +1046,7 @@ h2 {
 }
 
 @media (max-width: 450px) {
+  //addSchedule
   .scheduleListRange {
     margin-top: 35%;
     width: 90%;
@@ -1134,5 +1135,119 @@ h2 {
         }
       }
     }
+  }
+
+  //editSchedule
+  .scheduleWithMap {
+    width: 24vh;
+    margin-top: 242px;
+    .schedule {
+      width: 100%;
+      .switchBtnClick {
+        top: 110px;
+        left: 24vh;
+        width: 48%;
+        overflow: hidden;
+        button {
+          width: 50%;
+          height: 40px;
+          span {
+            font-size: 14px;
+            line-height: 40px;
+          }
+        }
+      }
+      .scheduleListTopLeft {
+        width: 24vh;
+        top: 110px;
+        .schedulePhoto {
+          height: 90px;
+        }
+        .scheduleTitle {
+          font-size: 12px;
+          bottom: 20px;
+          left: 5px;
+        }
+        .date {
+          font-size: 10px;
+          bottom: 5px;
+          right: 5px;
+        }
+        .scheduleLayer {
+          width: 24vh;
+          height: 40px;
+        }
+      }
+      .scheduleDateAll {
+        height: 38vh;
+        .scheduleDateSelect {
+          width: 18vh;
+          overflow-x: scroll;
+          top: 208px;
+          left: 45px;
+          svg {
+            top: 205px;
+            left: 10px;
+            font-size: 28px;
+          }
+          .scheduleDateTitle {
+            font-size: 10px;
+            top: 217px;
+            left: 12px;
+          }
+          .scheduleDateDetail {
+            min-width: 30px;
+            min-height: 16px;
+            padding: 3px;
+            margin: 0px 10px 3px 2px;
+          }
+        }
+        .scheduleDetailForDrop {
+          .scheduleDateOnly {
+            font-size: 12px;
+            height: 25px;
+            width: 22vh;
+            margin-left: -56px;
+            &:before {
+              left: 22vh;
+              border-left: 25px solid rgba(43, 92, 83, 0.796);
+              border-top: 12px solid transparent;
+              border-bottom: 13px solid transparent;
+            }
+          }
+        }
+        .locationSectionShow {
+          left: 24vh;
+          height: 68vh;
+          .listShow {
+            .searchAllShow {
+              top: 153px;
+              left: 25vh;
+              font-size: 12px;
+              width: 19.5vh;
+            }
+            .locationListShow {
+              left: 25.8vh;
+              top: -45px;
+              height: 32vh;
+              width: 19vh;
+            }
+            .likeListShow {
+              left: 25.8vh;
+              top: 165px;
+              height: 46vh;
+              width: 19vh;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .scheduleMap {
+    width: 100%;
+    height: 32vh;
+    top: 68vh;
+    margin-left: 0px;
   }
 }
