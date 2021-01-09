@@ -1138,12 +1138,49 @@ h2 {
   }
 
   //editSchedule
+  .itemList,
+  .item {
+    font-size: 10px;
+    .itemListDelete {
+      display: block;
+    }
+    .empty-stars:before,
+    .full-stars:before {
+      content: "\2605\2605\2605\2605\2605";
+      display: none;
+    }
+    .itemPhoto {
+      height: 60px;
+    }
+  }
+  .trafficLength {
+    font-size: 10px;
+    .itemTraffic {
+      font-size: 10px;
+      .itemSelect {
+        width: 60px;
+        div {
+          min-height: 10px;
+          height: 25px;
+          div {
+            div {
+              padding-top: 0px;
+              svg {
+                width: 12px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   .scheduleWithMap {
     width: 24vh;
     margin-top: 242px;
     .schedule {
       width: 100%;
-      .switchBtnClick {
+      .switchBtn {
+        opacity: 1;
         top: 110px;
         left: 24vh;
         width: 48%;
@@ -1160,6 +1197,10 @@ h2 {
       .scheduleListTopLeft {
         width: 24vh;
         top: 110px;
+        .arrowBounceRotate {
+          display: none;
+        }
+
         .schedulePhoto {
           height: 90px;
         }
@@ -1196,43 +1237,63 @@ h2 {
             left: 12px;
           }
           .scheduleDateDetail {
-            min-width: 30px;
-            min-height: 16px;
+            min-width: 25px;
+            min-height: 15px;
             padding: 3px;
             margin: 0px 10px 3px 2px;
           }
         }
         .scheduleDetailForDrop {
+          .scheduleDetail {
+            width: 150px;
+            min-height: 90px;
+            .emptyList {
+              width: 130px;
+              height: 70px;
+              font-size: 10px;
+            }
+          }
+
           .scheduleDateOnly {
             font-size: 12px;
             height: 25px;
-            width: 22vh;
+            width: 24vh;
             margin-left: -56px;
             &:before {
-              left: 22vh;
+              left: 24vh;
               border-left: 25px solid rgba(43, 92, 83, 0.796);
               border-top: 12px solid transparent;
               border-bottom: 13px solid transparent;
             }
           }
+          .scheduleDetail {
+            margin: 5px;
+          }
         }
-        .locationSectionShow {
+        .locationSection {
           left: 24vh;
           height: 68vh;
+          display: flex;
+          width: 19vh;
+          opacity: 1;
+
           .listShow {
-            .searchAllShow {
+            .searchAll {
               top: 153px;
               left: 25vh;
               font-size: 12px;
               width: 19.5vh;
+              .locationSearchDetail {
+                display: none;
+              }
             }
-            .locationListShow {
+            .locationList {
               left: 25.8vh;
-              top: -45px;
-              height: 32vh;
+              top: -95px;
+              height: 39vh;
               width: 19vh;
             }
-            .likeListShow {
+            .likeList {
               left: 25.8vh;
               top: 165px;
               height: 46vh;

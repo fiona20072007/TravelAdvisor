@@ -128,7 +128,7 @@ class FindLocation extends React.PureComponent {
               defaultOptions={this.options}
             />
           </div>
-          <div>
+          <div className={styles.locationSearchDetail}>
             <div className={styles.title}>挑選景點</div>
             <AsyncSelect
               className={styles.locationInput}

@@ -21,9 +21,11 @@ class MemberIndex extends React.PureComponent {
 
     this.state = {
       loginState: true,
-      email: "",
-      password: "",
+      email: "user@gmail.com",
+      password: "123456",
       displayName: "",
+      errorLoginState: "",
+      errorSignupState: "",
     };
   }
 
@@ -58,7 +60,9 @@ class MemberIndex extends React.PureComponent {
       })
       .catch((error) => {
         let errorMessage = error.message;
-        console.log(errorMessage);
+        this.setState({
+          errorLoginState: errorMessage,
+        });
       });
   };
 
@@ -85,7 +89,9 @@ class MemberIndex extends React.PureComponent {
       })
       .catch((error) => {
         let errorMessage = error.message;
-        console.log(errorMessage);
+        this.setState({
+          errorSignupState: errorMessage,
+        });
       });
   };
   nativeSignIn = () => {
@@ -97,7 +103,9 @@ class MemberIndex extends React.PureComponent {
       })
       .catch((error) => {
         let errorMessage = error.message;
-        console.log(errorMessage);
+        this.setState({
+          errorLoginState: errorMessage,
+        });
       });
   };
 
@@ -105,10 +113,14 @@ class MemberIndex extends React.PureComponent {
     if (this.state.loginState) {
       this.setState({
         loginState: false,
+        email: "",
+        password: "",
       });
     } else {
       this.setState({
         loginState: true,
+        email: "user@gmail.com",
+        password: "123456",
       });
     }
   };
@@ -174,7 +186,9 @@ class MemberIndex extends React.PureComponent {
                       value={this.state.password}
                     />
                   </div>
-                  <div className={styles.alert}>歡迎</div>
+                  <div className={styles.alert}>
+                    {this.state.errorLoginState}
+                  </div>
                   <button
                     id="signInBtn"
                     className={styles.btn}
@@ -245,7 +259,9 @@ class MemberIndex extends React.PureComponent {
                       value={this.state.password}
                     />
                   </div>
-                  <div className={styles.alert}>歡迎</div>
+                  <div className={styles.alert}>
+                    {this.state.errorSignupState}
+                  </div>
                   <button
                     id="signUpBtn"
                     className={styles.btn}
