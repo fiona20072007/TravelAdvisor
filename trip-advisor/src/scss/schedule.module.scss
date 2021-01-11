@@ -1175,15 +1175,15 @@ h2 {
     }
   }
   .scheduleWithMap {
-    width: 24vh;
+    width: 50vw;
     margin-top: 242px;
     .schedule {
       width: 100%;
       .switchBtn {
         opacity: 1;
         top: 110px;
-        left: 24vh;
-        width: 48%;
+        left: 52vw;
+        width: 50%;
         overflow: hidden;
         button {
           width: 50%;
@@ -1195,7 +1195,7 @@ h2 {
         }
       }
       .scheduleListTopLeft {
-        width: 24vh;
+        width: 52vw;
         top: 110px;
         .arrowBounceRotate {
           display: none;
@@ -1215,14 +1215,14 @@ h2 {
           right: 5px;
         }
         .scheduleLayer {
-          width: 24vh;
+          width: 51vw;
           height: 40px;
         }
       }
       .scheduleDateAll {
         height: 38vh;
         .scheduleDateSelect {
-          width: 18vh;
+          width: 39vw;
           overflow-x: scroll;
           top: 208px;
           left: 45px;
@@ -1257,10 +1257,10 @@ h2 {
           .scheduleDateOnly {
             font-size: 12px;
             height: 25px;
-            width: 24vh;
+            width: 49vw;
             margin-left: -56px;
             &:before {
-              left: 24vh;
+              left: 49vw;
               border-left: 25px solid rgba(43, 92, 83, 0.796);
               border-top: 12px solid transparent;
               border-bottom: 13px solid transparent;
@@ -1271,33 +1271,33 @@ h2 {
           }
         }
         .locationSection {
-          left: 24vh;
+          left: 51vw;
           height: 68vh;
           display: flex;
-          width: 19vh;
+          width: 49vw;
           opacity: 1;
 
           .listShow {
             .searchAll {
               top: 153px;
-              left: 25vh;
+              left: 54vw;
               font-size: 12px;
-              width: 19.5vh;
+              width: 40vw;
               .locationSearchDetail {
                 display: none;
               }
             }
             .locationList {
-              left: 25.8vh;
+              left: 55vw;
               top: -95px;
               height: 39vh;
-              width: 19vh;
+              width: 41vw;
             }
             .likeList {
-              left: 25.8vh;
+              left: 55vw;
               top: 165px;
               height: 46vh;
-              width: 19vh;
+              width: 41vw;
             }
           }
         }
