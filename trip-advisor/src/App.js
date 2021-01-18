@@ -3,6 +3,7 @@ import LocationIndex from "./location";
 import LocationDetail from "./locationDetail";
 import ScheduleIndex from "./schedule";
 import MemberIndex from "./member";
+import NoMatch from "./NoMatch";
 import Profile from "./member/profile";
 import styles from "./scss/App.module.scss";
 import icon from "./image/icon.png";
@@ -186,6 +187,9 @@ class App extends React.Component {
             <Route path="/schedule" component={ScheduleIndex} />
             <Route path="/member" component={MemberIndex} />
             <Route path="/profile" component={Profile} />
+            <Route path="*">
+              <NoMatch />
+            </Route>
           </Switch>
         </div>
       </Router>
