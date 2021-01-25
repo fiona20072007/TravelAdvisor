@@ -30,6 +30,7 @@ class AddSchedule extends React.PureComponent {
       totalDay: "",
       size: null,
       dateBlock: [],
+      alert: "",
     };
   }
   componentDidMount() {
@@ -165,33 +166,43 @@ class AddSchedule extends React.PureComponent {
   handleSubmit = (event) => {
     let date = Date.now();
     event.preventDefault();
-    getTravelTitleDetail(this.props.userUid, this.state.size).set({
-      CoverImgUrl: "https://imgs.gvm.com.tw/upload/gallery/oimg26/26478_01.jpg",
-      EndDate: this.state.endDateSubmit,
-      EndDateStamp: this.state.endDateStamp,
-      ImMultiEditMember: false,
-      ShareLink: "",
-      StartDate: this.state.startDateSubmit,
-      StartDateStamp: this.state.startDateStamp,
-      TotalDay: this.state.totalDay,
-      TravelScheduleDetailInfos: [],
-      TravelScheduleName: this.state.value,
-      comment: "",
-      id: this.state.size,
-      dateBlock: this.state.dateBlock,
-      setDateStamp: date,
-    });
-    for (let i = 0; i < this.state.totalDay; i++) {
-      setSchedule(
-        this.props.userUid,
-        this.state.size,
-        this.state.dateBlock[i],
-        []
-      );
+    if (this.state.value === "") {
+      this.setState({
+        alert: "請輸入旅程名稱",
+      });
+    } else if (this.state.totalDay <= 1) {
+      this.setState({
+        alert: "請輸入日期",
+      });
+    } else {
+      getTravelTitleDetail(this.props.userUid, this.state.size).set({
+        CoverImgUrl:
+          "https://imgs.gvm.com.tw/upload/gallery/oimg26/26478_01.jpg",
+        EndDate: this.state.endDateSubmit,
+        EndDateStamp: this.state.endDateStamp,
+        ImMultiEditMember: false,
+        ShareLink: "",
+        StartDate: this.state.startDateSubmit,
+        StartDateStamp: this.state.startDateStamp,
+        TotalDay: this.state.totalDay,
+        TravelScheduleDetailInfos: [],
+        TravelScheduleName: this.state.value,
+        comment: "",
+        id: this.state.size,
+        dateBlock: this.state.dateBlock,
+        setDateStamp: date,
+      });
+      for (let i = 0; i < this.state.totalDay; i++) {
+        setSchedule(
+          this.props.userUid,
+          this.state.size,
+          this.state.dateBlock[i],
+          []
+        );
+      }
+      this.setState({ value: "" });
+      this.props.handleSubmitChange();
     }
-
-    this.setState({ value: "" });
-    this.props.handleSubmitChange();
   };
 
   onDatesChange = ({ startDate, endDate }) => {
@@ -276,6 +287,7 @@ class AddSchedule extends React.PureComponent {
           </div>
           <div>{this.state.date}</div>
         </label>
+        <div className={styles.alert}>{this.state.alert}</div>
         <div className={styles.wrapper}>
           <a className={styles.button} onClick={this.handleSubmit}>
             Submit!
