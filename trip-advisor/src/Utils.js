@@ -96,6 +96,18 @@ export const getTravelTitleData = (userId, travelId) => {
     .get();
 };
 
+export const deleteTravel = (userId, travelId) => {
+  return db
+    .collection("schedule")
+    .doc(userId)
+    .collection("data")
+    .doc(`travel${travelId}`)
+    .delete()
+    .then(() => {
+      console.log(11111);
+    });
+};
+
 export const getTravelScheduleData = (userId, travelId) => {
   return db
     .collection("schedule")

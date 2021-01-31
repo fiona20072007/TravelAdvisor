@@ -5,7 +5,7 @@ import EditSchedule from "./EditSchedule";
 import styles from "../scss/schedule.module.scss";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlane } from "@fortawesome/free-solid-svg-icons";
+import { faPlane, faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import {
   Route,
   Link,
@@ -13,7 +13,7 @@ import {
   useLocation,
   useHistory,
 } from "react-router-dom";
-import { setNavbarColor } from "../Utils";
+import { setNavbarColor, deleteTravel } from "../Utils";
 
 const db = firebase.firestore();
 
@@ -25,6 +25,8 @@ const ScheduleIndex = () => {
   const [ScheduleStatus, setScheduleStatus] = useState(true);
   const [userUid, setUserUid] = useState("");
   const [clickNav, setClickNav] = useState(0);
+  const [deleteShow, setDeleteShow] = useState(false);
+  const [deleteShowId, setDeleteShowId] = useState(null);
 
   const location = useLocation();
   const history = useHistory();
@@ -74,6 +76,15 @@ const ScheduleIndex = () => {
 
   const handleSubmitChange = () => {
     setScheduleStatus(true);
+  };
+
+  const handleDeleteSchedule = (id) => {
+    let arr = TravelSchedule.filter((item) => {
+      return item.id !== id;
+    });
+    setTravelSchedule(arr);
+    setTravelScheduleShow(arr);
+    deleteTravel(userUid, id);
   };
 
   useEffect(() => {
@@ -172,14 +183,24 @@ const ScheduleIndex = () => {
                       )}
                       <div
                         className={styles.scheduleList}
-                        onClick={() => {
-                          setTravelId(item.id);
-                          document.getElementById("loading").style.display =
-                            "flex";
-                          document.getElementById(
-                            "loading"
-                          ).style.backgroundColor = "white";
-                          history.push(`${url}/editSchedule/${item.id}`);
+                        onMouseOver={() => {
+                          setDeleteShowId(item.id);
+                          setDeleteShow(true);
+                        }}
+                        onMouseLeave={() => setDeleteShow(false)}
+                        onClick={(e) => {
+                          if (
+                            e.target.tagName === "DIV" ||
+                            e.target.tagName === "IMG"
+                          ) {
+                            setTravelId(item.id);
+                            document.getElementById("loading").style.display =
+                              "flex";
+                            document.getElementById(
+                              "loading"
+                            ).style.backgroundColor = "white";
+                            history.push(`${url}/editSchedule/${item.id}`);
+                          }
                         }}
                       >
                         <div className={styles.scheduleTitle}>
@@ -194,6 +215,24 @@ const ScheduleIndex = () => {
                             {" "}
                             {item.EndDate}
                           </div>
+                        </div>
+                        <div
+                          id={item.id}
+                          className={
+                            deleteShow && item.id === deleteShowId
+                              ? styles.deleteSchedule
+                              : styles.deleteScheduleHide
+                          }
+                          onClick={(e) => {
+                            if (
+                              e.target.tagName === "svg" ||
+                              e.target.tagName === "path"
+                            ) {
+                              handleDeleteSchedule(item.id);
+                            }
+                          }}
+                        >
+                          <FontAwesomeIcon icon={faTrashAlt} />
                         </div>
                         <img
                           className={styles.schedulePhoto}

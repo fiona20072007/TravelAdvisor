@@ -34,14 +34,27 @@ class AddSchedule extends React.PureComponent {
     };
   }
   componentDidMount() {
+    Array.max = function (array) {
+      return Math.max.apply(Math, array);
+    };
     db.collection("schedule")
       .doc(this.props.userUid)
       .collection("data")
       .get()
-      .then((snap) => {
-        this.setState({
-          size: snap.size,
+      .then((docs) => {
+        let arr = [];
+        docs.forEach((doc) => {
+          arr.push(doc.data().id);
         });
+        if (arr.length === 0) {
+          this.setState({
+            size: 0,
+          });
+        } else {
+          this.setState({
+            size: Array.max(arr) + 1,
+          });
+        }
       });
 
     anime

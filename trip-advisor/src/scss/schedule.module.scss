@@ -70,6 +70,23 @@ a {
     top: 0;
   }
 }
+
+@mixin deleteComponent($display) {
+  position: absolute;
+  top: 170px;
+  right: 40px;
+  color: white;
+  display: $display;
+  &:hover {
+    color: rgba(255, 0, 0, 0.68);
+  }
+}
+.deleteSchedule {
+  @include deleteComponent(block);
+}
+.deleteScheduleHide {
+  @include deleteComponent(none);
+}
 .scheduleList {
   display: flex;
   align-items: center;
